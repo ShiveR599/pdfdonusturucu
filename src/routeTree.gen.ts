@@ -9,8 +9,50 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SssRouteImport } from './routes/sss'
+import { Route as ResimSikistirRouteImport } from './routes/resim-sikistir'
+import { Route as PdfSikistirRouteImport } from './routes/pdf-sikistir'
+import { Route as OzelliklerimizRouteImport } from './routes/ozelliklerimiz'
+import { Route as NasilKullanilirRouteImport } from './routes/nasil-kullanilir'
+import { Route as GuvenlikRouteImport } from './routes/guvenlik'
+import { Route as GizlilikPolitikasiRouteImport } from './routes/gizlilik-politikasi'
 import { Route as IndexRouteImport } from './routes/index'
 
+const SssRoute = SssRouteImport.update({
+  id: '/sss',
+  path: '/sss',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResimSikistirRoute = ResimSikistirRouteImport.update({
+  id: '/resim-sikistir',
+  path: '/resim-sikistir',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PdfSikistirRoute = PdfSikistirRouteImport.update({
+  id: '/pdf-sikistir',
+  path: '/pdf-sikistir',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OzelliklerimizRoute = OzelliklerimizRouteImport.update({
+  id: '/ozelliklerimiz',
+  path: '/ozelliklerimiz',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NasilKullanilirRoute = NasilKullanilirRouteImport.update({
+  id: '/nasil-kullanilir',
+  path: '/nasil-kullanilir',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GuvenlikRoute = GuvenlikRouteImport.update({
+  id: '/guvenlik',
+  path: '/guvenlik',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GizlilikPolitikasiRoute = GizlilikPolitikasiRouteImport.update({
+  id: '/gizlilik-politikasi',
+  path: '/gizlilik-politikasi',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +61,130 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/gizlilik-politikasi': typeof GizlilikPolitikasiRoute
+  '/guvenlik': typeof GuvenlikRoute
+  '/nasil-kullanilir': typeof NasilKullanilirRoute
+  '/ozelliklerimiz': typeof OzelliklerimizRoute
+  '/pdf-sikistir': typeof PdfSikistirRoute
+  '/resim-sikistir': typeof ResimSikistirRoute
+  '/sss': typeof SssRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/gizlilik-politikasi': typeof GizlilikPolitikasiRoute
+  '/guvenlik': typeof GuvenlikRoute
+  '/nasil-kullanilir': typeof NasilKullanilirRoute
+  '/ozelliklerimiz': typeof OzelliklerimizRoute
+  '/pdf-sikistir': typeof PdfSikistirRoute
+  '/resim-sikistir': typeof ResimSikistirRoute
+  '/sss': typeof SssRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/gizlilik-politikasi': typeof GizlilikPolitikasiRoute
+  '/guvenlik': typeof GuvenlikRoute
+  '/nasil-kullanilir': typeof NasilKullanilirRoute
+  '/ozelliklerimiz': typeof OzelliklerimizRoute
+  '/pdf-sikistir': typeof PdfSikistirRoute
+  '/resim-sikistir': typeof ResimSikistirRoute
+  '/sss': typeof SssRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/gizlilik-politikasi'
+    | '/guvenlik'
+    | '/nasil-kullanilir'
+    | '/ozelliklerimiz'
+    | '/pdf-sikistir'
+    | '/resim-sikistir'
+    | '/sss'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/gizlilik-politikasi'
+    | '/guvenlik'
+    | '/nasil-kullanilir'
+    | '/ozelliklerimiz'
+    | '/pdf-sikistir'
+    | '/resim-sikistir'
+    | '/sss'
+  id:
+    | '__root__'
+    | '/'
+    | '/gizlilik-politikasi'
+    | '/guvenlik'
+    | '/nasil-kullanilir'
+    | '/ozelliklerimiz'
+    | '/pdf-sikistir'
+    | '/resim-sikistir'
+    | '/sss'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  GizlilikPolitikasiRoute: typeof GizlilikPolitikasiRoute
+  GuvenlikRoute: typeof GuvenlikRoute
+  NasilKullanilirRoute: typeof NasilKullanilirRoute
+  OzelliklerimizRoute: typeof OzelliklerimizRoute
+  PdfSikistirRoute: typeof PdfSikistirRoute
+  ResimSikistirRoute: typeof ResimSikistirRoute
+  SssRoute: typeof SssRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sss': {
+      id: '/sss'
+      path: '/sss'
+      fullPath: '/sss'
+      preLoaderRoute: typeof SssRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/resim-sikistir': {
+      id: '/resim-sikistir'
+      path: '/resim-sikistir'
+      fullPath: '/resim-sikistir'
+      preLoaderRoute: typeof ResimSikistirRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pdf-sikistir': {
+      id: '/pdf-sikistir'
+      path: '/pdf-sikistir'
+      fullPath: '/pdf-sikistir'
+      preLoaderRoute: typeof PdfSikistirRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ozelliklerimiz': {
+      id: '/ozelliklerimiz'
+      path: '/ozelliklerimiz'
+      fullPath: '/ozelliklerimiz'
+      preLoaderRoute: typeof OzelliklerimizRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/nasil-kullanilir': {
+      id: '/nasil-kullanilir'
+      path: '/nasil-kullanilir'
+      fullPath: '/nasil-kullanilir'
+      preLoaderRoute: typeof NasilKullanilirRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/guvenlik': {
+      id: '/guvenlik'
+      path: '/guvenlik'
+      fullPath: '/guvenlik'
+      preLoaderRoute: typeof GuvenlikRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gizlilik-politikasi': {
+      id: '/gizlilik-politikasi'
+      path: '/gizlilik-politikasi'
+      fullPath: '/gizlilik-politikasi'
+      preLoaderRoute: typeof GizlilikPolitikasiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,6 +197,13 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  GizlilikPolitikasiRoute: GizlilikPolitikasiRoute,
+  GuvenlikRoute: GuvenlikRoute,
+  NasilKullanilirRoute: NasilKullanilirRoute,
+  OzelliklerimizRoute: OzelliklerimizRoute,
+  PdfSikistirRoute: PdfSikistirRoute,
+  ResimSikistirRoute: ResimSikistirRoute,
+  SssRoute: SssRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
