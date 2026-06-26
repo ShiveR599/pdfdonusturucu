@@ -11,6 +11,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { Layout } from "../components/Layout";
 
 function NotFoundComponent() {
   return (
@@ -77,20 +78,29 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "PDF Dönüştürücü – Ücretsiz PDF & Görsel İşleme Aracı" },
+      { name: "description", content: "PDF'i JPEG, PNG veya WebP'ye dönüştürün; görseli PDF'e ekleyin; PDF ve resimleri sıkıştırın. %100 ücretsiz, sınırsız, sunucusuz ve güvenli." },
+      { name: "keywords", content: "pdf dönüştürücü, pdf jpeg çevirme, pdf sıkıştırma, resim sıkıştırma, ücretsiz pdf dönüştür, pdf to image, image to pdf" },
+      { property: "og:title", content: "PDF Dönüştürücü – Ücretsiz PDF & Görsel İşleme Aracı" },
+      { property: "og:description", content: "PDF'i JPEG/PNG/WebP'ye dönüştür, görseli PDF'e ekle, PDF ve resimleri sıkıştır. Ücretsiz, sınırsız, tarayıcı tabanlı." },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
       {
         rel: "stylesheet",
         href: appCss,
       },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" },
+    ],
+    scripts: [
+      {
+        children: `window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;gtag('consent','default',{'analytics_storage':'denied','ad_storage':'denied','ad_personalization':'denied','ad_user_data':'denied','wait_for_update':500});gtag('js', new Date());gtag('config','G-YDCM4WQ58R');`,
+      },
+      { src: "https://www.googletagmanager.com/gtag/js?id=G-YDCM4WQ58R", async: true },
+      { src: "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8147032819898233", async: true, crossOrigin: "anonymous" },
     ],
   }),
   shellComponent: RootShell,
@@ -101,7 +111,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="tr">
       <head>
         <HeadContent />
       </head>
@@ -118,8 +128,9 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <Layout>
+        <Outlet />
+      </Layout>
     </QueryClientProvider>
   );
 }
