@@ -95,7 +95,11 @@ export function ImageCompress() {
     setBulkBusy(true);
     const zip = new JSZip();
     for (const it of items) {
-      const c = it.compressed ?? (await compressOne(it).then((r) => ({ blob: r.blob, size: r.blob.size, name: r.name })));
+      let c = it.compressed;
+      if (!c) {
+        const r = await compressOne(it);
+        c = { blob: r.blob, size: r.blob.size, name: r.name };
+      }
       zip.file(c.name, c.blob);
     }
     const out = await zip.generateAsync({ type: "blob" });

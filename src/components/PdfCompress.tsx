@@ -66,7 +66,7 @@ export function PdfCompress() {
       page.drawImage(jpg, { x: 0, y: 0, width: viewport.width, height: viewport.height });
     }
     const bytes = await out.save();
-    return new Blob([bytes], { type: "application/pdf" });
+    return new Blob([bytes as BlobPart], { type: "application/pdf" });
   }
 
   async function runOne(id: string) {
