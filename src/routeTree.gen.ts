@@ -12,10 +12,14 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SssRouteImport } from './routes/sss'
 import { Route as ResimSikistirRouteImport } from './routes/resim-sikistir'
 import { Route as PdfSikistirRouteImport } from './routes/pdf-sikistir'
+import { Route as PdfBirlestirRouteImport } from './routes/pdf-birlestir'
 import { Route as OzelliklerimizRouteImport } from './routes/ozelliklerimiz'
 import { Route as NasilKullanilirRouteImport } from './routes/nasil-kullanilir'
+import { Route as IletisimRouteImport } from './routes/iletisim'
+import { Route as HakkimizdaRouteImport } from './routes/hakkimizda'
 import { Route as GuvenlikRouteImport } from './routes/guvenlik'
 import { Route as GizlilikPolitikasiRouteImport } from './routes/gizlilik-politikasi'
+import { Route as BlogRouteImport } from './routes/blog'
 import { Route as IndexRouteImport } from './routes/index'
 
 const SssRoute = SssRouteImport.update({
@@ -33,6 +37,11 @@ const PdfSikistirRoute = PdfSikistirRouteImport.update({
   path: '/pdf-sikistir',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PdfBirlestirRoute = PdfBirlestirRouteImport.update({
+  id: '/pdf-birlestir',
+  path: '/pdf-birlestir',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OzelliklerimizRoute = OzelliklerimizRouteImport.update({
   id: '/ozelliklerimiz',
   path: '/ozelliklerimiz',
@@ -41,6 +50,16 @@ const OzelliklerimizRoute = OzelliklerimizRouteImport.update({
 const NasilKullanilirRoute = NasilKullanilirRouteImport.update({
   id: '/nasil-kullanilir',
   path: '/nasil-kullanilir',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IletisimRoute = IletisimRouteImport.update({
+  id: '/iletisim',
+  path: '/iletisim',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HakkimizdaRoute = HakkimizdaRouteImport.update({
+  id: '/hakkimizda',
+  path: '/hakkimizda',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GuvenlikRoute = GuvenlikRouteImport.update({
@@ -53,6 +72,11 @@ const GizlilikPolitikasiRoute = GizlilikPolitikasiRouteImport.update({
   path: '/gizlilik-politikasi',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogRoute = BlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -61,20 +85,28 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/blog': typeof BlogRoute
   '/gizlilik-politikasi': typeof GizlilikPolitikasiRoute
   '/guvenlik': typeof GuvenlikRoute
+  '/hakkimizda': typeof HakkimizdaRoute
+  '/iletisim': typeof IletisimRoute
   '/nasil-kullanilir': typeof NasilKullanilirRoute
   '/ozelliklerimiz': typeof OzelliklerimizRoute
+  '/pdf-birlestir': typeof PdfBirlestirRoute
   '/pdf-sikistir': typeof PdfSikistirRoute
   '/resim-sikistir': typeof ResimSikistirRoute
   '/sss': typeof SssRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/blog': typeof BlogRoute
   '/gizlilik-politikasi': typeof GizlilikPolitikasiRoute
   '/guvenlik': typeof GuvenlikRoute
+  '/hakkimizda': typeof HakkimizdaRoute
+  '/iletisim': typeof IletisimRoute
   '/nasil-kullanilir': typeof NasilKullanilirRoute
   '/ozelliklerimiz': typeof OzelliklerimizRoute
+  '/pdf-birlestir': typeof PdfBirlestirRoute
   '/pdf-sikistir': typeof PdfSikistirRoute
   '/resim-sikistir': typeof ResimSikistirRoute
   '/sss': typeof SssRoute
@@ -82,10 +114,14 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/blog': typeof BlogRoute
   '/gizlilik-politikasi': typeof GizlilikPolitikasiRoute
   '/guvenlik': typeof GuvenlikRoute
+  '/hakkimizda': typeof HakkimizdaRoute
+  '/iletisim': typeof IletisimRoute
   '/nasil-kullanilir': typeof NasilKullanilirRoute
   '/ozelliklerimiz': typeof OzelliklerimizRoute
+  '/pdf-birlestir': typeof PdfBirlestirRoute
   '/pdf-sikistir': typeof PdfSikistirRoute
   '/resim-sikistir': typeof ResimSikistirRoute
   '/sss': typeof SssRoute
@@ -94,30 +130,42 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/blog'
     | '/gizlilik-politikasi'
     | '/guvenlik'
+    | '/hakkimizda'
+    | '/iletisim'
     | '/nasil-kullanilir'
     | '/ozelliklerimiz'
+    | '/pdf-birlestir'
     | '/pdf-sikistir'
     | '/resim-sikistir'
     | '/sss'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/blog'
     | '/gizlilik-politikasi'
     | '/guvenlik'
+    | '/hakkimizda'
+    | '/iletisim'
     | '/nasil-kullanilir'
     | '/ozelliklerimiz'
+    | '/pdf-birlestir'
     | '/pdf-sikistir'
     | '/resim-sikistir'
     | '/sss'
   id:
     | '__root__'
     | '/'
+    | '/blog'
     | '/gizlilik-politikasi'
     | '/guvenlik'
+    | '/hakkimizda'
+    | '/iletisim'
     | '/nasil-kullanilir'
     | '/ozelliklerimiz'
+    | '/pdf-birlestir'
     | '/pdf-sikistir'
     | '/resim-sikistir'
     | '/sss'
@@ -125,10 +173,14 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BlogRoute: typeof BlogRoute
   GizlilikPolitikasiRoute: typeof GizlilikPolitikasiRoute
   GuvenlikRoute: typeof GuvenlikRoute
+  HakkimizdaRoute: typeof HakkimizdaRoute
+  IletisimRoute: typeof IletisimRoute
   NasilKullanilirRoute: typeof NasilKullanilirRoute
   OzelliklerimizRoute: typeof OzelliklerimizRoute
+  PdfBirlestirRoute: typeof PdfBirlestirRoute
   PdfSikistirRoute: typeof PdfSikistirRoute
   ResimSikistirRoute: typeof ResimSikistirRoute
   SssRoute: typeof SssRoute
@@ -157,6 +209,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PdfSikistirRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/pdf-birlestir': {
+      id: '/pdf-birlestir'
+      path: '/pdf-birlestir'
+      fullPath: '/pdf-birlestir'
+      preLoaderRoute: typeof PdfBirlestirRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/ozelliklerimiz': {
       id: '/ozelliklerimiz'
       path: '/ozelliklerimiz'
@@ -169,6 +228,20 @@ declare module '@tanstack/react-router' {
       path: '/nasil-kullanilir'
       fullPath: '/nasil-kullanilir'
       preLoaderRoute: typeof NasilKullanilirRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/iletisim': {
+      id: '/iletisim'
+      path: '/iletisim'
+      fullPath: '/iletisim'
+      preLoaderRoute: typeof IletisimRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hakkimizda': {
+      id: '/hakkimizda'
+      path: '/hakkimizda'
+      fullPath: '/hakkimizda'
+      preLoaderRoute: typeof HakkimizdaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/guvenlik': {
@@ -185,6 +258,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GizlilikPolitikasiRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -197,10 +277,14 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BlogRoute: BlogRoute,
   GizlilikPolitikasiRoute: GizlilikPolitikasiRoute,
   GuvenlikRoute: GuvenlikRoute,
+  HakkimizdaRoute: HakkimizdaRoute,
+  IletisimRoute: IletisimRoute,
   NasilKullanilirRoute: NasilKullanilirRoute,
   OzelliklerimizRoute: OzelliklerimizRoute,
+  PdfBirlestirRoute: PdfBirlestirRoute,
   PdfSikistirRoute: PdfSikistirRoute,
   ResimSikistirRoute: ResimSikistirRoute,
   SssRoute: SssRoute,

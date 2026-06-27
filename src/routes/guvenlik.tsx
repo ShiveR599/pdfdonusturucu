@@ -1,13 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { CloudOff, Lock, Eye, Server, ShieldCheck } from "lucide-react";
-import { InArticleAd } from "../components/AdSlot";
+import { CloudOff, Lock, Eye, Server } from "lucide-react";
 
 export const Route = createFileRoute("/guvenlik")({
   head: () => ({
     meta: [
-      { title: "Güvenlik — PDF Dönüştürücü" },
-      { name: "description", content: "Tüm işlemler tarayıcınızda gerçekleşir. Dosyalarınız sunucuya yüklenmez." },
+      { title: "Güvenlik & Gizlilik — PDF Dönüştürücü" },
+      { name: "description", content: "Tüm işlemler tarayıcınızda gerçekleşir. Dosyalarınız sunucuya yüklenmez. KVKK uyumlu gizlilik politikamızı okuyun." },
+      { property: "og:url", content: "https://pdfdonusturucu.netlify.app/guvenlik" },
     ],
+    links: [{ rel: "canonical", href: "https://pdfdonusturucu.netlify.app/guvenlik" }],
   }),
   component: Security,
 });
@@ -19,11 +20,23 @@ const CARDS = [
   { icon: Server, title: "Arka Plan Yok", text: "Arka planda çalışan hiçbir veri toplama veya işleme süreci yoktur." },
 ];
 
+const PRIVACY = [
+  { title: "Veri Sorumlusu", text: "PDF Dönüştürücü — pdfdonusturucu.netlify.app" },
+  { title: "İşlenen Veriler", text: "Yüklediğiniz dosyalar yalnızca tarayıcınızda işlenir. Sunucularımıza iletilmez, kaydedilmez veya saklanmaz." },
+  { title: "Çerezler ve Analitik", text: "Google Analytics kullanılmaktadır. Yalnızca kullanıcı onayı sonrasında aktif olur. IP adresleri anonimleştirilir." },
+  { title: "Reklam Çerezleri", text: "Google AdSense kullanılmaktadır. Kullanıcı onayı sonrasında kişiselleştirilmiş reklam gösterilebilir." },
+  { title: "Kullanıcı Hakları (KVKK Madde 11)", text: "Bilgi edinme, düzeltme, silme ve itiraz haklarınız için iletişim adresimize yazabilirsiniz." },
+  { title: "Çerez Tercihleri", text: "Tercihlerinizi sayfanın alt kısmındaki banner üzerinden istediğiniz zaman değiştirebilirsiniz." },
+  { title: "İletişim", text: "info@pdfdonusturucu.net" },
+];
+
 function Security() {
   return (
-    <div>
-      <h1 className="text-2xl sm:text-3xl font-bold text-center mb-8">Güvenlik</h1>
-      <div className="grid sm:grid-cols-2 gap-4 mb-8">
+    <div className="space-y-10">
+      <header className="text-center">
+        <h1 className="text-2xl sm:text-3xl font-bold">Güvenlik & Gizlilik</h1>
+      </header>
+      <div className="grid sm:grid-cols-2 gap-4">
         {CARDS.map((c) => (
           <div key={c.title} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
             <div className="w-12 h-12 rounded-xl bg-accent-100 dark:bg-accent-900/30 text-accent-700 dark:text-accent-400 flex items-center justify-center mb-4">
@@ -34,11 +47,19 @@ function Security() {
           </div>
         ))}
       </div>
-      <div className="bg-gradient-to-r from-accent-500 to-accent-600 text-white rounded-2xl p-6 flex items-center gap-4">
-        <ShieldCheck className="w-10 h-10 shrink-0" />
-        <p className="font-semibold">KVKK uyumlu gizlilik politikası ile korunan bir hizmettir.</p>
-      </div>
-      <InArticleAd />
+
+      <section id="gizlilik-politikasi" className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
+        <h2 className="text-xl font-bold mb-5">Gizlilik Politikası</h2>
+        <dl className="space-y-4">
+          {PRIVACY.map((p) => (
+            <div key={p.title}>
+              <dt className="font-semibold text-slate-800 dark:text-slate-200">{p.title}</dt>
+              <dd className="text-sm text-slate-600 dark:text-slate-400 mt-1">{p.text}</dd>
+            </div>
+          ))}
+        </dl>
+        <p className="mt-6 text-xs text-slate-500 dark:text-slate-400">Son güncelleme: Ocak 2025</p>
+      </section>
     </div>
   );
 }

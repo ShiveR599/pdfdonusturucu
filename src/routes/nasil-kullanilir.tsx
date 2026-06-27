@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { MousePointerClick, Upload, Settings, Download } from "lucide-react";
-import { InArticleAd } from "../components/AdSlot";
 
 export const Route = createFileRoute("/nasil-kullanilir")({
   head: () => ({
@@ -15,7 +14,7 @@ export const Route = createFileRoute("/nasil-kullanilir")({
 const STEPS = [
   { icon: MousePointerClick, title: "Aracını Seç", text: "Üst menüden ihtiyacına uygun aracı seç." },
   { icon: Upload, title: "Dosyanı Yükle", text: "Sürükle-bırak veya tıklayarak yükle, dosya sayısı sınırı yok." },
-  { icon: Settings, title: "Ayarlarını Belirle", text: "Format, kalite veya sıkıştırma seviyesini seç." },
+  { icon: Settings, title: "Ayarlarını Belirle", text: "Format, kalite, sıkıştırma seviyesi veya sayfa aralığını seç." },
   { icon: Download, title: "İndir", text: "İşlem tarayıcında anında tamamlanır, dosyayı hemen indir." },
 ];
 
@@ -59,6 +58,33 @@ const DETAILS = [
       "Tüm sıkıştırılmış görseller tek ZIP olarak indirilebilir",
     ],
   },
+  {
+    title: "PDF Birleştir",
+    items: [
+      "Birden fazla PDF'i tek belgede toplamak için PDF Birleştir aracını kullanın",
+      "PDF'leri yükleyin, sürükleyerek sıralamayı düzenleyin ve 'Birleştir' butonuna tıklayın",
+      "Dosya sayısı sınırı yoktur",
+      "Tüm işlem tarayıcınızda gerçekleşir",
+    ],
+  },
+  {
+    title: "PDF Böl",
+    items: [
+      "Bir PDF'i belirli sayfa aralıklarına bölmek için PDF Böl aracını kullanın",
+      "'1-3, 5, 8-10' formatında sayfa aralıkları girin; her aralık ayrı bir PDF olarak indirilir",
+      "Alternatif olarak her sayfayı ayrı PDF yapabilirsiniz",
+      "Birden fazla aralık tek ZIP olarak indirilir",
+    ],
+  },
+  {
+    title: "PDF Sayfa Düzenle",
+    items: [
+      "PDF sayfalarını yeniden sıralamak, döndürmek veya silmek için Sayfa Düzenle aracını kullanın",
+      "Sayfaları sürükleyerek yeniden sıralayın",
+      "Döndürme butonlarıyla her sayfanın yönünü ayarlayın",
+      "İstemediğiniz sayfaları kaldırın ve değişiklikleri tek tıkla uygulayın",
+    ],
+  },
 ];
 
 function HowToUse() {
@@ -79,7 +105,6 @@ function HowToUse() {
           </div>
         ))}
       </div>
-      <InArticleAd />
       <div className="grid md:grid-cols-2 gap-4">
         {DETAILS.map((d) => (
           <div key={d.title} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5">

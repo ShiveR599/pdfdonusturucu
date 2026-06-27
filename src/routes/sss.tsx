@@ -14,23 +14,27 @@ export const Route = createFileRoute("/sss")({
 });
 
 const Q = [
-  { q: "PDF Dönüştürücü ücretsiz mi?", a: "Evet, tüm araçlar tamamen ücretsiz ve sınırsızdır. Gizli abonelik veya premium paket yoktur." },
-  { q: "Dosyalarım güvende mi?", a: "%100 güvende. Hiçbir dosya sunucuya yüklenmez; tüm işlemler tarayıcınızda gerçekleşir." },
-  { q: "Günlük dosya limiti var mı?", a: "Hayır, hiçbir yapay sınır yoktur." },
-  { q: "Aynı anda kaç PDF yükleyebilirim?", a: "Sınır yoktur, istediğiniz kadar PDF yükleyebilirsiniz." },
-  { q: "PDF'te belirli sayfaları seçebilir miyim?", a: "Evet, tek PDF yüklendiğinde sayfa aralığı belirlenebilir (1-5, 8, 11-13). Çoklu PDF'te tüm sayfalar listelenir ve bireysel seçilir." },
-  { q: "Çıktı kalitesini nasıl seçerim?", a: "PDF→Görsel'de 4 seviye (Standart/İyi/Yüksek/HD), sıkıştırma araçlarında 3 seviye mevcuttur." },
-  { q: "Hangi görüntü formatları destekleniyor?", a: "JPEG, PNG ve WebP — hem giriş hem çıkış olarak tüm araçlarda desteklenir." },
-  { q: "PNG sıkıştırma nasıl çalışır?", a: "PNG kayıpsız bir formattır; bu nedenle yalnızca boyut küçültme (resize) uygulanır." },
-  { q: "İnternet kesilirse ne olur?", a: "Dosya yüklendikten sonra internet kesilse bile işlem devam eder; yalnızca ilk açılışta internet gerekir." },
-  { q: "Mobil cihazlardan kullanabilir miyim?", a: "Evet, tüm araçlar mobil uyumludur." },
+  { q: "PDF Dönüştürücü ücretsiz mi?", a: "Evet, tüm araçlar tamamen ücretsiz ve sınırsızdır. Gizli abonelik, premium paket veya kayıt zorunluluğu yoktur." },
+  { q: "Dosyalarım güvende mi?", a: "%100 güvende. Yüklediğiniz hiçbir dosya sunucularımıza gönderilmez. Tüm işlemler yalnızca tarayıcınızda gerçekleşir. Dosyalarınız bilgisayarınızdan asla çıkmaz." },
+  { q: "Günlük dosya veya boyut limiti var mı?", a: "Hayır, hiçbir yapay sınır yoktur. İstediğiniz kadar dosyayı, istediğiniz boyutta, istediğiniz sıklıkta işleyebilirsiniz." },
+  { q: "Aynı anda kaç PDF yükleyebilirim?", a: "Sınır yoktur. İstediğiniz kadar PDF aynı anda yükleyebilirsiniz." },
+  { q: "PDF'te belirli sayfaları seçebilir miyim?", a: "Evet. Tek PDF yüklendiğinde sayfa aralığı belirleyebilirsiniz (örneğin: 1-5, 8, 11-13). Birden fazla PDF yüklendiğinde tüm sayfalar listelenir ve istediğiniz sayfaları tek tek seçebilirsiniz." },
+  { q: "Hangi çıktı kalitesini seçmeliyim?", a: "PDF'ten Görsele'de 4 seviye var: Standart (108 DPI) günlük ve web kullanımı için, HD (216 DPI) baskı kalitesi için önerilir. PDF ve Resim Sıkıştırma araçlarında 3 seviye var: e-posta için Yüksek, genel için Orta, arşiv için Düşük sıkıştırma önerilir." },
+  { q: "Hangi dosya formatları destekleniyor?", a: "Giriş: PDF, JPEG, PNG, WebP. Çıkış: JPEG, PNG, WebP (görsel olarak) ve PDF. Tüm modern tarayıcılar bu formatları destekler." },
+  { q: "PNG sıkıştırma neden farklı çalışıyor?", a: "PNG kayıpsız bir formattır; kalite parametresi PNG üzerinde etkili değildir. PNG için yalnızca boyut küçültme (yeniden örnekleme) uygulanır." },
+  { q: "İnternet bağlantısı kesilirse ne olur?", a: "Dosya tarayıcıya yüklendikten sonra internet kesilse bile işlem devam eder. Yalnızca sayfayı ilk açarken internet gereklidir." },
+  { q: "Mobil cihazdan kullanabilir miyim?", a: "Evet, tüm araçlar mobil uyumludur. Akıllı telefon ve tabletten de sorunsuz kullanabilirsiniz." },
+  { q: "Birden fazla PDF'i tek dosyada birleştirebilir miyim?", a: "Evet. PDF Birleştir aracıyla istediğiniz kadar PDF'i tek belgede toplayabilirsiniz. Sıralamayı sürükleyerek düzenleyebilir, ardından tek tıkla birleştirilmiş PDF'i indirebilirsiniz. Tüm işlem tarayıcınızda gerçekleşir." },
+  { q: "PDF'i belirli sayfalara bölebilir miyim?", a: "Evet. PDF Böl aracıyla '1-3, 5, 8-10' gibi sayfa aralıkları belirtebilirsiniz; her aralık ayrı bir PDF dosyası olarak oluşturulur. Tüm sayfaları ayrı ayrı bölebilir veya seçtiğiniz aralıkları ZIP olarak indirebilirsiniz." },
+  { q: "PDF sayfalarını yeniden sıralayabilir veya döndürebilir miyim?", a: "Evet. Sayfa Düzenle aracıyla sayfaları sürükleyerek istediğiniz sıraya getirebilir, her sayfayı 90° döndürebilir ve istemediğiniz sayfaları silebilirsiniz. Değişiklikler anında önizlemeye yansır." },
 ];
 
 function Faq() {
   const [open, setOpen] = useState<number | null>(0);
   return (
     <div>
-      <h1 className="text-2xl sm:text-3xl font-bold text-center mb-8">Sıkça Sorulan Sorular</h1>
+      <h1 className="text-2xl sm:text-3xl font-bold text-center mb-6">Sıkça Sorulan Sorular</h1>
+      <InArticleAd />
       <div className="space-y-2 max-w-3xl mx-auto">
         {Q.map((it, i) => (
           <div key={i} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden">
@@ -42,7 +46,6 @@ function Faq() {
           </div>
         ))}
       </div>
-      <InArticleAd />
     </div>
   );
 }
