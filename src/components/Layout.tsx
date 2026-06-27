@@ -7,11 +7,18 @@ const NAV = [
   { to: "/", label: "PDF Dönüştürücü" },
   { to: "/pdf-sikistir", label: "PDF Sıkıştır" },
   { to: "/resim-sikistir", label: "Resim Sıkıştır" },
-  { to: "/nasil-kullanilir", label: "Nasıl Kullanılır" },
-  { to: "/guvenlik", label: "Güvenlik" },
-  { to: "/ozelliklerimiz", label: "Özelliklerimiz" },
+  { to: "/pdf-birlestir", label: "PDF Birleştir" },
   { to: "/sss", label: "SSS" },
-];
+  { to: "/blog", label: "Blog" },
+] as const;
+
+const FOOTER_LINKS = [
+  { to: "/nasil-kullanilir", label: "Nasıl Kullanılır" },
+  { to: "/guvenlik", label: "Güvenlik & Gizlilik" },
+  { to: "/hakkimizda", label: "Hakkımızda" },
+  { to: "/iletisim", label: "İletişim" },
+  { to: "/gizlilik-politikasi", label: "Gizlilik Politikası" },
+] as const;
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const [dark, setDark] = useState(false);
@@ -111,16 +118,30 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </div>
 
       <footer className="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 mt-8">
-        <div className="max-w-7xl mx-auto px-4 py-8 text-center space-y-3">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent-50 dark:bg-accent-900/20 text-accent-700 dark:text-accent-400 text-sm font-medium">
-            <ShieldCheck className="w-4 h-4" />
-            KVKK uyumlu gizlilik politikası ile korunan bir hizmettir.
+        <div className="max-w-7xl mx-auto px-4 py-8 space-y-5">
+          <div className="flex items-center gap-2 justify-center">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center">
+              <FileText className="w-4 h-4 text-white" />
+            </div>
+            <span className="font-bold text-base">PDF Dönüştürücü</span>
           </div>
-          <div className="font-bold text-lg">PDF Dönüştürücü</div>
-          <div>
-            <Link to="/gizlilik-politikasi" className="text-sm text-primary-600 dark:text-primary-400 hover:underline">
-              Gizlilik Politikası
-            </Link>
+          <nav className="flex flex-wrap justify-center gap-x-5 gap-y-2 text-sm">
+            {FOOTER_LINKS.map((l) => (
+              <Link
+                key={l.to}
+                to={l.to}
+                className="text-slate-600 dark:text-slate-400 hover:text-primary-600 dark:hover:text-primary-400 hover:underline"
+              >
+                {l.label}
+              </Link>
+            ))}
+          </nav>
+          <div className="flex items-center justify-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+            <ShieldCheck className="w-4 h-4 text-accent-600 dark:text-accent-400" />
+            <span>KVKK uyumlu gizlilik politikası ile korunan bir hizmettir.</span>
+          </div>
+          <div className="text-center text-xs text-slate-500 dark:text-slate-400">
+            © 2025 PDF Dönüştürücü. Tüm hakları saklıdır.
           </div>
         </div>
       </footer>
