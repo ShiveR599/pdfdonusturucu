@@ -82,12 +82,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "description", content: "PDF dönüştür, birleştir, böl, sıkıştır ve sayfa düzenle. Görseli PDF'e ekle, PDF'i JPEG/PNG/WebP'ye çevir, resimleri sıkıştır. %100 ücretsiz, sınırsız, sunucusuz. Dosyalarınız tarayıcınızdan çıkmaz." },
       { name: "keywords", content: "pdf dönüştürücü, pdf birleştir, pdf böl, pdf sıkıştır, pdf sayfa düzenle, pdf sayfaları yeniden sırala, pdf sayfa döndür, pdf birleştirme, pdf bölme, pdf jpeg çevirme, pdf png çevirme, pdf webp dönüştürme, jpg pdf yapma, png pdf yapma, webp pdf yapma, pdf küçültme, resim sıkıştırma, görsel küçültme, fotoğraf sıkıştırma, ücretsiz pdf dönüştür, online pdf dönüştürücü, pdf görsel çevirici, pdf araçları, dosya sıkıştırma online, tarayıcıda pdf işleme, güvenli pdf dönüştürücü, sınırsız pdf dönüştürücü, pdf to image, image to pdf, compress pdf online, merge pdf online, split pdf online, pdf küçük yapma, resim boyutu küçültme, toplu pdf dönüştürme, pdf sayfaları birleştir, pdf parçala, pdf ayır, pdf düzenle" },
       { property: "og:title", content: "PDF Dönüştürücü – Ücretsiz PDF Birleştir, Böl, Dönüştür ve Sıkıştır" },
-      { property: "og:description", content: "PDF dönüştür, birleştir, böl ve sıkıştır. Görseli PDF'e ekle, PDF'i JPEG/PNG/WebP'ye çevir. %100 ücretsiz, sınırsız, tarayıcı tabanlı." },
+      { property: "og:description", content: "PDF dönüştür, birleştir, böl, sıkıştır ve sayfa düzenle. Görseli PDF'e ekle, PDF'i JPEG/PNG/WebP'ye çevir, resimleri sıkıştır. %100 ücretsiz, sınırsız, sunucusuz. Dosyalarınız tarayıcınızdan çıkmaz." },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://pdfdonusturucu.netlify.app/" },
       { property: "og:image", content: "https://pdfdonusturucu.netlify.app/og-image.png" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:image", content: "https://pdfdonusturucu.netlify.app/og-image.png" },
+      { name: "twitter:title", content: "PDF Dönüştürücü – Ücretsiz PDF Birleştir, Böl, Dönüştür ve Sıkıştır" },
+      { name: "twitter:description", content: "PDF dönüştür, birleştir, böl, sıkıştır ve sayfa düzenle. Görseli PDF'e ekle, PDF'i JPEG/PNG/WebP'ye çevir, resimleri sıkıştır. %100 ücretsiz, sınırsız, sunucusuz. Dosyalarınız tarayıcınızdan çıkmaz." },
     ],
     links: [
       {
