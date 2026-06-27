@@ -13,7 +13,9 @@ export const Route = createFileRoute("/")({
       { name: "description", content: "PDF'i JPEG, PNG veya WebP'ye dönüştürün; görselleri PDF'e ekleyin. Tamamen tarayıcıda, ücretsiz ve sınırsız." },
       { property: "og:title", content: "PDF Dönüştürücü" },
       { property: "og:description", content: "PDF ↔ Görsel dönüştürme. Tarayıcıda, ücretsiz, sınırsız." },
+      { property: "og:url", content: "https://pdfdonusturucu.netlify.app/" },
     ],
+    links: [{ rel: "canonical", href: "https://pdfdonusturucu.netlify.app/" }],
   }),
   component: Index,
 });
