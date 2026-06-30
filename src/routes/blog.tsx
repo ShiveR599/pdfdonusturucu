@@ -20,7 +20,7 @@ export const Route = createFileRoute("/blog")({
 const POSTS = [
   {
     title: "PDF Dosyası Nasıl Küçültülür?",
-    date: "Ocak 2025",
+    date: "Nisan 2026",
     tag: "Rehber",
     summary: "PDF dosyaları zamanla büyük boyutlara ulaşabilir. E-posta gönderimi veya depolama için dosya boyutunu küçültmek gerekebilir.",
     body: [
@@ -32,7 +32,7 @@ const POSTS = [
   },
   {
     title: "JPEG, PNG ve WebP Arasındaki Fark Nedir?",
-    date: "Şubat 2025",
+    date: "Mayıs 2026",
     tag: "Bilgi",
     summary: "Hangi görsel formatı ne zaman kullanılmalı? Üç popüler formatın karşılaştırması.",
     body: [
@@ -45,7 +45,7 @@ const POSTS = [
   },
   {
     title: "Birden Fazla Görseli Tek PDF'e Nasıl Birleştiririm?",
-    date: "Mart 2025",
+    date: "Haziran 2026",
     tag: "Rehber",
     summary: "Fotoğrafları veya taranmış belgeleri tek bir PDF'de toplamak isteyenler için adım adım rehber.",
     body: [
