@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
-import { Upload, Download, ZoomIn, X, Loader2, Trash2 } from "lucide-react";
+import { Upload, Download, ZoomIn, X, Loader2, Trash2, AlertCircle } from "lucide-react";
 import JSZip from "jszip";
-import { pdfjsLib } from "../lib/pdfjs";
+import { pdfjsLib, withTimeout, pdfErrorMessage } from "../lib/pdfjs";
 import { downloadBlob } from "../lib/format";
 
 type Page = {
@@ -24,6 +24,8 @@ const QUALITY: Record<string, number> = {
 
 export function PdfToImage() {
   const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState<{ done: number; total: number } | null>(null);
+  const [error, setError] = useState("");
   const [pdfs, setPdfs] = useState<PdfFile[]>([]);
   const [pages, setPages] = useState<Page[]>([]);
   const [format, setFormat] = useState<"jpeg" | "png" | "webp">("jpeg");
@@ -36,35 +38,56 @@ export function PdfToImage() {
 
   async function handleFiles(files: FileList | File[]) {
     setLoading(true);
-    const newPdfs: PdfFile[] = [...pdfs];
-    const newPages: Page[] = [...pages];
-    for (const file of Array.from(files)) {
-      if (!file.name.toLowerCase().endsWith(".pdf")) continue;
-      const buf = await file.arrayBuffer();
-      const doc = await pdfjsLib.getDocument({ data: buf }).promise;
-      const pdfIndex = newPdfs.length;
-      newPdfs.push({ name: file.name, doc });
-      for (let i = 1; i <= doc.numPages; i++) {
-        const page = await doc.getPage(i);
-        const viewport = page.getViewport({ scale: 1.0 });
-        const canvas = document.createElement("canvas");
-        canvas.width = viewport.width;
-        canvas.height = viewport.height;
-        const ctx = canvas.getContext("2d")!;
-        await page.render({ canvasContext: ctx, viewport, canvas } as any).promise;
-        newPages.push({
-          id: `${pdfIndex}-${i}`,
-          pdfName: file.name,
-          pdfIndex,
-          pageNumber: i,
-          preview: canvas.toDataURL("image/jpeg", 0.7),
-          selected: true,
-        });
+    setError("");
+    try {
+      const newPdfs: PdfFile[] = [...pdfs];
+      // First, load all PDF documents and count total pages
+      const docs: { name: string; doc: any; pdfIndex: number }[] = [];
+      for (const file of Array.from(files)) {
+        if (!file.name.toLowerCase().endsWith(".pdf")) continue;
+        const buf = await file.arrayBuffer();
+        const doc = await withTimeout(pdfjsLib.getDocument({ data: buf }).promise);
+        const pdfIndex = newPdfs.length;
+        newPdfs.push({ name: file.name, doc });
+        docs.push({ name: file.name, doc, pdfIndex });
       }
+      setPdfs(newPdfs);
+      const totalPages = docs.reduce((s, d) => s + d.doc.numPages, 0);
+      let done = 0;
+      setProgress({ done, total: totalPages });
+      // Render previews page by page with low scale, streaming into state.
+      for (const { name, doc, pdfIndex } of docs) {
+        for (let i = 1; i <= doc.numPages; i++) {
+          const page = await doc.getPage(i);
+          const viewport = page.getViewport({ scale: 0.5 });
+          const canvas = document.createElement("canvas");
+          canvas.width = viewport.width;
+          canvas.height = viewport.height;
+          const ctx = canvas.getContext("2d")!;
+          await withTimeout(page.render({ canvasContext: ctx, viewport, canvas } as any).promise);
+          const preview = canvas.toDataURL("image/jpeg", 0.65);
+          canvas.width = 0;
+          canvas.height = 0;
+          const newPage: Page = {
+            id: `${pdfIndex}-${i}`,
+            pdfName: name,
+            pdfIndex,
+            pageNumber: i,
+            preview,
+            selected: true,
+          };
+          setPages((prev) => [...prev, newPage]);
+          done++;
+          setProgress({ done, total: totalPages });
+          await new Promise((r) => requestAnimationFrame(() => r(null)));
+        }
+      }
+    } catch (e) {
+      setError(pdfErrorMessage(e));
+    } finally {
+      setLoading(false);
+      setProgress(null);
     }
-    setPdfs(newPdfs);
-    setPages(newPages);
-    setLoading(false);
   }
 
   function reset() {
@@ -72,6 +95,7 @@ export function PdfToImage() {
     setPages([]);
     setRangeInput("");
     setRangeError("");
+    setError("");
   }
 
   function toggle(id: string) {
@@ -122,30 +146,48 @@ export function PdfToImage() {
       ctx.fillStyle = "#ffffff";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
-    await p.render({ canvasContext: ctx, viewport, canvas } as any).promise;
+    await withTimeout(p.render({ canvasContext: ctx, viewport, canvas } as any).promise);
     const mime = format === "jpeg" ? "image/jpeg" : format === "png" ? "image/png" : "image/webp";
-    return await new Promise<Blob>((res) => canvas.toBlob((b) => res(b!), mime, 0.92));
+    const blob = await new Promise<Blob>((res) => canvas.toBlob((b) => res(b!), mime, 0.92));
+    canvas.width = 0;
+    canvas.height = 0;
+    return blob;
   }
 
   async function downloadOne(page: Page) {
-    const blob = await renderPage(page);
-    const base = page.pdfName.replace(/\.pdf$/i, "");
-    downloadBlob(blob, `${base}_sayfa-${page.pageNumber}.${format === "jpeg" ? "jpg" : format}`);
+    try {
+      const blob = await renderPage(page);
+      const base = page.pdfName.replace(/\.pdf$/i, "");
+      downloadBlob(blob, `${base}_sayfa-${page.pageNumber}.${format === "jpeg" ? "jpg" : format}`);
+    } catch (e) {
+      setError(pdfErrorMessage(e));
+    }
   }
 
   async function downloadZip() {
     const sel = pages.filter((p) => p.selected);
     if (!sel.length) return;
     setLoading(true);
-    const zip = new JSZip();
-    for (const page of sel) {
-      const blob = await renderPage(page);
-      const base = page.pdfName.replace(/\.pdf$/i, "");
-      zip.file(`${base}_sayfa-${page.pageNumber}.${format === "jpeg" ? "jpg" : format}`, blob);
+    setError("");
+    try {
+      const zip = new JSZip();
+      let done = 0;
+      setProgress({ done, total: sel.length });
+      for (const page of sel) {
+        const blob = await renderPage(page);
+        const base = page.pdfName.replace(/\.pdf$/i, "");
+        zip.file(`${base}_sayfa-${page.pageNumber}.${format === "jpeg" ? "jpg" : format}`, blob);
+        done++;
+        setProgress({ done, total: sel.length });
+      }
+      const out = await zip.generateAsync({ type: "blob" });
+      downloadBlob(out, "pdf-gorseller.zip");
+    } catch (e) {
+      setError(pdfErrorMessage(e));
+    } finally {
+      setLoading(false);
+      setProgress(null);
     }
-    const out = await zip.generateAsync({ type: "blob" });
-    downloadBlob(out, "pdf-gorseller.zip");
-    setLoading(false);
   }
 
   const selectedCount = pages.filter((p) => p.selected).length;
@@ -174,9 +216,17 @@ export function PdfToImage() {
         <input ref={inputRef} type="file" accept=".pdf,application/pdf" multiple hidden onChange={(e) => e.target.files && handleFiles(e.target.files)} />
       </div>
 
+      {error && (
+        <div className="mt-4 flex items-start gap-2 text-sm bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800/50 rounded-xl p-3">
+          <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
+          <span>{error}</span>
+        </div>
+      )}
+
       {loading && (
         <div className="mt-6 flex items-center justify-center gap-2 text-slate-600 dark:text-slate-400">
-          <Loader2 className="w-5 h-5 animate-spin" /> İşleniyor...
+          <Loader2 className="w-5 h-5 animate-spin" />
+          {progress ? `İşleniyor... ${progress.done}/${progress.total} sayfa` : "İşleniyor..."}
         </div>
       )}
 

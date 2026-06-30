@@ -17,7 +17,7 @@ function Privacy() {
 
       <h2 className="text-lg font-bold mt-6 mb-2">Veri Sorumlusu</h2>
       <p className="text-sm text-slate-600 dark:text-slate-400">
-        PDF Dönüştürücü — İletişim: [iletişim e-posta adresi yer tutucusu]
+        PDF Dönüştürücü — İletişim: info@pdfdonusturucu.net
       </p>
 
       <h2 className="text-lg font-bold mt-6 mb-2">İşlenen Veriler</h2>
@@ -46,9 +46,9 @@ function Privacy() {
       </p>
 
       <h2 className="text-lg font-bold mt-6 mb-2">İletişim</h2>
-      <p className="text-sm text-slate-600 dark:text-slate-400">[iletişim e-posta adresi yer tutucusu]</p>
+      <p className="text-sm text-slate-600 dark:text-slate-400">info@pdfdonusturucu.net</p>
 
-      <p className="text-xs text-slate-500 mt-8">Son güncelleme: [tarih yer tutucusu]</p>
+      <p className="text-xs text-slate-500 mt-8">Son güncelleme: Haziran 2026</p>
     </article>
   );
 }

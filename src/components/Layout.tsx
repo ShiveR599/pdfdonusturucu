@@ -141,7 +141,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <span>KVKK uyumlu gizlilik politikası ile korunan bir hizmettir.</span>
           </div>
           <div className="text-center text-xs text-slate-500 dark:text-slate-400">
-            © 2025 PDF Dönüştürücü. Tüm hakları saklıdır.
+            © 2026 PDF Dönüştürücü
           </div>
         </div>
       </footer>

@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
-import { Upload, Loader2, Download, Trash2, GripVertical, RotateCw, RotateCcw, RefreshCcw } from "lucide-react";
+import { Upload, Loader2, Download, Trash2, GripVertical, RotateCw, RotateCcw, RefreshCcw, AlertCircle } from "lucide-react";
 import { PDFDocument, degrees } from "pdf-lib";
-import { pdfjsLib } from "../lib/pdfjs";
+import { pdfjsLib, withTimeout, pdfErrorMessage } from "../lib/pdfjs";
 import { downloadBlob } from "../lib/format";
 
 type Page = { id: string; srcIndex: number; rotation: number; preview: string; w: number; h: number };
@@ -12,34 +12,57 @@ export function PdfPagesEdit() {
   const [originalPages, setOriginalPages] = useState<Page[]>([]);
   const [busy, setBusy] = useState(false);
   const [dragOver, setDragOver] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState<{ done: number; total: number } | null>(null);
+  const [error, setError] = useState("");
   const dragId = useRef<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   async function loadFile(f: File) {
     if (!f.name.toLowerCase().endsWith(".pdf")) return;
     setFile(f);
-    const buf = await f.arrayBuffer();
-    const doc = await pdfjsLib.getDocument({ data: buf.slice(0) }).promise;
-    const list: Page[] = [];
-    for (let i = 1; i <= doc.numPages; i++) {
-      const p = await doc.getPage(i);
-      const vp = p.getViewport({ scale: 0.5 });
-      const canvas = document.createElement("canvas");
-      canvas.width = vp.width;
-      canvas.height = vp.height;
-      const ctx = canvas.getContext("2d")!;
-      await p.render({ canvasContext: ctx, viewport: vp, canvas } as any).promise;
-      list.push({
-        id: crypto.randomUUID(),
-        srcIndex: i - 1,
-        rotation: 0,
-        preview: canvas.toDataURL("image/jpeg", 0.75),
-        w: vp.width,
-        h: vp.height,
-      });
+    setPages([]);
+    setOriginalPages([]);
+    setError("");
+    setLoading(true);
+    try {
+      const buf = await f.arrayBuffer();
+      const doc = await withTimeout(pdfjsLib.getDocument({ data: buf.slice(0) }).promise);
+      const list: Page[] = [];
+      setProgress({ done: 0, total: doc.numPages });
+      for (let i = 1; i <= doc.numPages; i++) {
+        const p = await doc.getPage(i);
+        const vp = p.getViewport({ scale: 0.5 });
+        const canvas = document.createElement("canvas");
+        canvas.width = vp.width;
+        canvas.height = vp.height;
+        const ctx = canvas.getContext("2d")!;
+        await withTimeout(p.render({ canvasContext: ctx, viewport: vp, canvas } as any).promise);
+        const preview = canvas.toDataURL("image/jpeg", 0.75);
+        const w = vp.width;
+        const h = vp.height;
+        canvas.width = 0;
+        canvas.height = 0;
+        const item: Page = {
+          id: crypto.randomUUID(),
+          srcIndex: i - 1,
+          rotation: 0,
+          preview,
+          w,
+          h,
+        };
+        list.push(item);
+        setPages([...list]);
+        setProgress({ done: i, total: doc.numPages });
+        await new Promise((r) => requestAnimationFrame(() => r(null)));
+      }
+      setOriginalPages(list);
+    } catch (e) {
+      setError(pdfErrorMessage(e));
+    } finally {
+      setLoading(false);
+      setProgress(null);
     }
-    setPages(list);
-    setOriginalPages(list);
   }
 
   function clear() {
@@ -77,6 +100,7 @@ export function PdfPagesEdit() {
   async function apply() {
     if (!file || !pages.length) return;
     setBusy(true);
+    setError("");
     try {
       const buf = await file.arrayBuffer();
       const src = await PDFDocument.load(buf, { ignoreEncryption: true });
@@ -94,6 +118,8 @@ export function PdfPagesEdit() {
       const blob = new Blob([bytes as BlobPart], { type: "application/pdf" });
       const base = file.name.replace(/\.pdf$/i, "");
       downloadBlob(blob, `${base}_duzenlenmis.pdf`);
+    } catch (e) {
+      setError(pdfErrorMessage(e));
     } finally {
       setBusy(false);
     }
@@ -122,6 +148,20 @@ export function PdfPagesEdit() {
         <p className="text-sm text-slate-500 mt-1">Sürükle, döndür veya sayfa sil — değişiklikler anlık önizlenir.</p>
         <input ref={inputRef} type="file" accept=".pdf,application/pdf" hidden onChange={(e) => e.target.files?.[0] && loadFile(e.target.files[0])} />
       </div>
+
+      {error && (
+        <div className="mt-4 flex items-start gap-2 text-sm bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800/50 rounded-xl p-3">
+          <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
+          <span>{error}</span>
+        </div>
+      )}
+
+      {loading && (
+        <div className="mt-4 flex items-center justify-center gap-2 text-slate-600 dark:text-slate-400 text-sm">
+          <Loader2 className="w-4 h-4 animate-spin" />
+          {progress ? `İşleniyor... ${progress.done}/${progress.total} sayfa` : "İşleniyor..."}
+        </div>
+      )}
 
       {file && pages.length > 0 && (
         <>

@@ -1,8 +1,8 @@
 import { useRef, useState } from "react";
-import { Upload, Loader2, Download, Trash2 } from "lucide-react";
+import { Upload, Loader2, Download, Trash2, AlertCircle } from "lucide-react";
 import JSZip from "jszip";
 import { PDFDocument } from "pdf-lib";
-import { pdfjsLib } from "../lib/pdfjs";
+import { pdfjsLib, withTimeout, pdfErrorMessage } from "../lib/pdfjs";
 import { downloadBlob } from "../lib/format";
 
 type Thumb = { num: number; preview: string; selected: boolean };
@@ -34,6 +34,8 @@ export function PdfSplit() {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const [dragOver, setDragOver] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState<{ done: number; total: number } | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   async function loadFile(f: File) {
@@ -41,20 +43,32 @@ export function PdfSplit() {
     setFile(f);
     setError("");
     setThumbs([]);
-    const buf = await f.arrayBuffer();
-    const doc = await pdfjsLib.getDocument({ data: buf.slice(0) }).promise;
-    const list: Thumb[] = [];
-    for (let i = 1; i <= doc.numPages; i++) {
-      const p = await doc.getPage(i);
-      const vp = p.getViewport({ scale: 0.4 });
-      const canvas = document.createElement("canvas");
-      canvas.width = vp.width;
-      canvas.height = vp.height;
-      const ctx = canvas.getContext("2d")!;
-      await p.render({ canvasContext: ctx, viewport: vp, canvas } as any).promise;
-      list.push({ num: i, preview: canvas.toDataURL("image/jpeg", 0.7), selected: true });
+    setLoading(true);
+    try {
+      const buf = await f.arrayBuffer();
+      const doc = await withTimeout(pdfjsLib.getDocument({ data: buf.slice(0) }).promise);
+      setProgress({ done: 0, total: doc.numPages });
+      for (let i = 1; i <= doc.numPages; i++) {
+        const p = await doc.getPage(i);
+        const vp = p.getViewport({ scale: 0.4 });
+        const canvas = document.createElement("canvas");
+        canvas.width = vp.width;
+        canvas.height = vp.height;
+        const ctx = canvas.getContext("2d")!;
+        await withTimeout(p.render({ canvasContext: ctx, viewport: vp, canvas } as any).promise);
+        const preview = canvas.toDataURL("image/jpeg", 0.7);
+        canvas.width = 0;
+        canvas.height = 0;
+        setThumbs((prev) => [...prev, { num: i, preview, selected: true }]);
+        setProgress({ done: i, total: doc.numPages });
+        await new Promise((r) => requestAnimationFrame(() => r(null)));
+      }
+    } catch (e) {
+      setError(pdfErrorMessage(e));
+    } finally {
+      setLoading(false);
+      setProgress(null);
     }
-    setThumbs(list);
   }
 
   function reset() {
@@ -128,7 +142,7 @@ export function PdfSplit() {
         downloadBlob(out, `${base}_bolunmus.zip`);
       }
     } catch (e) {
-      setError("PDF bölme işlemi başarısız oldu.");
+      setError(pdfErrorMessage(e));
     } finally {
       setBusy(false);
     }
@@ -157,6 +171,20 @@ export function PdfSplit() {
         <p className="text-sm text-slate-500 mt-1">Tek dosya · İşlem tarayıcınızda yapılır</p>
         <input ref={inputRef} type="file" accept=".pdf,application/pdf" hidden onChange={(e) => e.target.files?.[0] && loadFile(e.target.files[0])} />
       </div>
+
+      {error && (
+        <div className="mt-4 flex items-start gap-2 text-sm bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800/50 rounded-xl p-3">
+          <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
+          <span>{error}</span>
+        </div>
+      )}
+
+      {loading && (
+        <div className="mt-4 flex items-center justify-center gap-2 text-slate-600 dark:text-slate-400 text-sm">
+          <Loader2 className="w-4 h-4 animate-spin" />
+          {progress ? `İşleniyor... ${progress.done}/${progress.total} sayfa` : "İşleniyor..."}
+        </div>
+      )}
 
       {file && thumbs.length > 0 && (
         <>
