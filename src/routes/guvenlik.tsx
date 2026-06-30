@@ -58,7 +58,7 @@ function Security() {
             </div>
           ))}
         </dl>
-        <p className="mt-6 text-xs text-slate-500 dark:text-slate-400">Son güncelleme: Ocak 2025</p>
+        <p className="mt-6 text-xs text-slate-500 dark:text-slate-400">Son güncelleme: Haziran 2026</p>
       </section>
     </div>
   );
