@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
-import { Upload, FileText, GripVertical, X, Trash2, Loader2, Download } from "lucide-react";
+import { Upload, FileText, GripVertical, X, Trash2, Loader2, Download, AlertCircle } from "lucide-react";
 import { PDFDocument } from "pdf-lib";
+import { withTimeout, pdfErrorMessage } from "../lib/pdfjs";
 import { downloadBlob, formatBytes } from "../lib/format";
 
 type Item = { id: string; file: File; pages: number; size: number };
@@ -10,19 +11,25 @@ export function PdfMerge() {
   const [busy, setBusy] = useState(false);
   const [dragOver, setDragOver] = useState(false);
   const [resultPages, setResultPages] = useState<number | null>(null);
+  const [error, setError] = useState("");
   const dragId = useRef<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   async function add(files: FileList | File[]) {
+    setError("");
     const next: Item[] = [];
+    let hadError = false;
     for (const file of Array.from(files)) {
       if (!file.name.toLowerCase().endsWith(".pdf")) continue;
       try {
         const buf = await file.arrayBuffer();
         const doc = await PDFDocument.load(buf, { ignoreEncryption: true });
         next.push({ id: crypto.randomUUID(), file, pages: doc.getPageCount(), size: file.size });
-      } catch {}
+      } catch {
+        hadError = true;
+      }
     }
+    if (hadError) setError(pdfErrorMessage(new Error("load")));
     setItems((p) => [...p, ...next]);
     setResultPages(null);
   }
@@ -55,6 +62,7 @@ export function PdfMerge() {
   async function merge() {
     if (!items.length) return;
     setBusy(true);
+    setError("");
     try {
       const merged = await PDFDocument.create();
       for (const it of items) {
@@ -63,10 +71,12 @@ export function PdfMerge() {
         const copied = await merged.copyPages(src, src.getPageIndices());
         copied.forEach((p) => merged.addPage(p));
       }
-      const bytes = await merged.save();
+      const bytes = await withTimeout(merged.save());
       const blob = new Blob([bytes as BlobPart], { type: "application/pdf" });
       setResultPages(merged.getPageCount());
       downloadBlob(blob, "Birlestirilmis_PDF.pdf");
+    } catch (e) {
+      setError(pdfErrorMessage(e));
     } finally {
       setBusy(false);
     }
@@ -95,6 +105,13 @@ export function PdfMerge() {
         <p className="text-sm text-slate-500 mt-1">Birleştirmek istediğiniz PDF'leri ekleyin · Sınır yok</p>
         <input ref={inputRef} type="file" accept=".pdf,application/pdf" multiple hidden onChange={(e) => e.target.files && add(e.target.files)} />
       </div>
+
+      {error && (
+        <div className="mt-4 flex items-start gap-2 text-sm bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800/50 rounded-xl p-3">
+          <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
+          <span>{error}</span>
+        </div>
+      )}
 
       {items.length > 0 && (
         <>
