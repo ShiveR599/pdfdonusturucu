@@ -1,8 +1,8 @@
 import { useRef, useState } from "react";
-import { Upload, FileText, Loader2, Download, X, Trash2 } from "lucide-react";
+import { Upload, FileText, Loader2, Download, X, Trash2, AlertCircle } from "lucide-react";
 import JSZip from "jszip";
 import { PDFDocument } from "pdf-lib";
-import { pdfjsLib } from "../lib/pdfjs";
+import { pdfjsLib, withTimeout, pdfErrorMessage } from "../lib/pdfjs";
 import { downloadBlob, formatBytes } from "../lib/format";
 
 type Item = {
@@ -26,22 +26,28 @@ export function PdfCompress() {
   const [level, setLevel] = useState("Orta Sıkıştırma");
   const [dragOver, setDragOver] = useState(false);
   const [zipping, setZipping] = useState(false);
+  const [error, setError] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
   async function add(files: FileList | File[]) {
+    setError("");
     const next: Item[] = [];
-    for (const file of Array.from(files)) {
-      if (!file.name.toLowerCase().endsWith(".pdf")) continue;
-      const buf = await file.arrayBuffer();
-      const doc = await pdfjsLib.getDocument({ data: buf.slice(0) }).promise;
-      next.push({
-        id: crypto.randomUUID(),
-        file,
-        pages: doc.numPages,
-        originalSize: file.size,
-      });
+    try {
+      for (const file of Array.from(files)) {
+        if (!file.name.toLowerCase().endsWith(".pdf")) continue;
+        const buf = await file.arrayBuffer();
+        const doc = await withTimeout(pdfjsLib.getDocument({ data: buf.slice(0) }).promise);
+        next.push({
+          id: crypto.randomUUID(),
+          file,
+          pages: doc.numPages,
+          originalSize: file.size,
+        });
+      }
+      setItems((p) => [...p, ...next]);
+    } catch (e) {
+      setError(pdfErrorMessage(e));
     }
-    setItems((p) => [...p, ...next]);
   }
 
   async function compress(it: Item): Promise<Blob> {
@@ -58,12 +64,14 @@ export function PdfCompress() {
       const ctx = canvas.getContext("2d")!;
       ctx.fillStyle = "#ffffff";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-      await p.render({ canvasContext: ctx, viewport, canvas } as any).promise;
+      await withTimeout(p.render({ canvasContext: ctx, viewport, canvas } as any).promise);
       const jpegBlob = await new Promise<Blob>((res) => canvas.toBlob((b) => res(b!), "image/jpeg", quality));
       const jpegBuf = await jpegBlob.arrayBuffer();
       const jpg = await out.embedJpg(jpegBuf);
       const page = out.addPage([viewport.width, viewport.height]);
       page.drawImage(jpg, { x: 0, y: 0, width: viewport.width, height: viewport.height });
+      canvas.width = 0;
+      canvas.height = 0;
     }
     const bytes = await out.save();
     return new Blob([bytes as BlobPart], { type: "application/pdf" });
@@ -125,6 +133,13 @@ export function PdfCompress() {
         <p className="text-sm text-slate-500 mt-1">Sınırsız PDF yükleyebilirsiniz</p>
         <input ref={inputRef} type="file" accept=".pdf,application/pdf" multiple hidden onChange={(e) => e.target.files && add(e.target.files)} />
       </div>
+
+      {error && (
+        <div className="mt-4 flex items-start gap-2 text-sm bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800/50 rounded-xl p-3">
+          <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
+          <span>{error}</span>
+        </div>
+      )}
 
       {items.length > 0 && (
         <>
