@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#2563eb"/>
+  <rect x="40" y="40" width="1120" height="550" rx="24" fill="#1d4ed8"/>
+  <text x="600" y="260" font-family="Arial, sans-serif" font-size="72" font-weight="bold" fill="white" text-anchor="middle">PDF Dönüştürücü</text>
+  <text x="600" y="340" font-family="Arial, sans-serif" font-size="32" fill="#93c5fd" text-anchor="middle">Ücretsiz · Güvenli · Sınırsız</text>
+  <text x="600" y="410" font-family="Arial, sans-serif" font-size="24" fill="#bfdbfe" text-anchor="middle">PDF dönüştür • Birleştir • Böl • Sıkıştır</text>
+  <text x="600" y="530" font-family="Arial, sans-serif" font-size="20" fill="#93c5fd" text-anchor="middle">pdfdonusturucu.netlify.app</text>
+</svg>
