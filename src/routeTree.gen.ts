@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SssRouteImport } from './routes/sss'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as ResimSikistirRouteImport } from './routes/resim-sikistir'
 import { Route as PdfSikistirRouteImport } from './routes/pdf-sikistir'
 import { Route as PdfBirlestirRouteImport } from './routes/pdf-birlestir'
@@ -31,6 +32,11 @@ const SssRoute = SssRouteImport.update({
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
+  id: '/robots.txt',
+  path: '/robots.txt',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ResimSikistirRoute = ResimSikistirRouteImport.update({
@@ -101,6 +107,7 @@ export interface FileRoutesByFullPath {
   '/pdf-birlestir': typeof PdfBirlestirRoute
   '/pdf-sikistir': typeof PdfSikistirRoute
   '/resim-sikistir': typeof ResimSikistirRoute
+  '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sss': typeof SssRoute
 }
@@ -116,6 +123,7 @@ export interface FileRoutesByTo {
   '/pdf-birlestir': typeof PdfBirlestirRoute
   '/pdf-sikistir': typeof PdfSikistirRoute
   '/resim-sikistir': typeof ResimSikistirRoute
+  '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sss': typeof SssRoute
 }
@@ -132,6 +140,7 @@ export interface FileRoutesById {
   '/pdf-birlestir': typeof PdfBirlestirRoute
   '/pdf-sikistir': typeof PdfSikistirRoute
   '/resim-sikistir': typeof ResimSikistirRoute
+  '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sss': typeof SssRoute
 }
@@ -149,6 +158,7 @@ export interface FileRouteTypes {
     | '/pdf-birlestir'
     | '/pdf-sikistir'
     | '/resim-sikistir'
+    | '/robots.txt'
     | '/sitemap.xml'
     | '/sss'
   fileRoutesByTo: FileRoutesByTo
@@ -164,6 +174,7 @@ export interface FileRouteTypes {
     | '/pdf-birlestir'
     | '/pdf-sikistir'
     | '/resim-sikistir'
+    | '/robots.txt'
     | '/sitemap.xml'
     | '/sss'
   id:
@@ -179,6 +190,7 @@ export interface FileRouteTypes {
     | '/pdf-birlestir'
     | '/pdf-sikistir'
     | '/resim-sikistir'
+    | '/robots.txt'
     | '/sitemap.xml'
     | '/sss'
   fileRoutesById: FileRoutesById
@@ -195,6 +207,7 @@ export interface RootRouteChildren {
   PdfBirlestirRoute: typeof PdfBirlestirRoute
   PdfSikistirRoute: typeof PdfSikistirRoute
   ResimSikistirRoute: typeof ResimSikistirRoute
+  RobotsDottxtRoute: typeof RobotsDottxtRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SssRoute: typeof SssRoute
 }
@@ -213,6 +226,13 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/robots.txt': {
+      id: '/robots.txt'
+      path: '/robots.txt'
+      fullPath: '/robots.txt'
+      preLoaderRoute: typeof RobotsDottxtRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/resim-sikistir': {
@@ -307,6 +327,7 @@ const rootRouteChildren: RootRouteChildren = {
   PdfBirlestirRoute: PdfBirlestirRoute,
   PdfSikistirRoute: PdfSikistirRoute,
   ResimSikistirRoute: ResimSikistirRoute,
+  RobotsDottxtRoute: RobotsDottxtRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SssRoute: SssRoute,
 }
