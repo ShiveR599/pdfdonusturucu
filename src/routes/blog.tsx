@@ -6,7 +6,7 @@ import { InArticleAd } from "../components/AdSlot";
 export const Route = createFileRoute("/blog")({
   head: () => ({
     meta: [
-      { title: "Blog & Rehberler — PDF Dönüştürücü" },
+      { title: "Blog & Rehberler – PDF Dönüştürücü" },
       { name: "description", content: "PDF ve görsel dosyalar hakkında pratik bilgiler, rehberler ve format karşılaştırmaları." },
       { property: "og:title", content: "Blog & Rehberler" },
       { property: "og:description", content: "PDF ve görsel dosyalar hakkında pratik bilgiler." },

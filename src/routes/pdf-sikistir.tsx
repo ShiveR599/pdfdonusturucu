@@ -5,7 +5,7 @@ import { ToolDescription } from "../components/ToolDescription";
 export const Route = createFileRoute("/pdf-sikistir")({
   head: () => ({
     meta: [
-      { title: "PDF Sıkıştır — Ücretsiz Online PDF Küçültme" },
+      { title: "PDF Sıkıştır – Ücretsiz Online Araç" },
       { name: "description", content: "PDF dosyalarınızı tarayıcınızda ücretsiz ve sınırsız sıkıştırın." },
       { property: "og:title", content: "PDF Sıkıştır" },
       { property: "og:description", content: "PDF dosyalarınızı tarayıcınızda küçültün." },

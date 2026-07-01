@@ -9,7 +9,7 @@ import { ToolDescription } from "../components/ToolDescription";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "PDF Dönüştürücü — PDF ↔ Görsel Çevirme | Ücretsiz" },
+      { title: "PDF Dönüştürücü – Ücretsiz & Güvenli" },
       { name: "description", content: "PDF'i JPEG, PNG veya WebP'ye dönüştürün; görselleri PDF'e ekleyin. Tamamen tarayıcıda, ücretsiz ve sınırsız." },
       { property: "og:title", content: "PDF Dönüştürücü" },
       { property: "og:description", content: "PDF ↔ Görsel dönüştürme. Tarayıcıda, ücretsiz, sınırsız." },
