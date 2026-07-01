@@ -5,7 +5,7 @@ import { ToolDescription } from "../components/ToolDescription";
 export const Route = createFileRoute("/resim-sikistir")({
   head: () => ({
     meta: [
-      { title: "Resim Sıkıştır — Ücretsiz Online Görsel Küçültme" },
+      { title: "Resim Sıkıştır – JPEG PNG WebP" },
       { name: "description", content: "JPEG, PNG ve WebP görselleri tarayıcınızda sıkıştırın." },
       { property: "og:title", content: "Resim Sıkıştır" },
       { property: "og:description", content: "Görselleri tarayıcıda hızlıca küçültün." },

@@ -4,7 +4,7 @@ import { CloudOff, Lock, Eye, Server } from "lucide-react";
 export const Route = createFileRoute("/guvenlik")({
   head: () => ({
     meta: [
-      { title: "Güvenlik & Gizlilik — PDF Dönüştürücü" },
+      { title: "Güvenlik & Gizlilik – PDF Dönüştürücü" },
       { name: "description", content: "Tüm işlemler tarayıcınızda gerçekleşir. Dosyalarınız sunucuya yüklenmez. KVKK uyumlu gizlilik politikamızı okuyun." },
       { property: "og:url", content: "https://pdfdonusturucu.netlify.app/guvenlik" },
     ],

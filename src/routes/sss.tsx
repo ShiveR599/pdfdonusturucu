@@ -6,7 +6,7 @@ import { InArticleAd } from "../components/AdSlot";
 export const Route = createFileRoute("/sss")({
   head: () => ({
     meta: [
-      { title: "SSS — Sıkça Sorulan Sorular | PDF Dönüştürücü" },
+      { title: "Sıkça Sorulan Sorular – PDF Dönüştürücü" },
       { name: "description", content: "PDF Dönüştürücü hakkında sıkça sorulan sorular ve yanıtları." },
     ],
   }),

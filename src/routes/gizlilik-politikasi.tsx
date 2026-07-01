@@ -3,7 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 export const Route = createFileRoute("/gizlilik-politikasi")({
   head: () => ({
     meta: [
-      { title: "Gizlilik Politikası — PDF Dönüştürücü" },
+      { title: "Gizlilik Politikası – PDF Dönüştürücü" },
       { name: "description", content: "KVKK uyumlu gizlilik politikası ve çerez kullanım bilgileri." },
     ],
   }),

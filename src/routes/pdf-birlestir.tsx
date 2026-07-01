@@ -5,7 +5,7 @@ import { ToolDescription } from "../components/ToolDescription";
 export const Route = createFileRoute("/pdf-birlestir")({
   head: () => ({
     meta: [
-      { title: "PDF Birleştir — Ücretsiz Online PDF Birleştirme" },
+      { title: "PDF Birleştir – Ücretsiz Online Araç" },
       { name: "description", content: "Birden fazla PDF dosyasını tek belgede birleştirin. Tarayıcı tabanlı, ücretsiz, sınırsız ve güvenli." },
       { property: "og:title", content: "PDF Birleştir" },
       { property: "og:description", content: "PDF'leri sürükleyip sıralayın ve tek belgede birleştirin." },

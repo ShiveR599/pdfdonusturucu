@@ -4,7 +4,7 @@ import { Shield, Zap, Globe, FileImage, FileType, Minimize2, ImageDown, Combine,
 export const Route = createFileRoute("/hakkimizda")({
   head: () => ({
     meta: [
-      { title: "Hakkımızda — PDF Dönüştürücü" },
+      { title: "Hakkımızda – PDF Dönüştürücü" },
       { name: "description", content: "PDF Dönüştürücü, tarayıcınızda çalışan ücretsiz, sınırsız ve güvenli bir PDF ve görsel işleme platformudur." },
       { property: "og:title", content: "PDF Dönüştürücü Hakkında" },
       { property: "og:description", content: "Tarayıcı tabanlı, ücretsiz, sınırsız PDF ve görsel işleme platformu." },

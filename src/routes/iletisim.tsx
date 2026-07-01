@@ -4,7 +4,7 @@ import { Mail, Clock, ShieldCheck } from "lucide-react";
 export const Route = createFileRoute("/iletisim")({
   head: () => ({
     meta: [
-      { title: "İletişim — PDF Dönüştürücü" },
+      { title: "İletişim – PDF Dönüştürücü" },
       { name: "description", content: "Görüş, öneri veya sorularınız için bizimle iletişime geçin. KVKK kapsamındaki taleplerinizi e-posta ile iletebilirsiniz." },
       { property: "og:title", content: "İletişim — PDF Dönüştürücü" },
       { property: "og:description", content: "Görüş, öneri veya KVKK kapsamındaki talepleriniz için iletişim." },

@@ -4,7 +4,7 @@ import { MousePointerClick, Upload, Settings, Download } from "lucide-react";
 export const Route = createFileRoute("/nasil-kullanilir")({
   head: () => ({
     meta: [
-      { title: "Nasıl Kullanılır — PDF Dönüştürücü" },
+      { title: "Nasıl Kullanılır – PDF Dönüştürücü" },
       { name: "description", content: "PDF Dönüştürücü araçlarını nasıl kullanacağınızı öğrenin." },
     ],
   }),
@@ -108,7 +108,7 @@ function HowToUse() {
       <div className="grid md:grid-cols-2 gap-4">
         {DETAILS.map((d) => (
           <div key={d.title} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5">
-            <h3 className="font-bold text-lg mb-3 text-primary-700 dark:text-primary-300">{d.title}</h3>
+            <h2 className="font-bold text-lg mb-3 text-primary-700 dark:text-primary-300">{d.title}</h2>
             <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-400">
               {d.items.map((it, i) => (
                 <li key={i} className="flex gap-2">
