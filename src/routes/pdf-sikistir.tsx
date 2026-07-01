@@ -18,7 +18,7 @@ export const Route = createFileRoute("/pdf-sikistir")({
         <p className="text-slate-500 dark:text-slate-400 mt-1 text-sm">Dosyalarınızı tarayıcınızda sıkıştırın — sunucusuz, sınırsız.</p>
       </div>
       <PdfCompress />
-      <ToolDescription title="PDF Sıkıştırma Nasıl Çalışır?" titleAs="h2">
+      <ToolDescription title="PDF Sıkıştırma Nasıl Çalışır?">
         <p>
           PDF Sıkıştır aracı, yüklediğiniz PDF dosyasının her sayfasını seçilen kalite seviyesinde işleyerek dosya boyutunu küçültür. Tüm işlem tarayıcınızda gerçekleşir; dosyalarınız sunucuya gönderilmez.
         </p>
