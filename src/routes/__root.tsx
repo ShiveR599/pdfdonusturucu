@@ -18,16 +18,16 @@ function NotFoundComponent() {
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
+        <h2 className="mt-4 text-xl font-semibold text-foreground">Sayfa Bulunamadı</h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
+          Aradığınız sayfa bulunamadı veya taşınmış olabilir.
         </p>
         <div className="mt-6">
           <Link
             to="/"
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Go home
+            Ana Sayfaya Dön
           </Link>
         </div>
       </div>
@@ -46,10 +46,10 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          This page didn't load
+          Sayfa Yüklenemedi
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Something went wrong on our end. You can try refreshing or head back home.
+          Bir hata oluştu. Sayfayı yenileyebilir veya ana sayfaya dönebilirsiniz.
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
@@ -59,13 +59,13 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
             }}
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Try again
+            Tekrar Dene
           </button>
           <a
             href="/"
             className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
           >
-            Go home
+            Ana Sayfaya Dön
           </a>
         </div>
       </div>
@@ -78,17 +78,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "PDF Dönüştürücü – Ücretsiz PDF Birleştir, Böl, Dönüştür ve Sıkıştır" },
+      { title: "PDF Dönüştürücü – Ücretsiz & Güvenli" },
+      { name: "google-site-verification", content: "lNvdKACSDfKuIJF8QPzUubeb3mXGmtoCZ3pFF8ZLJow" },
       { name: "description", content: "PDF dönüştür, birleştir, böl, sıkıştır ve sayfa düzenle. Görseli PDF'e ekle, PDF'i JPEG/PNG/WebP'ye çevir, resimleri sıkıştır. %100 ücretsiz, sınırsız, sunucusuz. Dosyalarınız tarayıcınızdan çıkmaz." },
       { name: "keywords", content: "pdf dönüştürücü, pdf birleştir, pdf böl, pdf sıkıştır, pdf sayfa düzenle, pdf sayfaları yeniden sırala, pdf sayfa döndür, pdf birleştirme, pdf bölme, pdf jpeg çevirme, pdf png çevirme, pdf webp dönüştürme, jpg pdf yapma, png pdf yapma, webp pdf yapma, pdf küçültme, resim sıkıştırma, görsel küçültme, fotoğraf sıkıştırma, ücretsiz pdf dönüştür, online pdf dönüştürücü, pdf görsel çevirici, pdf araçları, dosya sıkıştırma online, tarayıcıda pdf işleme, güvenli pdf dönüştürücü, sınırsız pdf dönüştürücü, pdf to image, image to pdf, compress pdf online, merge pdf online, split pdf online, pdf küçük yapma, resim boyutu küçültme, toplu pdf dönüştürme, pdf sayfaları birleştir, pdf parçala, pdf ayır, pdf düzenle" },
-      { property: "og:title", content: "PDF Dönüştürücü – Ücretsiz PDF Birleştir, Böl, Dönüştür ve Sıkıştır" },
+      { property: "og:title", content: "PDF Dönüştürücü – Ücretsiz & Güvenli" },
       { property: "og:description", content: "PDF dönüştür, birleştir, böl, sıkıştır ve sayfa düzenle. Görseli PDF'e ekle, PDF'i JPEG/PNG/WebP'ye çevir, resimleri sıkıştır. %100 ücretsiz, sınırsız, sunucusuz. Dosyalarınız tarayıcınızdan çıkmaz." },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://pdfdonusturucu.netlify.app/" },
-      { property: "og:image", content: "https://pdfdonusturucu.netlify.app/og-image.png" },
+      { property: "og:image", content: "https://pdfdonusturucu.netlify.app/og-image.svg" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:image", content: "https://pdfdonusturucu.netlify.app/og-image.png" },
-      { name: "twitter:title", content: "PDF Dönüştürücü – Ücretsiz PDF Birleştir, Böl, Dönüştür ve Sıkıştır" },
+      { name: "twitter:image", content: "https://pdfdonusturucu.netlify.app/og-image.svg" },
+      { name: "twitter:title", content: "PDF Dönüştürücü – Ücretsiz & Güvenli" },
       { name: "twitter:description", content: "PDF dönüştür, birleştir, böl, sıkıştır ve sayfa düzenle. Görseli PDF'e ekle, PDF'i JPEG/PNG/WebP'ye çevir, resimleri sıkıştır. %100 ücretsiz, sınırsız, sunucusuz. Dosyalarınız tarayıcınızdan çıkmaz." },
     ],
     links: [
@@ -106,6 +107,29 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { src: "https://www.googletagmanager.com/gtag/js?id=G-YDCM4WQ58R", async: true },
       { src: "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8147032819898233", async: true, crossOrigin: "anonymous" },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          name: "PDF Dönüştürücü",
+          url: "https://pdfdonusturucu.netlify.app/",
+          description: "PDF dönüştür, birleştir, böl ve sıkıştır. Görsel işleme araçları. %100 ücretsiz, sunucusuz, güvenli.",
+          applicationCategory: "UtilitiesApplication",
+          operatingSystem: "Web Browser",
+          offers: { "@type": "Offer", price: "0", priceCurrency: "TRY" },
+          inLanguage: "tr",
+          featureList: [
+            "PDF'ten Görsele Dönüştürme",
+            "Görsellerden PDF Oluşturma",
+            "PDF Sıkıştırma",
+            "Resim Sıkıştırma",
+            "PDF Birleştirme",
+            "PDF Bölme",
+            "PDF Sayfa Düzenleme",
+          ],
+        }),
+      },
     ],
   }),
   shellComponent: RootShell,
