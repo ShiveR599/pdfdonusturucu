@@ -10,9 +10,26 @@ export const Route = createFileRoute("/blog")({
       { name: "description", content: "PDF ve görsel dosyalar hakkında pratik bilgiler, rehberler ve format karşılaştırmaları." },
       { property: "og:title", content: "Blog & Rehberler" },
       { property: "og:description", content: "PDF ve görsel dosyalar hakkında pratik bilgiler." },
-      { property: "og:url", content: "https://pdfdonusturucu.netlify.app/blog" },
+      { property: "og:url", content: "https://pdfdonusturucu.lovable.app/blog" },
+      { property: "og:type", content: "article" },
     ],
-    links: [{ rel: "canonical", href: "https://pdfdonusturucu.netlify.app/blog" }],
+    links: [{ rel: "canonical", href: "https://pdfdonusturucu.lovable.app/blog" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Blog",
+          name: "PDF Dönüştürücü Blog",
+          url: "https://pdfdonusturucu.lovable.app/blog",
+          blogPost: [
+            { "@type": "BlogPosting", headline: "PDF Dosyası Nasıl Küçültülür?", datePublished: "2026-04-01", author: { "@type": "Organization", name: "PDF Dönüştürücü" } },
+            { "@type": "BlogPosting", headline: "JPEG, PNG ve WebP Arasındaki Fark Nedir?", datePublished: "2026-05-01", author: { "@type": "Organization", name: "PDF Dönüştürücü" } },
+            { "@type": "BlogPosting", headline: "Birden Fazla Görseli Tek PDF'e Nasıl Birleştiririm?", datePublished: "2026-06-01", author: { "@type": "Organization", name: "PDF Dönüştürücü" } },
+          ],
+        }),
+      },
+    ],
   }),
   component: Blog,
 });
@@ -61,7 +78,7 @@ function Blog() {
   return (
     <div>
       <div className="text-center mb-6">
-        <h1 className="text-2xl sm:text-3xl font-bold">Blog & Rehberler</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold">PDF ve Görsel İşleme Rehberleri</h1>
         <p className="text-slate-500 dark:text-slate-400 mt-1 text-sm">PDF ve görsel dosyalar hakkında pratik bilgiler.</p>
       </div>
       <InArticleAd />
