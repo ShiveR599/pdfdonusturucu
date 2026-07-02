@@ -153,7 +153,12 @@ export function ImageToPdf() {
                 className="group relative bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden"
               >
                 <div className="aspect-square bg-slate-100 dark:bg-slate-800">
-                  <img src={it.url} alt={it.file.name} className="w-full h-full object-contain" style={{ transform: `rotate(${it.rotation}deg)` }} />
+                  <img
+                    src={it.url}
+                    alt={`PDF için görsel ${idx + 1} — ${it.file.name.replace(/\.[^.]+$/, "")}`}
+                    className="w-full h-full object-contain"
+                    style={{ transform: `rotate(${it.rotation}deg)` }}
+                  />
                 </div>
                 <GripVertical className="absolute top-2 left-2 w-5 h-5 text-white drop-shadow cursor-grab" />
                 <span className="absolute top-2 right-2 w-6 h-6 rounded-full bg-primary-600 text-white text-xs font-bold flex items-center justify-center">
