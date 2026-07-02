@@ -1,0 +1,24 @@
+# PDF Dönüştürücü
+
+> Tarayıcı tabanlı, ücretsiz ve sınırsız PDF ile görsel işleme araçları. Tüm işlemler kullanıcının cihazında gerçekleşir; dosyalar sunucuya yüklenmez.
+
+## Araçlar
+
+- [PDF Dönüştürücü](/): PDF ↔ görsel (JPEG/PNG/WebP) dönüşümü, PDF bölme ve sayfa düzenleme.
+- [PDF Birleştir](/pdf-birlestir): Birden fazla PDF'i tek belgede birleştirme.
+- [PDF Sıkıştır](/pdf-sikistir): PDF dosyalarını tarayıcıda küçültme.
+- [Resim Sıkıştır](/resim-sikistir): JPEG, PNG ve WebP görselleri sıkıştırma.
+
+## Bilgi
+
+- [Nasıl Kullanılır](/nasil-kullanilir): Araçların adım adım kullanım rehberi.
+- [Özelliklerimiz](/ozelliklerimiz): Öne çıkan özellikler.
+- [SSS](/sss): Sıkça sorulan sorular ve yanıtları.
+- [Blog](/blog): PDF ve görsel işleme rehberleri.
+- [Güvenlik & Gizlilik](/guvenlik): Sunucusuz altyapı ve gizlilik açıklamaları.
+- [Hakkımızda](/hakkimizda): Proje hakkında.
+- [İletişim](/iletisim): İletişim bilgileri.
+
+## Optional
+
+- [Gizlilik Politikası](/gizlilik-politikasi): KVKK uyumlu gizlilik metni.
