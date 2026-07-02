@@ -8,9 +8,9 @@ export const Route = createFileRoute("/hakkimizda")({
       { name: "description", content: "PDF Dönüştürücü, tarayıcınızda çalışan ücretsiz, sınırsız ve güvenli bir PDF ve görsel işleme platformudur." },
       { property: "og:title", content: "PDF Dönüştürücü Hakkında" },
       { property: "og:description", content: "Tarayıcı tabanlı, ücretsiz, sınırsız PDF ve görsel işleme platformu." },
-      { property: "og:url", content: "https://pdfdonusturucu.netlify.app/hakkimizda" },
+      { property: "og:url", content: "https://pdfdonusturucu.lovable.app/hakkimizda" },
     ],
-    links: [{ rel: "canonical", href: "https://pdfdonusturucu.netlify.app/hakkimizda" }],
+    links: [{ rel: "canonical", href: "https://pdfdonusturucu.lovable.app/hakkimizda" }],
   }),
   component: About,
 });
