@@ -8,9 +8,9 @@ export const Route = createFileRoute("/iletisim")({
       { name: "description", content: "Görüş, öneri veya sorularınız için bizimle iletişime geçin. KVKK kapsamındaki taleplerinizi e-posta ile iletebilirsiniz." },
       { property: "og:title", content: "İletişim — PDF Dönüştürücü" },
       { property: "og:description", content: "Görüş, öneri veya KVKK kapsamındaki talepleriniz için iletişim." },
-      { property: "og:url", content: "https://pdfdonusturucu.netlify.app/iletisim" },
+      { property: "og:url", content: "https://pdfdonusturucu.lovable.app/iletisim" },
     ],
-    links: [{ rel: "canonical", href: "https://pdfdonusturucu.netlify.app/iletisim" }],
+    links: [{ rel: "canonical", href: "https://pdfdonusturucu.lovable.app/iletisim" }],
   }),
   component: Contact,
 });

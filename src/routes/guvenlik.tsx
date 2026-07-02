@@ -6,9 +6,11 @@ export const Route = createFileRoute("/guvenlik")({
     meta: [
       { title: "Güvenlik & Gizlilik – PDF Dönüştürücü" },
       { name: "description", content: "Tüm işlemler tarayıcınızda gerçekleşir. Dosyalarınız sunucuya yüklenmez. KVKK uyumlu gizlilik politikamızı okuyun." },
-      { property: "og:url", content: "https://pdfdonusturucu.netlify.app/guvenlik" },
+      { property: "og:title", content: "Güvenlik & Gizlilik — PDF Dönüştürücü" },
+      { property: "og:description", content: "Tüm işlemler tarayıcınızda. Dosyalar sunucuya yüklenmez. KVKK uyumlu." },
+      { property: "og:url", content: "https://pdfdonusturucu.lovable.app/guvenlik" },
     ],
-    links: [{ rel: "canonical", href: "https://pdfdonusturucu.netlify.app/guvenlik" }],
+    links: [{ rel: "canonical", href: "https://pdfdonusturucu.lovable.app/guvenlik" }],
   }),
   component: Security,
 });

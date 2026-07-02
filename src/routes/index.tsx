@@ -13,9 +13,11 @@ export const Route = createFileRoute("/")({
       { name: "description", content: "PDF'i JPEG, PNG veya WebP'ye dönüştürün; görselleri PDF'e ekleyin. Tamamen tarayıcıda, ücretsiz ve sınırsız." },
       { property: "og:title", content: "PDF Dönüştürücü" },
       { property: "og:description", content: "PDF ↔ Görsel dönüştürme. Tarayıcıda, ücretsiz, sınırsız." },
-      { property: "og:url", content: "https://pdfdonusturucu.netlify.app/" },
+      { property: "og:url", content: "https://pdfdonusturucu.lovable.app/" },
+      { property: "og:image", content: "https://pdfdonusturucu.lovable.app/og-image.svg" },
+      { name: "twitter:image", content: "https://pdfdonusturucu.lovable.app/og-image.svg" },
     ],
-    links: [{ rel: "canonical", href: "https://pdfdonusturucu.netlify.app/" }],
+    links: [{ rel: "canonical", href: "https://pdfdonusturucu.lovable.app/" }],
   }),
   component: Index,
 });
@@ -34,7 +36,7 @@ function Index() {
   return (
     <div>
       <div className="text-center mb-6">
-        <h1 className="text-2xl sm:text-3xl font-bold">PDF Dönüştürücü</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold">PDF Dönüştürücü — Ücretsiz ve Güvenli</h1>
         <p className="text-slate-500 dark:text-slate-400 mt-1 text-sm">
           PDF ile görselleri tarayıcınızda dönüştürün, bölün ve sayfalarını düzenleyin — ücretsiz, sınırsız, güvenli.
         </p>

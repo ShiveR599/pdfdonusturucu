@@ -9,7 +9,9 @@ export const Route = createFileRoute("/resim-sikistir")({
       { name: "description", content: "JPEG, PNG ve WebP görselleri tarayıcınızda sıkıştırın." },
       { property: "og:title", content: "Resim Sıkıştır" },
       { property: "og:description", content: "Görselleri tarayıcıda hızlıca küçültün." },
+      { property: "og:url", content: "https://pdfdonusturucu.lovable.app/resim-sikistir" },
     ],
+    links: [{ rel: "canonical", href: "https://pdfdonusturucu.lovable.app/resim-sikistir" }],
   }),
   component: () => (
     <div>

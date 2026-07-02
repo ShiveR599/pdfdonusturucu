@@ -7,7 +7,11 @@ export const Route = createFileRoute("/ozelliklerimiz")({
     meta: [
       { title: "Özelliklerimiz — PDF Dönüştürücü" },
       { name: "description", content: "Sınırsız, ücretsiz, güvenli — PDF Dönüştürücü'nün öne çıkan özellikleri." },
+      { property: "og:title", content: "Özelliklerimiz — PDF Dönüştürücü" },
+      { property: "og:description", content: "Sınırsız, ücretsiz, güvenli — PDF Dönüştürücü'nün özellikleri." },
+      { property: "og:url", content: "https://pdfdonusturucu.lovable.app/ozelliklerimiz" },
     ],
+    links: [{ rel: "canonical", href: "https://pdfdonusturucu.lovable.app/ozelliklerimiz" }],
   }),
   component: Features,
 });

@@ -9,7 +9,9 @@ export const Route = createFileRoute("/pdf-sikistir")({
       { name: "description", content: "PDF dosyalarınızı tarayıcınızda ücretsiz ve sınırsız sıkıştırın." },
       { property: "og:title", content: "PDF Sıkıştır" },
       { property: "og:description", content: "PDF dosyalarınızı tarayıcınızda küçültün." },
+      { property: "og:url", content: "https://pdfdonusturucu.lovable.app/pdf-sikistir" },
     ],
+    links: [{ rel: "canonical", href: "https://pdfdonusturucu.lovable.app/pdf-sikistir" }],
   }),
   component: () => (
     <div>

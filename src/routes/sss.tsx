@@ -3,16 +3,6 @@ import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { InArticleAd } from "../components/AdSlot";
 
-export const Route = createFileRoute("/sss")({
-  head: () => ({
-    meta: [
-      { title: "Sıkça Sorulan Sorular – PDF Dönüştürücü" },
-      { name: "description", content: "PDF Dönüştürücü hakkında sıkça sorulan sorular ve yanıtları." },
-    ],
-  }),
-  component: Faq,
-});
-
 const Q = [
   { q: "PDF Dönüştürücü ücretsiz mi?", a: "Evet, tüm araçlar tamamen ücretsiz ve sınırsızdır. Gizli abonelik, premium paket veya kayıt zorunluluğu yoktur." },
   { q: "Dosyalarım güvende mi?", a: "%100 güvende. Yüklediğiniz hiçbir dosya sunucularımıza gönderilmez. Tüm işlemler yalnızca tarayıcınızda gerçekleşir. Dosyalarınız bilgisayarınızdan asla çıkmaz." },
@@ -28,6 +18,34 @@ const Q = [
   { q: "PDF'i belirli sayfalara bölebilir miyim?", a: "Evet. PDF Böl aracıyla '1-3, 5, 8-10' gibi sayfa aralıkları belirtebilirsiniz; her aralık ayrı bir PDF dosyası olarak oluşturulur. Tüm sayfaları ayrı ayrı bölebilir veya seçtiğiniz aralıkları ZIP olarak indirebilirsiniz." },
   { q: "PDF sayfalarını yeniden sıralayabilir veya döndürebilir miyim?", a: "Evet. Sayfa Düzenle aracıyla sayfaları sürükleyerek istediğiniz sıraya getirebilir, her sayfayı 90° döndürebilir ve istemediğiniz sayfaları silebilirsiniz. Değişiklikler anında önizlemeye yansır." },
 ];
+
+export const Route = createFileRoute("/sss")({
+  head: () => ({
+    meta: [
+      { title: "Sıkça Sorulan Sorular – PDF Dönüştürücü" },
+      { name: "description", content: "PDF Dönüştürücü hakkında sıkça sorulan sorular ve yanıtları." },
+      { property: "og:title", content: "SSS — PDF Dönüştürücü" },
+      { property: "og:description", content: "PDF Dönüştürücü araçları hakkında sıkça sorulan sorular." },
+      { property: "og:url", content: "https://pdfdonusturucu.lovable.app/sss" },
+    ],
+    links: [{ rel: "canonical", href: "https://pdfdonusturucu.lovable.app/sss" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: Q.map((it) => ({
+            "@type": "Question",
+            name: it.q,
+            acceptedAnswer: { "@type": "Answer", text: it.a },
+          })),
+        }),
+      },
+    ],
+  }),
+  component: Faq,
+});
 
 function Faq() {
   const [open, setOpen] = useState<number | null>(0);

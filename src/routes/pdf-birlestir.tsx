@@ -9,9 +9,9 @@ export const Route = createFileRoute("/pdf-birlestir")({
       { name: "description", content: "Birden fazla PDF dosyasını tek belgede birleştirin. Tarayıcı tabanlı, ücretsiz, sınırsız ve güvenli." },
       { property: "og:title", content: "PDF Birleştir" },
       { property: "og:description", content: "PDF'leri sürükleyip sıralayın ve tek belgede birleştirin." },
-      { property: "og:url", content: "https://pdfdonusturucu.netlify.app/pdf-birlestir" },
+      { property: "og:url", content: "https://pdfdonusturucu.lovable.app/pdf-birlestir" },
     ],
-    links: [{ rel: "canonical", href: "https://pdfdonusturucu.netlify.app/pdf-birlestir" }],
+    links: [{ rel: "canonical", href: "https://pdfdonusturucu.lovable.app/pdf-birlestir" }],
   }),
   component: () => (
     <div>

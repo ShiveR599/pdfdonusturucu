@@ -1,12 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-const BASE_URL = "https://pdfdonusturucu.netlify.app";
+const BASE_URL = "https://pdfdonusturucu.lovable.app";
 
 const entries: Array<{ path: string; changefreq?: string; priority?: string }> = [
   { path: "/", changefreq: "weekly", priority: "1.0" },
   { path: "/pdf-sikistir", changefreq: "weekly", priority: "0.9" },
   { path: "/resim-sikistir", changefreq: "weekly", priority: "0.9" },
   { path: "/pdf-birlestir", changefreq: "weekly", priority: "0.9" },
+  { path: "/ozelliklerimiz", changefreq: "monthly", priority: "0.6" },
   { path: "/sss", changefreq: "monthly", priority: "0.7" },
   { path: "/blog", changefreq: "monthly", priority: "0.7" },
   { path: "/nasil-kullanilir", changefreq: "monthly", priority: "0.6" },
