@@ -144,8 +144,8 @@ export function PdfPagesEdit() {
         }`}
       >
         <Upload className="w-10 h-10 mx-auto text-primary-500 mb-3" />
-        <p className="font-semibold">Sayfa düzenlemek için bir PDF yükleyin</p>
-        <p className="text-sm text-slate-500 mt-1">Sürükle, döndür veya sayfa sil — değişiklikler anlık önizlenir.</p>
+        <p className="font-semibold">Düzenlemek için bir PDF seçin</p>
+        <p className="text-sm text-slate-500 mt-1">Sayfaları sıralayın, döndürün veya silin · Sunucuya gönderilmez</p>
         <input ref={inputRef} type="file" accept=".pdf,application/pdf" hidden onChange={(e) => e.target.files?.[0] && loadFile(e.target.files[0])} />
       </div>
 

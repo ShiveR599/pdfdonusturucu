@@ -167,8 +167,8 @@ export function PdfSplit() {
         }`}
       >
         <Upload className="w-10 h-10 mx-auto text-primary-500 mb-3" />
-        <p className="font-semibold">Bölmek için bir PDF yükleyin</p>
-        <p className="text-sm text-slate-500 mt-1">Tek dosya · İşlem tarayıcınızda yapılır</p>
+        <p className="font-semibold">Bölmek için bir PDF seçin</p>
+        <p className="text-sm text-slate-500 mt-1">Tek dosya · Tarayıcınızda işlenir · Sunucuya gönderilmez</p>
         <input ref={inputRef} type="file" accept=".pdf,application/pdf" hidden onChange={(e) => e.target.files?.[0] && loadFile(e.target.files[0])} />
       </div>
 
