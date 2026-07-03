@@ -20,17 +20,16 @@ export const Route = createFileRoute("/pdf-birlestir")({
         <p className="text-slate-500 dark:text-slate-400 mt-1 text-sm">PDF dosyalarınızı tek belgede toplayın — sürükleyerek sıralayın.</p>
       </div>
       <PdfMerge />
-      <ToolDescription title="PDF Birleştirme Nasıl Çalışır?">
-        <p>
-          PDF Birleştir aracı, birden fazla PDF dosyasını tek bir belgede birleştirir. Tüm işlem pdf-lib kütüphanesi aracılığıyla tarayıcınızda gerçekleşir; dosyalarınız hiçbir sunucuya gönderilmez.
-        </p>
-        <p>
-          PDF'leri yükledikten sonra sürükleyerek sıralamayı düzenleyebilirsiniz — birleşik belgede sayfalar bu sıraya göre yer alır. Dosya sayısı sınırı yoktur; sözleşmeler, raporlar veya taranmış belgeler gibi birden fazla PDF'i kolayca tek dosyada toplayabilirsiniz.
-        </p>
-        <p>
-          'PDF'leri Birleştir ve İndir' butonuna tıkladığınızda işlem anında tamamlanır ve birleştirilmiş PDF otomatik olarak indirilir.
-        </p>
-      </ToolDescription>
+      <ToolDescription
+        title="PDF Birleştirme Nasıl Çalışır?"
+        items={[
+          "PDF Birleştir aracı, birden fazla PDF dosyasını tek bir belgede birleştirir.",
+          "Tüm işlem pdf-lib kütüphanesi aracılığıyla tarayıcınızda gerçekleşir; dosyalarınız hiçbir sunucuya gönderilmez.",
+          "PDF'leri yükledikten sonra sürükleyerek sıralamayı düzenleyebilirsiniz — birleşik belgede sayfalar bu sıraya göre yer alır.",
+          "Dosya sayısı sınırı yoktur; sözleşmeler, raporlar veya taranmış belgeler gibi birden fazla PDF'i kolayca tek dosyada toplayabilirsiniz.",
+          "'PDF'leri Birleştir ve İndir' butonuna tıkladığınızda işlem anında tamamlanır ve birleştirilmiş PDF otomatik olarak indirilir.",
+        ]}
+      />
     </div>
   ),
 });
