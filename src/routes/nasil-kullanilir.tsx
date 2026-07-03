@@ -5,7 +5,7 @@ export const Route = createFileRoute("/nasil-kullanilir")({
   head: () => ({
     meta: [
       { title: "Nasıl Kullanılır – PDF Dönüştürücü" },
-      { name: "description", content: "PDF Dönüştürücü araçlarını nasıl kullanacağınızı öğrenin." },
+      { name: "description", content: "PDF dönüştür, birleştir, böl, sıkıştır, sayfa düzenle ve görsel sıkıştır. Tüm araçların adım adım kullanım kılavuzu." },
       { property: "og:title", content: "Nasıl Kullanılır — PDF Dönüştürücü" },
       { property: "og:description", content: "PDF Dönüştürücü araçlarını adım adım nasıl kullanacağınız." },
       { property: "og:url", content: "https://pdfdonusturucu.lovable.app/nasil-kullanilir" },

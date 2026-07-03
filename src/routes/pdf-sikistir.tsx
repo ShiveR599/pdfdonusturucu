@@ -6,7 +6,7 @@ export const Route = createFileRoute("/pdf-sikistir")({
   head: () => ({
     meta: [
       { title: "PDF Sıkıştır – Ücretsiz Online Araç" },
-      { name: "description", content: "PDF dosyalarınızı tarayıcınızda ücretsiz ve sınırsız sıkıştırın." },
+      { name: "description", content: "PDF dosyalarınızı tarayıcınızda sıkıştırın. 3 kalite seviyesi, önce/sonra boyut karşılaştırması, toplu ZIP indirme. Ücretsiz, sınırsız, sunucusuz." },
       { property: "og:title", content: "PDF Sıkıştır" },
       { property: "og:description", content: "PDF dosyalarınızı tarayıcınızda küçültün." },
       { property: "og:url", content: "https://pdfdonusturucu.lovable.app/pdf-sikistir" },

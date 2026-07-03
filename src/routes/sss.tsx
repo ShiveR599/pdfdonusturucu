@@ -23,7 +23,7 @@ export const Route = createFileRoute("/sss")({
   head: () => ({
     meta: [
       { title: "Sıkça Sorulan Sorular – PDF Dönüştürücü" },
-      { name: "description", content: "PDF Dönüştürücü hakkında sıkça sorulan sorular ve yanıtları." },
+      { name: "description", content: "PDF Dönüştürücü hakkında sık sorulan sorular: ücretsiz mi, güvenli mi, limit var mı, hangi formatlar destekleniyor ve daha fazlası." },
       { property: "og:title", content: "SSS — PDF Dönüştürücü" },
       { property: "og:description", content: "PDF Dönüştürücü araçları hakkında sıkça sorulan sorular." },
       { property: "og:url", content: "https://pdfdonusturucu.lovable.app/sss" },
