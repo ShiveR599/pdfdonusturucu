@@ -6,9 +6,9 @@ export const Route = createFileRoute("/resim-sikistir")({
   head: () => ({
     meta: [
       { title: "Resim Sıkıştır – JPEG PNG WebP" },
-      { name: "description", content: "JPEG, PNG ve WebP görselleri tarayıcınızda sıkıştırın." },
+      { name: "description", content: "JPEG, PNG ve WebP görsellerinizi tarayıcınızda sıkıştırın. Boyut ve tasarruf yüzdesi gösterilir. Toplu ZIP indirme. Ücretsiz, sınırsız, sunucusuz." },
       { property: "og:title", content: "Resim Sıkıştır" },
-      { property: "og:description", content: "Görselleri tarayıcıda hızlıca küçültün." },
+      { property: "og:description", content: "JPEG, PNG ve WebP görsellerinizi boyut olarak küçültün. Tasarruf yüzdesi anlık gösterilir. Ücretsiz ve sunucusuz." },
       { property: "og:url", content: "https://pdfdonusturucu.lovable.app/resim-sikistir" },
     ],
     links: [{ rel: "canonical", href: "https://pdfdonusturucu.lovable.app/resim-sikistir" }],
@@ -20,17 +20,18 @@ export const Route = createFileRoute("/resim-sikistir")({
         <p className="text-slate-500 dark:text-slate-400 mt-1 text-sm">JPEG, PNG, WebP — ücretsiz, sınırsız, tarayıcı tabanlı.</p>
       </div>
       <ImageCompress />
-      <ToolDescription title="Resim Sıkıştırma Nasıl Çalışır?">
-        <p>
-          Resim Sıkıştır aracı, tarayıcınızın yerleşik Canvas API'sini kullanarak JPEG, PNG ve WebP görsellerinizi boyut olarak küçültür. Hiçbir veri sunucuya gönderilmez.
-        </p>
-        <p>
-          JPEG ve WebP görseller seçilen kalite parametresiyle yeniden kodlanır. PNG görseller kayıpsız formatta olduğundan yalnızca boyut küçültme (yeniden örnekleme) uygulanır; kalite parametresi PNG için etkili değildir.
-        </p>
-        <p>
-          Her görsel için sıkıştırma öncesi ve sonrası boyut ile tasarruf yüzdesi gösterilir. Tümünü ZIP olarak tek seferde indirebilirsiniz. Dosya sayısı sınırı yoktur.
-        </p>
-      </ToolDescription>
+      <ToolDescription
+        title="Resim Sıkıştırma Nasıl Çalışır?"
+        items={[
+          "Resim Sıkıştır aracı, tarayıcınızın yerleşik Canvas API'sini kullanarak JPEG, PNG ve WebP görsellerinizi boyut olarak küçültür.",
+          "Hiçbir veri sunucuya gönderilmez.",
+          "JPEG ve WebP görseller seçilen kalite parametresiyle yeniden kodlanır.",
+          "PNG görseller kayıpsız formatta olduğundan yalnızca boyut küçültme (yeniden örnekleme) uygulanır; kalite parametresi PNG için etkili değildir.",
+          "Her görsel için sıkıştırma öncesi ve sonrası boyut ile tasarruf yüzdesi gösterilir.",
+          "Tümünü ZIP olarak tek seferde indirebilirsiniz.",
+          "Dosya sayısı sınırı yoktur.",
+        ]}
+      />
     </div>
   ),
 });

@@ -211,8 +211,8 @@ export function PdfToImage() {
         }`}
       >
         <Upload className="w-10 h-10 mx-auto text-primary-500 mb-3" />
-        <p className="font-semibold">PDF yüklemek için tıklayın veya sürükleyin</p>
-        <p className="text-sm text-slate-500 mt-1">Birden fazla PDF yükleyebilirsiniz · Sınır yok</p>
+        <p className="font-semibold">PDF'leri buraya sürükleyin veya seçin</p>
+        <p className="text-sm text-slate-500 mt-1">Birden fazla PDF · Sınır yok · Sunucuya gönderilmez</p>
         <input ref={inputRef} type="file" accept=".pdf,application/pdf" multiple hidden onChange={(e) => e.target.files && handleFiles(e.target.files)} />
       </div>
 

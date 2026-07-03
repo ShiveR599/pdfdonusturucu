@@ -101,8 +101,8 @@ export function PdfMerge() {
         }`}
       >
         <Upload className="w-10 h-10 mx-auto text-primary-500 mb-3" />
-        <p className="font-semibold">PDF yüklemek için tıklayın veya sürükleyin</p>
-        <p className="text-sm text-slate-500 mt-1">Birleştirmek istediğiniz PDF'leri ekleyin · Sınır yok</p>
+        <p className="font-semibold">Birleştirmek için PDF'leri sürükleyin veya seçin</p>
+        <p className="text-sm text-slate-500 mt-1">Sıralamayı sonradan değiştirebilirsiniz · Sınır yok · Sunucuya gönderilmez</p>
         <input ref={inputRef} type="file" accept=".pdf,application/pdf" multiple hidden onChange={(e) => e.target.files && add(e.target.files)} />
       </div>
 

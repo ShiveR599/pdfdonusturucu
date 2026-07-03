@@ -123,8 +123,8 @@ export function ImageToPdf() {
         }`}
       >
         <Upload className="w-10 h-10 mx-auto text-primary-500 mb-3" />
-        <p className="font-semibold">Görsel yüklemek için tıklayın veya sürükleyin</p>
-        <p className="text-sm text-slate-500 mt-1">JPEG, PNG, WebP · Sınır yok</p>
+        <p className="font-semibold">Görselleri buraya sürükleyin veya seçin</p>
+        <p className="text-sm text-slate-500 mt-1">JPEG · PNG · WebP · Sunucuya gönderilmez</p>
         <input ref={inputRef} type="file" multiple accept="image/jpeg,image/png,image/webp" hidden onChange={(e) => e.target.files && add(e.target.files)} />
       </div>
 

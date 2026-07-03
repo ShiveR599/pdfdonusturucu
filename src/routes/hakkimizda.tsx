@@ -48,7 +48,7 @@ function About() {
               <div className="w-12 h-12 rounded-xl bg-primary-100 dark:bg-primary-900/40 text-primary-700 dark:text-primary-300 flex items-center justify-center mb-4">
                 <v.icon className="w-6 h-6" />
               </div>
-              <h3 className="font-bold text-lg">{v.title}</h3>
+              <h2 className="font-bold text-lg">{v.title}</h2>
               <p className="text-sm text-slate-600 dark:text-slate-400 mt-2">{v.text}</p>
             </div>
           ))}
