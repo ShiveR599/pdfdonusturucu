@@ -10,9 +10,9 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "PDF Dönüştürücü – Ücretsiz & Güvenli" },
-      { name: "description", content: "PDF'i JPEG, PNG veya WebP'ye dönüştürün; görselleri PDF'e ekleyin. Tamamen tarayıcıda, ücretsiz ve sınırsız." },
+      { name: "description", content: "PDF dönüştür, birleştir, böl, sıkıştır ve sayfa düzenle. Görsel sıkıştır. %100 ücretsiz, sınırsız, tarayıcı tabanlı — sunucusuz." },
       { property: "og:title", content: "PDF Dönüştürücü" },
-      { property: "og:description", content: "PDF ↔ Görsel dönüştürme. Tarayıcıda, ücretsiz, sınırsız." },
+      { property: "og:description", content: "PDF dönüştür, birleştir, böl ve sıkıştır. Görsel işleme araçları. Ücretsiz, sınırsız, tarayıcı tabanlı." },
       { property: "og:url", content: "https://pdfdonusturucu.lovable.app/" },
       { property: "og:image", content: "https://pdfdonusturucu.lovable.app/og-image.svg" },
       { name: "twitter:image", content: "https://pdfdonusturucu.lovable.app/og-image.svg" },
