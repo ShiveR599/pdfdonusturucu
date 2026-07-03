@@ -60,46 +60,44 @@ function Index() {
       {tab === "edit" && <PdfPagesEdit />}
 
       {(tab === "pdf2img" || tab === "img2pdf") && (
-        <ToolDescription title="PDF Dönüştürücü Nasıl Çalışır?">
-          <p>
-            PDF Dönüştürücü aracı, yüklediğiniz PDF dosyasının her sayfasını tarayıcınızda pdfjs-dist kütüphanesi ile işler ve JPEG, PNG veya WebP formatında görsel olarak dışa aktarır. Dosyalarınız hiçbir sunucuya gönderilmez; tüm işlem cihazınızın belleğinde gerçekleşir.
-          </p>
-          <p>
-            Birden fazla PDF aynı anda yüklenebilir, dosya sayısı sınırı yoktur. Tek PDF yüklendiğinde sayfa aralığı belirleyebilirsiniz (örneğin: 1-5, 8, 11-13). Birden fazla PDF yüklendiğinde tüm sayfalar listelenir ve bireysel sayfa seçimi yapabilirsiniz.
-          </p>
-          <p>
-            4 farklı kalite seviyesi mevcuttur: Standart (108 DPI) günlük kullanım için, HD (216 DPI) ise baskı kalitesi gerektiren durumlar için uygundur. Seçilen sayfalar tek ZIP dosyası olarak ya da ayrı ayrı indirilebilir.
-          </p>
-          <p>
-            Görüntüden PDF'e sekmesinde JPEG, PNG ve WebP görsellerinizi sürükleyerek sıralayabilir, döndürebilir ve tek bir PDF dosyasında birleştirebilirsiniz.
-          </p>
-        </ToolDescription>
+        <ToolDescription
+          title="PDF Dönüştürücü Nasıl Çalışır?"
+          items={[
+            "PDF Dönüştürücü aracı, yüklediğiniz PDF dosyasının her sayfasını tarayıcınızda pdfjs-dist kütüphanesi ile işler ve JPEG, PNG veya WebP formatında görsel olarak dışa aktarır.",
+            "Dosyalarınız hiçbir sunucuya gönderilmez; tüm işlem cihazınızın belleğinde gerçekleşir.",
+            "Birden fazla PDF aynı anda yüklenebilir, dosya sayısı sınırı yoktur.",
+            "Tek PDF yüklendiğinde sayfa aralığı belirleyebilirsiniz (örneğin: 1-5, 8, 11-13).",
+            "Birden fazla PDF yüklendiğinde tüm sayfalar listelenir ve bireysel sayfa seçimi yapabilirsiniz.",
+            "4 farklı kalite seviyesi mevcuttur: Standart (108 DPI) günlük kullanım için, HD (216 DPI) ise baskı kalitesi gerektiren durumlar için uygundur.",
+            "Seçilen sayfalar tek ZIP dosyası olarak ya da ayrı ayrı indirilebilir.",
+            "Görüntüden PDF'e sekmesinde JPEG, PNG ve WebP görsellerinizi sürükleyerek sıralayabilir, döndürebilir ve tek bir PDF dosyasında birleştirebilirsiniz.",
+          ]}
+        />
       )}
       {tab === "split" && (
-        <ToolDescription title="PDF Bölme Nasıl Çalışır?">
-          <p>
-            PDF Böl aracı, tek bir PDF dosyasını belirttiğiniz sayfa aralıklarına göre birden fazla ayrı PDF'e böler. Tüm işlem tarayıcınızda gerçekleşir; dosyanız sunucuya gönderilmez.
-          </p>
-          <p>
-            İki farklı bölme modu mevcuttur: Sayfa aralığı ile bölerken 1-3, 5, 8-10 formatında istediğiniz aralıkları belirtirsiniz ve her aralık ayrı bir PDF dosyası olarak oluşturulur. 'Her sayfayı ayrı böl' modunda ise tüm sayfalar tek tek PDF dosyalarına dönüştürülür ve ZIP olarak indirilir.
-          </p>
-          <p>
-            Büyük belgelerin belirli bölümlerini ayıklamak, gereksiz sayfaları çıkarmak veya bir raporu bölümlere ayırmak için idealdir.
-          </p>
-        </ToolDescription>
+        <ToolDescription
+          title="PDF Bölme Nasıl Çalışır?"
+          items={[
+            "PDF Böl aracı, tek bir PDF dosyasını belirttiğiniz sayfa aralıklarına göre birden fazla ayrı PDF'e böler.",
+            "Tüm işlem tarayıcınızda gerçekleşir; dosyanız sunucuya gönderilmez.",
+            "İki farklı bölme modu mevcuttur: Sayfa aralığı ile bölerken 1-3, 5, 8-10 formatında istediğiniz aralıkları belirtirsiniz ve her aralık ayrı bir PDF dosyası olarak oluşturulur.",
+            "'Her sayfayı ayrı böl' modunda ise tüm sayfalar tek tek PDF dosyalarına dönüştürülür ve ZIP olarak indirilir.",
+            "Büyük belgelerin belirli bölümlerini ayıklamak, gereksiz sayfaları çıkarmak veya bir raporu bölümlere ayırmak için idealdir.",
+          ]}
+        />
       )}
       {tab === "edit" && (
-        <ToolDescription title="PDF Sayfa Düzenleme Nasıl Çalışır?">
-          <p>
-            Sayfa Düzenle aracı ile PDF dosyanızdaki sayfaları yeniden sıralayabilir, döndürebilir veya istemediğiniz sayfaları silebilirsiniz. Tüm işlem tarayıcınızda gerçekleşir; dosyanız sunucuya gönderilmez.
-          </p>
-          <p>
-            PDF'i yükledikten sonra sayfaları sürükleyerek istediğiniz sıraya getirebilirsiniz. Her sayfanın sağ üst köşesindeki döndürme butonlarıyla sayfayı 90° saat yönünde veya tersine döndürebilirsiniz. Gereksiz sayfaları çöp kutusu ikonuyla kaldırabilirsiniz.
-          </p>
-          <p>
-            Tüm düzenlemelerinizi yaptıktan sonra 'Değişiklikleri Uygula ve İndir' butonuyla güncellenmiş PDF'i indirin.
-          </p>
-        </ToolDescription>
+        <ToolDescription
+          title="PDF Sayfa Düzenleme Nasıl Çalışır?"
+          items={[
+            "Sayfa Düzenle aracı ile PDF dosyanızdaki sayfaları yeniden sıralayabilir, döndürebilir veya istemediğiniz sayfaları silebilirsiniz.",
+            "Tüm işlem tarayıcınızda gerçekleşir; dosyanız sunucuya gönderilmez.",
+            "PDF'i yükledikten sonra sayfaları sürükleyerek istediğiniz sıraya getirebilirsiniz.",
+            "Her sayfanın sağ üst köşesindeki döndürme butonlarıyla sayfayı 90° saat yönünde veya tersine döndürebilirsiniz.",
+            "Gereksiz sayfaları çöp kutusu ikonuyla kaldırabilirsiniz.",
+            "Tüm düzenlemelerinizi yaptıktan sonra 'Değişiklikleri Uygula ve İndir' butonuyla güncellenmiş PDF'i indirin.",
+          ]}
+        />
       )}
     </div>
   );
