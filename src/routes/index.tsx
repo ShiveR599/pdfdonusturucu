@@ -9,7 +9,7 @@ import { ToolDescription } from "../components/ToolDescription";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "PDF Dönüştürücü – Ücretsiz & Güvenli" },
+      { title: "PDF Dönüştürücü – Ücretsiz PDF & Görsel İşleme Aracı" },
       { name: "description", content: "PDF dönüştür, birleştir, böl, sıkıştır ve sayfa düzenle. Görsel sıkıştır. %100 ücretsiz, sınırsız, tarayıcı tabanlı — sunucusuz." },
       { property: "og:title", content: "PDF Dönüştürücü" },
       { property: "og:description", content: "PDF dönüştür, birleştir, böl ve sıkıştır. Görsel işleme araçları. Ücretsiz, sınırsız, tarayıcı tabanlı." },
