@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-const BASE_URL = "https://pdfdonusturucu.lovable.app";
+const BASE_URL = "https://pdfdonusturucu.netlify.app";
 
 const entries: Array<{ path: string; changefreq?: string; priority?: string }> = [
   { path: "/", changefreq: "weekly", priority: "1.0" },
