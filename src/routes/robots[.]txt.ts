@@ -4,7 +4,7 @@ export const Route = createFileRoute("/robots.txt")({
   server: {
     handlers: {
       GET: async () => {
-        const body = `User-agent: *\nAllow: /\nSitemap: https://pdfdonusturucu.lovable.app/sitemap.xml\n`;
+        const body = `User-agent: *\nAllow: /\nSitemap: https://pdfdonusturucu.netlify.app/sitemap.xml\n`;
         return new Response(body, {
           headers: {
             "Content-Type": "text/plain; charset=utf-8",
