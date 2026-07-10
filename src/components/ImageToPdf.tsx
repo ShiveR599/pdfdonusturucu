@@ -1,7 +1,8 @@
 import { useRef, useState } from "react";
-import { Upload, Trash2, RotateCw, GripVertical, Loader2 } from "lucide-react";
-import jsPDF from "jspdf";
+import { Upload, Trash2, RotateCw, GripVertical, Loader2, AlertCircle } from "lucide-react";
+import { PDFDocument } from "pdf-lib";
 import { downloadBlob } from "../lib/format";
+import { withTimeout, pdfErrorMessage } from "../lib/pdfjs";
 
 type Img = { id: string; file: File; url: string; rotation: number };
 
@@ -9,6 +10,7 @@ export function ImageToPdf() {
   const [imgs, setImgs] = useState<Img[]>([]);
   const [processing, setProcessing] = useState(false);
   const [dragOver, setDragOver] = useState(false);
+  const [error, setError] = useState("");
   const dragId = useRef<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -62,46 +64,58 @@ export function ImageToPdf() {
   async function makePdf() {
     if (!imgs.length) return;
     setProcessing(true);
-    const pdf = new jsPDF({ unit: "mm", format: "a4" });
-    const pageW = pdf.internal.pageSize.getWidth();
-    const pageH = pdf.internal.pageSize.getHeight();
-    const margin = 5;
-    for (let i = 0; i < imgs.length; i++) {
-      const it = imgs[i];
-      const img = await loadImage(it.url);
-      const rot = it.rotation;
-      let w = img.width;
-      let h = img.height;
-      // bake rotation onto a canvas
-      const canvas = document.createElement("canvas");
-      if (rot === 90 || rot === 270) {
-        canvas.width = h;
-        canvas.height = w;
-      } else {
-        canvas.width = w;
-        canvas.height = h;
+    setError("");
+    // A4 @ 72dpi in points
+    const pageW = 595.28;
+    const pageH = 841.89;
+    const margin = 14.17; // ~5mm
+    try {
+      const pdfDoc = await PDFDocument.create();
+      for (const it of imgs) {
+        const img = await loadImage(it.url);
+        const rot = it.rotation;
+        const canvas = document.createElement("canvas");
+        if (rot === 90 || rot === 270) {
+          canvas.width = img.height;
+          canvas.height = img.width;
+        } else {
+          canvas.width = img.width;
+          canvas.height = img.height;
+        }
+        const ctx = canvas.getContext("2d")!;
+        ctx.translate(canvas.width / 2, canvas.height / 2);
+        ctx.rotate((rot * Math.PI) / 180);
+        ctx.drawImage(img, -img.width / 2, -img.height / 2);
+        const jpegDataUrl = canvas.toDataURL("image/jpeg", 0.92);
+        const jpegBytes = Uint8Array.from(atob(jpegDataUrl.split(",")[1]), (c) => c.charCodeAt(0));
+        const embedded = await pdfDoc.embedJpg(jpegBytes);
+        const cw = canvas.width;
+        const ch = canvas.height;
+        const maxW = pageW - margin * 2;
+        const maxH = pageH - margin * 2;
+        const ratio = Math.min(maxW / cw, maxH / ch);
+        const finalW = cw * ratio;
+        const finalH = ch * ratio;
+        const page = pdfDoc.addPage([pageW, pageH]);
+        page.drawImage(embedded, {
+          x: (pageW - finalW) / 2,
+          y: (pageH - finalH) / 2,
+          width: finalW,
+          height: finalH,
+        });
+        // free canvas memory
+        canvas.width = 0;
+        canvas.height = 0;
       }
-      const ctx = canvas.getContext("2d")!;
-      ctx.translate(canvas.width / 2, canvas.height / 2);
-      ctx.rotate((rot * Math.PI) / 180);
-      ctx.drawImage(img, -w / 2, -h / 2);
-      const dataUrl = canvas.toDataURL("image/jpeg", 0.92);
-      const cw = canvas.width;
-      const ch = canvas.height;
-      const maxW = pageW - margin * 2;
-      const maxH = pageH - margin * 2;
-      const ratio = Math.min(maxW / cw, maxH / ch);
-      const finalW = cw * ratio;
-      const finalH = ch * ratio;
-      const x = (pageW - finalW) / 2;
-      const y = (pageH - finalH) / 2;
-      if (i > 0) pdf.addPage();
-      pdf.addImage(dataUrl, "JPEG", x, y, finalW, finalH);
+      const bytes = await withTimeout(pdfDoc.save());
+      const blob = new Blob([bytes as BlobPart], { type: "application/pdf" });
+      const base = imgs[0].file.name.replace(/\.[^.]+$/, "");
+      downloadBlob(blob, `${base}_Birlestirilmis.pdf`);
+    } catch (e) {
+      setError(pdfErrorMessage(e));
+    } finally {
+      setProcessing(false);
     }
-    const blob = pdf.output("blob");
-    const base = imgs[0].file.name.replace(/\.[^.]+$/, "");
-    downloadBlob(blob, `${base}_Birlestirilmis.pdf`);
-    setProcessing(false);
   }
 
   return (
@@ -127,6 +141,13 @@ export function ImageToPdf() {
         <p className="text-sm text-slate-500 mt-1">JPEG · PNG · WebP · Sunucuya gönderilmez</p>
         <input ref={inputRef} type="file" multiple accept="image/jpeg,image/png,image/webp" hidden onChange={(e) => e.target.files && add(e.target.files)} />
       </div>
+
+      {error && (
+        <div className="mt-4 flex items-start gap-2 text-sm bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800/50 rounded-xl p-3">
+          <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
+          <span>{error}</span>
+        </div>
+      )}
 
       {imgs.length > 0 && (
         <>
