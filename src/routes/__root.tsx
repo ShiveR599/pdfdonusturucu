@@ -89,6 +89,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "PDF Dönüştürücü – Ücretsiz & Güvenli" },
       { name: "twitter:description", content: "PDF dönüştür, birleştir, böl, sıkıştır ve sayfa düzenle. Ücretsiz, sınırsız ve tarayıcıda güvenli." },
+      { property: "og:image", content: "https://pdfdonusturucu.netlify.app/og-image.svg" },
+      { name: "twitter:image", content: "https://pdfdonusturucu.netlify.app/og-image.svg" },
     ],
     links: [
       {
