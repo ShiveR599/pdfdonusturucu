@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { FileText, Sun, Moon, Menu, X, ShieldCheck } from "lucide-react";
 import { CookieBanner } from "./CookieBanner";
+import { AD_SLOTS } from "../lib/adSlots";
 
 const NAV = [
   { to: "/", label: "PDF Dönüştürücü" },
@@ -96,23 +97,23 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <div className="flex-1 w-full max-w-7xl mx-auto px-4 py-6 flex gap-4">
         <aside className="hidden lg:block w-[160px] shrink-0">
           <div className="sticky top-24 w-[160px] min-h-[600px] bg-slate-100 dark:bg-slate-900 rounded-xl flex items-center justify-center text-xs text-slate-400 overflow-hidden">
-            <ins className="adsbygoogle block w-full" style={{ display: "block", width: 160, height: 600 }} data-ad-client="ca-pub-8147032819898233" data-ad-slot="auto" data-ad-format="auto" />
+            <ins className="adsbygoogle block w-full" style={{ display: "block", width: 160, height: 600 }} data-ad-client="ca-pub-8147032819898233" data-ad-slot={AD_SLOTS.sidebarLeft} data-ad-format="auto" />
           </div>
         </aside>
 
         <main className="flex-1 min-w-0">
           <div className="block lg:hidden mb-4 h-[90px] bg-slate-100 dark:bg-slate-900 rounded-xl overflow-hidden">
-            <ins className="adsbygoogle block w-full h-full" style={{ display: "block" }} data-ad-client="ca-pub-8147032819898233" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true" />
+            <ins className="adsbygoogle block w-full h-full" style={{ display: "block" }} data-ad-client="ca-pub-8147032819898233" data-ad-slot={AD_SLOTS.mobileTop} data-ad-format="auto" data-full-width-responsive="true" />
           </div>
           {children}
           <div className="block lg:hidden mt-6 h-[90px] bg-slate-100 dark:bg-slate-900 rounded-xl overflow-hidden">
-            <ins className="adsbygoogle block w-full h-full" style={{ display: "block" }} data-ad-client="ca-pub-8147032819898233" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true" />
+            <ins className="adsbygoogle block w-full h-full" style={{ display: "block" }} data-ad-client="ca-pub-8147032819898233" data-ad-slot={AD_SLOTS.mobileBottom} data-ad-format="auto" data-full-width-responsive="true" />
           </div>
         </main>
 
         <aside className="hidden lg:block w-[160px] shrink-0">
           <div className="sticky top-24 w-[160px] min-h-[600px] bg-slate-100 dark:bg-slate-900 rounded-xl flex items-center justify-center text-xs text-slate-400 overflow-hidden">
-            <ins className="adsbygoogle block w-full" style={{ display: "block", width: 160, height: 600 }} data-ad-client="ca-pub-8147032819898233" data-ad-slot="auto" data-ad-format="auto" />
+            <ins className="adsbygoogle block w-full" style={{ display: "block", width: 160, height: 600 }} data-ad-client="ca-pub-8147032819898233" data-ad-slot={AD_SLOTS.sidebarRight} data-ad-format="auto" />
           </div>
         </aside>
       </div>
