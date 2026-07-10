@@ -114,7 +114,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "@context": "https://schema.org",
           "@type": "WebApplication",
           name: "PDF Dönüştürücü",
-          url: "https://pdfdonusturucu.lovable.app/",
+          url: "https://pdfdonusturucu.netlify.app/",
           description: "PDF dönüştür, birleştir, böl ve sıkıştır. Görsel işleme araçları. %100 ücretsiz, sunucusuz, güvenli.",
           applicationCategory: "UtilitiesApplication",
           operatingSystem: "Web Browser",

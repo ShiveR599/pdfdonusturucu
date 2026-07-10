@@ -10,10 +10,10 @@ export const Route = createFileRoute("/blog")({
       { name: "description", content: "PDF ve görsel dosyalar hakkında pratik bilgiler, rehberler ve format karşılaştırmaları." },
       { property: "og:title", content: "Blog & Rehberler" },
       { property: "og:description", content: "PDF ve görsel dosyalar hakkında pratik bilgiler." },
-      { property: "og:url", content: "https://pdfdonusturucu.lovable.app/blog" },
+      { property: "og:url", content: "https://pdfdonusturucu.netlify.app/blog" },
       { property: "og:type", content: "article" },
     ],
-    links: [{ rel: "canonical", href: "https://pdfdonusturucu.lovable.app/blog" }],
+    links: [{ rel: "canonical", href: "https://pdfdonusturucu.netlify.app/blog" }],
     scripts: [
       {
         type: "application/ld+json",
@@ -21,7 +21,7 @@ export const Route = createFileRoute("/blog")({
           "@context": "https://schema.org",
           "@type": "Blog",
           name: "PDF Dönüştürücü Blog",
-          url: "https://pdfdonusturucu.lovable.app/blog",
+          url: "https://pdfdonusturucu.netlify.app/blog",
           blogPost: [
             { "@type": "BlogPosting", headline: "PDF Dosyası Nasıl Küçültülür?", datePublished: "2026-04-01", author: { "@type": "Organization", name: "PDF Dönüştürücü" } },
             { "@type": "BlogPosting", headline: "JPEG, PNG ve WebP Arasındaki Fark Nedir?", datePublished: "2026-05-01", author: { "@type": "Organization", name: "PDF Dönüştürücü" } },

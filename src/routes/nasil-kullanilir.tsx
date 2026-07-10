@@ -8,9 +8,9 @@ export const Route = createFileRoute("/nasil-kullanilir")({
       { name: "description", content: "PDF dönüştür, birleştir, böl, sıkıştır, sayfa düzenle ve görsel sıkıştır. Tüm araçların adım adım kullanım kılavuzu." },
       { property: "og:title", content: "Nasıl Kullanılır — PDF Dönüştürücü" },
       { property: "og:description", content: "PDF Dönüştürücü araçlarını adım adım nasıl kullanacağınız." },
-      { property: "og:url", content: "https://pdfdonusturucu.lovable.app/nasil-kullanilir" },
+      { property: "og:url", content: "https://pdfdonusturucu.netlify.app/nasil-kullanilir" },
     ],
-    links: [{ rel: "canonical", href: "https://pdfdonusturucu.lovable.app/nasil-kullanilir" }],
+    links: [{ rel: "canonical", href: "https://pdfdonusturucu.netlify.app/nasil-kullanilir" }],
   }),
   component: HowToUse,
 });

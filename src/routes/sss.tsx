@@ -26,9 +26,9 @@ export const Route = createFileRoute("/sss")({
       { name: "description", content: "PDF Dönüştürücü hakkında sık sorulan sorular: ücretsiz mi, güvenli mi, limit var mı, hangi formatlar destekleniyor ve daha fazlası." },
       { property: "og:title", content: "SSS — PDF Dönüştürücü" },
       { property: "og:description", content: "PDF Dönüştürücü araçları hakkında sıkça sorulan sorular." },
-      { property: "og:url", content: "https://pdfdonusturucu.lovable.app/sss" },
+      { property: "og:url", content: "https://pdfdonusturucu.netlify.app/sss" },
     ],
-    links: [{ rel: "canonical", href: "https://pdfdonusturucu.lovable.app/sss" }],
+    links: [{ rel: "canonical", href: "https://pdfdonusturucu.netlify.app/sss" }],
     scripts: [
       {
         type: "application/ld+json",
