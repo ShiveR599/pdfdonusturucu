@@ -1,7 +1,7 @@
 export const AD_SLOTS = {
-  sidebarLeft: "TODO_SIDEBAR_LEFT",
-  sidebarRight: "TODO_SIDEBAR_RIGHT",
-  mobileTop: "TODO_MOBILE_TOP",
-  mobileBottom: "TODO_MOBILE_BOTTOM",
-  inArticle: "TODO_IN_ARTICLE",
+  sidebarLeft: "4690537123",
+  sidebarRight: "6738115964",
+  mobileTop: "1614771476",
+  mobileBottom: "9751292113",
+  inArticle: "9275016489",
 } as const;
