@@ -9,9 +9,9 @@ export const Route = createFileRoute("/ozelliklerimiz")({
       { name: "description", content: "Sınırsız, ücretsiz, güvenli — PDF Dönüştürücü'nün öne çıkan özellikleri." },
       { property: "og:title", content: "Özelliklerimiz — PDF Dönüştürücü" },
       { property: "og:description", content: "Sınırsız, ücretsiz, güvenli — PDF Dönüştürücü'nün özellikleri." },
-      { property: "og:url", content: "https://pdfdonusturucu.lovable.app/ozelliklerimiz" },
+      { property: "og:url", content: "https://pdfdonusturucu.netlify.app/ozelliklerimiz" },
     ],
-    links: [{ rel: "canonical", href: "https://pdfdonusturucu.lovable.app/ozelliklerimiz" }],
+    links: [{ rel: "canonical", href: "https://pdfdonusturucu.netlify.app/ozelliklerimiz" }],
   }),
   component: Features,
 });

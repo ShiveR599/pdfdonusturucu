@@ -51,6 +51,7 @@ export function CookieBanner() {
   return (
     <div className="fixed bottom-4 left-4 right-4 z-50 flex justify-center pointer-events-none">
       <div className="pointer-events-auto max-w-3xl w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-2xl p-5 relative">
+        {/* X kapatma = Reddet: KVKK/GDPR'de kullanıcı aktif onay vermediği sürece varsayılan izin yok olmalıdır. */}
         <button onClick={reject} aria-label="Kapat" className="absolute top-3 right-3 p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800">
           <X className="w-4 h-4" />
         </button>

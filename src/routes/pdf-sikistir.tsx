@@ -9,9 +9,9 @@ export const Route = createFileRoute("/pdf-sikistir")({
       { name: "description", content: "PDF dosyalarınızı tarayıcınızda sıkıştırın. 3 kalite seviyesi, önce/sonra boyut karşılaştırması, toplu ZIP indirme. Ücretsiz, sınırsız, sunucusuz." },
       { property: "og:title", content: "PDF Sıkıştır" },
       { property: "og:description", content: "PDF dosyalarınızı tarayıcınızda küçültün." },
-      { property: "og:url", content: "https://pdfdonusturucu.lovable.app/pdf-sikistir" },
+      { property: "og:url", content: "https://pdfdonusturucu.netlify.app/pdf-sikistir" },
     ],
-    links: [{ rel: "canonical", href: "https://pdfdonusturucu.lovable.app/pdf-sikistir" }],
+    links: [{ rel: "canonical", href: "https://pdfdonusturucu.netlify.app/pdf-sikistir" }],
   }),
   component: () => (
     <div>

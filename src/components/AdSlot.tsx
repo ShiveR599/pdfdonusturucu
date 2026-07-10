@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { AD_SLOTS } from "../lib/adSlots";
 
 export function InArticleAd() {
   const ref = useRef<HTMLModElement>(null);
@@ -16,7 +17,7 @@ export function InArticleAd() {
         data-ad-layout="in-article"
         data-ad-format="fluid"
         data-ad-client="ca-pub-8147032819898233"
-        data-ad-slot="auto"
+        data-ad-slot={AD_SLOTS.inArticle}
       />
     </div>
   );

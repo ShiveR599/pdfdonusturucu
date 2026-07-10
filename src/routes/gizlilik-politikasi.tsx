@@ -7,10 +7,10 @@ export const Route = createFileRoute("/gizlilik-politikasi")({
       { name: "description", content: "KVKK uyumlu gizlilik politikası ve çerez kullanım bilgileri." },
       { property: "og:title", content: "Gizlilik Politikası — PDF Dönüştürücü" },
       { property: "og:description", content: "KVKK uyumlu gizlilik politikası ve çerez kullanımı." },
-      { property: "og:url", content: "https://pdfdonusturucu.lovable.app/gizlilik-politikasi" },
+      { property: "og:url", content: "https://pdfdonusturucu.netlify.app/gizlilik-politikasi" },
       { property: "og:type", content: "article" },
     ],
-    links: [{ rel: "canonical", href: "https://pdfdonusturucu.lovable.app/gizlilik-politikasi" }],
+    links: [{ rel: "canonical", href: "https://pdfdonusturucu.netlify.app/gizlilik-politikasi" }],
   }),
   component: Privacy,
 });

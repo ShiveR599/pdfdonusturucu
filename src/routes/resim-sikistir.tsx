@@ -9,9 +9,9 @@ export const Route = createFileRoute("/resim-sikistir")({
       { name: "description", content: "JPEG, PNG ve WebP görsellerinizi tarayıcınızda sıkıştırın. Boyut ve tasarruf yüzdesi gösterilir. Toplu ZIP indirme. Ücretsiz, sınırsız, sunucusuz." },
       { property: "og:title", content: "Resim Sıkıştır" },
       { property: "og:description", content: "JPEG, PNG ve WebP görsellerinizi boyut olarak küçültün. Tasarruf yüzdesi anlık gösterilir. Ücretsiz ve sunucusuz." },
-      { property: "og:url", content: "https://pdfdonusturucu.lovable.app/resim-sikistir" },
+      { property: "og:url", content: "https://pdfdonusturucu.netlify.app/resim-sikistir" },
     ],
-    links: [{ rel: "canonical", href: "https://pdfdonusturucu.lovable.app/resim-sikistir" }],
+    links: [{ rel: "canonical", href: "https://pdfdonusturucu.netlify.app/resim-sikistir" }],
   }),
   component: () => (
     <div>
