@@ -80,7 +80,7 @@ function Page() {
           ))}
         </div>
       </section>
-      <OtherTools />
+      <OtherTools current="/iban-dogrulama" />
     </div>
   );
 }

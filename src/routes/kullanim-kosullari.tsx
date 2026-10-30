@@ -20,8 +20,8 @@ function Terms() {
 
       <H2>1. Hizmetin Niteliği</H2>
       <p>
-        {SITE_NAME}, PDF ve görsel dosyalarını tarayıcınızda işleyen ücretsiz araçlar sunar. Dosyalar sunucuya yüklenmez; tüm işlem
-        sizin cihazınızda, sizin tarayıcınız tarafından yapılır. Hizmet için üyelik gerekmez ve herhangi bir ücret alınmaz.
+        {SITE_NAME}, PDF ve görsel dosyalarını tarayıcınızda işleyen ve IBAN numaralarını doğrulayan ücretsiz araçlar sunar. Dosyalar
+        ve girilen bilgiler sunucuya gönderilmez; tüm işlem sizin cihazınızda, sizin tarayıcınız tarafından yapılır. Hizmet için üyelik gerekmez ve herhangi bir ücret alınmaz.
       </p>
 
       <H2>2. "Olduğu Gibi" Sunum</H2>
@@ -38,6 +38,7 @@ function Terms() {
           "Oluşan dosyayı kullanmadan önce (özellikle resmi başvuru, sözleşme, fatura gibi önemli belgelerde) kontrol etmeniz gerekir.",
           "Yalnızca işleme hakkına sahip olduğunuz dosyaları kullanmalısınız. Başkalarına ait telif hakkıyla korunan, kişisel veri içeren veya hukuka aykırı içerikteki dosyaların işlenmesinden kullanıcı sorumludur.",
           "Şifreli veya korumalı belgelerin korumasını aşmaya yönelik kullanım amaçlanmamıştır ve desteklenmez.",
+          "IBAN Doğrulama aracının 'geçerli' sonucu yalnızca IBAN'ın yazım kurallarına uygun olduğunu gösterir; hesabın var olduğunu, açık olduğunu veya kime ait olduğunu göstermez. Gösterilen banka adı, IBAN'daki banka koduna göre bilgilendirme amaçlıdır. Para transferi öncesinde alıcı bilgilerini bankanız üzerinden kontrol etmek ve transfer kararları kullanıcının sorumluluğundadır.",
         ]}
       />
 

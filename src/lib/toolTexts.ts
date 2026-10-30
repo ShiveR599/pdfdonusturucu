@@ -79,3 +79,15 @@ export const TEXT_IMAGE_COMPRESS = {
     "Her görsel için önceki ve sonraki boyut gösterilir; tümünü tek ZIP dosyası olarak indirebilirsiniz.",
   ],
 };
+
+export const TEXT_IBAN = {
+  title: "IBAN Doğrulama Nasıl Çalışır?",
+  items: [
+    "IBAN'ı boşluklu veya boşluksuz yazın ya da yapıştırın; sonuç yazarken anında görünür.",
+    "IBAN'daki kontrol haneleri uluslararası kurala (ISO 13616, mod 97) göre hesaplanır; eksik/fazla hane veya yanlış yazılmış rakam yakalanır.",
+    "Türk IBAN'larında 5–9. hanelerdeki banka kodundan bankanın adı gösterilir.",
+    "Şube ve hesap sahibi bilgisi IBAN'ın standart bir parçası değildir; bu nedenle gösterilmez.",
+    "'Geçerli' sonucu hesabın var olduğunu veya kime ait olduğunu göstermez; para göndermeden önce alıcı adını bankanızda kontrol edin.",
+    "IBAN hiçbir yere gönderilmez ve kaydedilmez; kontrol tarayıcınızda yapılır.",
+  ],
+};

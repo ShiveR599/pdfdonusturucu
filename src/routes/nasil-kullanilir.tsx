@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { seo, SITE_NAME } from "../lib/site";
-import type { ToolPath } from "../lib/tools";
+import type { AnyToolPath } from "../lib/tools";
 import { MousePointerClick, Upload, Settings, Download } from "lucide-react";
 
 export const Route = createFileRoute("/nasil-kullanilir")({
@@ -20,7 +20,7 @@ const STEPS = [
   { icon: Download, title: "İndir", text: "İşlem tarayıcında tamamlanır; sonucu kontrol edip indir." },
 ];
 
-const DETAILS: { title: string; to: ToolPath; items: string[] }[] = [
+const DETAILS: { title: string; to: AnyToolPath; items: string[] }[] = [
   {
     title: "PDF → Görsel",
     to: "/pdf-jpg",
@@ -92,6 +92,16 @@ const DETAILS: { title: string; to: ToolPath; items: string[] }[] = [
       "Sayfaları sürükleyerek veya ok düğmeleriyle yeniden sıralayın",
       "Döndürme butonlarıyla her sayfanın yönünü ayarlayın",
       "İstemediğiniz sayfaları kaldırın ve değişiklikleri tek tıkla uygulayın",
+    ],
+  },
+  {
+    title: "IBAN Doğrulama",
+    to: "/iban-dogrulama",
+    items: [
+      "IBAN'ı boşluklu veya boşluksuz yazın ya da yapıştırın; sonuç yazarken anında görünür",
+      "Hatalıysa sebebi gösterilir (eksik/fazla hane, yanlış yazılmış rakam vb.)",
+      "Türk IBAN'larında hangi bankaya ait olduğu gösterilir; şube ve hesap sahibi bilgisi IBAN'da yer almaz",
+      "IBAN hiçbir yere gönderilmez; kontrol tarayıcınızda yapılır",
     ],
   },
 ];

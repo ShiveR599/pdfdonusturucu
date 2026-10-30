@@ -14,7 +14,7 @@ export const Route = createFileRoute("/guvenlik")({
 
 const CARDS = [
   { icon: CloudOff, title: "Sunucuya Yükleme Yok", text: "Dosyalarınız hiçbir sunucuya gönderilmez. İşlemi yapan kod sayfayla birlikte tarayıcınıza iner ve dosyanız yalnızca cihazınızda işlenir." },
-  { icon: Lock, title: "Saklama Yok", text: "Dosyalarınız kaydedilmez ve saklanmaz. Sayfayı kapattığınızda veya yenilediğinizde tarayıcı belleğinden silinir." },
+  { icon: Lock, title: "Saklama Yok", text: "Dosyalarınız ve IBAN Doğrulama aracına yazdığınız IBAN'lar kaydedilmez, saklanmaz ve hiçbir yere gönderilmez. Sayfayı kapattığınızda tarayıcı belleğinden silinir." },
   { icon: Cookie, title: "Onaysız Reklam Çerezi Yok", text: "Google reklam sistemi yalnızca çerez bildiriminde 'Kabul Et' derseniz yüklenir. Reddederseniz Google'a hiçbir istek gitmez." },
   { icon: Trash2, title: "Üyelik ve Takip Yok", text: "Üyelik, form veya ziyaretçi analiz aracı yoktur. Sizinle ilgili bir veritabanı tutulmaz." },
 ];

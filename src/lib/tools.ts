@@ -15,3 +15,5 @@ export const EXTRA_TOOLS = [
 ] as const;
 
 export type ToolPath = (typeof TOOLS)[number]["to"];
+export type AnyToolPath = ToolPath | (typeof EXTRA_TOOLS)[number]["to"];
+export const ALL_TOOLS = [...TOOLS, ...EXTRA_TOOLS];

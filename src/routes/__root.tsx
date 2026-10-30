@@ -13,7 +13,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Layout } from "../components/Layout";
 import { SITE_NAME, SITE_URL, ADSENSE_CLIENT } from "../lib/site";
-import { TOOLS } from "../lib/tools";
+import { ALL_TOOLS } from "../lib/tools";
 
 function NotFoundComponent() {
   return (
@@ -109,7 +109,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           operatingSystem: "Web Browser",
           offers: { "@type": "Offer", price: "0", priceCurrency: "TRY" },
           inLanguage: "tr",
-          featureList: TOOLS.map((t) => t.label),
+          featureList: ALL_TOOLS.map((t) => t.label),
         }),
       },
     ],

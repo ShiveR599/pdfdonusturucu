@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Shield, Zap, Globe } from "lucide-react";
-import { TOOLS } from "../lib/tools";
+import { ALL_TOOLS } from "../lib/tools";
 import { seo, SITE_NAME } from "../lib/site";
 
 export const Route = createFileRoute("/hakkimizda")({
@@ -46,7 +46,7 @@ function About() {
       <section>
         <h2 className="text-xl font-bold mb-4">Araçlarımız</h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {TOOLS.map((t) => (
+          {ALL_TOOLS.map((t) => (
             <Link
               key={t.to}
               to={t.to}

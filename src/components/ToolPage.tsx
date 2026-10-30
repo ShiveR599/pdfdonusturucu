@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { ToolDescription } from "./ToolDescription";
-import { TOOLS } from "../lib/tools";
+import { ALL_TOOLS } from "../lib/tools";
 
 /** Araç sayfalarının ortak iskeleti: başlık, araç, açıklama ve diğer araçlar. */
 export function ToolPage({
@@ -35,7 +35,7 @@ export function OtherTools({ current }: { current?: string }) {
     <section className="mt-8">
       <h2 className="text-lg font-semibold mb-3 text-slate-700 dark:text-slate-300">Diğer Araçlar</h2>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-        {TOOLS.filter((t) => t.to !== current).map((t) => (
+        {ALL_TOOLS.filter((t) => t.to !== current).map((t) => (
           <Link
             key={t.to}
             to={t.to}

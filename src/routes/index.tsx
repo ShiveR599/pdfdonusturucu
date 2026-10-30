@@ -4,9 +4,10 @@ import { PdfToImage } from "../components/PdfToImage";
 import { ImageToPdf } from "../components/ImageToPdf";
 import { PdfSplit } from "../components/PdfSplit";
 import { PdfPagesEdit } from "../components/PdfPagesEdit";
+import { IbanCheck } from "../components/IbanCheck";
 import { ToolDescription } from "../components/ToolDescription";
 import { OtherTools } from "../components/ToolPage";
-import { TEXT_PDF_TO_IMAGE, TEXT_IMAGE_TO_PDF, TEXT_SPLIT, TEXT_EDIT } from "../lib/toolTexts";
+import { TEXT_PDF_TO_IMAGE, TEXT_IMAGE_TO_PDF, TEXT_SPLIT, TEXT_EDIT, TEXT_IBAN } from "../lib/toolTexts";
 import { seo, SITE_NAME } from "../lib/site";
 
 export const Route = createFileRoute("/")({
@@ -14,7 +15,7 @@ export const Route = createFileRoute("/")({
     seo({
       title: `${SITE_NAME} – Ücretsiz PDF ve Görsel Araçları`,
       description:
-        "PDF'i JPG'ye çevirin, görselleri PDF yapın, PDF birleştirin, bölün, sıkıştırın ve sayfaları düzenleyin. Ücretsiz; dosyalar tarayıcınızda işlenir, sunucuya yüklenmez.",
+        "PDF'i JPG'ye çevirin, görselleri PDF yapın, PDF birleştirin, bölün, sıkıştırın, sayfaları düzenleyin ve IBAN doğrulayın. Ücretsiz; dosyalar tarayıcınızda işlenir, sunucuya yüklenmez.",
       path: "/",
     }),
   component: Index,
@@ -25,6 +26,7 @@ const TABS = [
   { id: "img2pdf", label: "Görüntüden PDF'e", text: TEXT_IMAGE_TO_PDF },
   { id: "split", label: "PDF Böl", text: TEXT_SPLIT },
   { id: "edit", label: "Sayfa Düzenle", text: TEXT_EDIT },
+  { id: "iban", label: "IBAN Doğrulama", text: TEXT_IBAN },
 ] as const;
 
 type TabId = (typeof TABS)[number]["id"];
@@ -37,7 +39,7 @@ function Index() {
       <div className="text-center mb-6">
         <h1 className="text-2xl sm:text-3xl font-bold">PDF Dönüştürücü — Ücretsiz ve Tarayıcıda</h1>
         <p className="text-slate-500 dark:text-slate-400 mt-1 text-sm">
-          PDF ve görsellerinizi dönüştürün, bölün ve düzenleyin. Dosyalarınız sunucuya yüklenmez; tüm işlem cihazınızda yapılır.
+          PDF ve görsellerinizi dönüştürün, bölün, düzenleyin; IBAN doğrulayın. Dosyalarınız sunucuya yüklenmez; tüm işlem cihazınızda yapılır.
         </p>
       </div>
       <div role="tablist" aria-label="Araç seçimi" className="inline-flex flex-wrap p-1 bg-slate-100 dark:bg-slate-900 rounded-xl mb-5 gap-1">
@@ -59,6 +61,7 @@ function Index() {
       {tab === "img2pdf" && <ImageToPdf />}
       {tab === "split" && <PdfSplit />}
       {tab === "edit" && <PdfPagesEdit />}
+      {tab === "iban" && <IbanCheck />}
 
       <ToolDescription title={current.text.title} items={current.text.items} />
       <OtherTools />
