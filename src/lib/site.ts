@@ -6,11 +6,11 @@ export const SITE_URL = "https://pdfdonusturucu.netlify.app";
 
 // ÖNEMLİ: Yayına almadan önce kendi kontrolünüzdeki gerçek bir e-posta adresi yazın.
 // KVKK başvuruları bu adrese gelir; size ait olmayan bir adres yazılmamalıdır.
-export const CONTACT_EMAIL = "info@pdfdonusturucu.net";
+export const CONTACT_EMAIL = "osmandemiray5926@gmail.com";
 
 // ÖNEMLİ: KVKK aydınlatma metninde veri sorumlusunun adı/unvanı yer almalıdır.
 // Gerçek kişi olarak işletiyorsanız adınızı soyadınızı yazın (ör. "Ad Soyad").
-export const OWNER_NAME = "PDF Dönüştürücü site sahibi";
+export const OWNER_NAME = "Osman DEMİRAY";
 
 // Siteyi yayınlayan barındırma hizmeti (gizlilik politikasında adı geçer).
 export const HOSTING_PROVIDER = "Netlify, Inc. (ABD)";
