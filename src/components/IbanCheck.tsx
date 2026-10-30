@@ -15,19 +15,27 @@ function Row({ label, value, mono = false }: { label: string; value: React.React
 
 export function IbanCheck() {
   const [value, setValue] = useState("");
-  const [copied, setCopied] = useState(false);
+  const [copied, setCopied] = useState<"" | "spaced" | "plain">("");
   const result = useMemo(() => (value.trim() ? analyzeIban(value) : null), [value]);
 
-  async function copy() {
-    if (!result) return;
+  async function copy(text: string, which: "spaced" | "plain") {
     try {
-      await navigator.clipboard.writeText(result.formatted);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1500);
+      await navigator.clipboard.writeText(text);
+      setCopied(which);
+      setTimeout(() => setCopied(""), 1500);
     } catch {
       /* pano izni yoksa sessizce geç */
     }
   }
+
+  const CopyBtn = ({ text, which }: { text: string; which: "spaced" | "plain" }) => (
+    <button
+      onClick={() => copy(text, which)}
+      className="inline-flex items-center gap-1 text-xs px-2 py-1 rounded-md bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 font-sans"
+    >
+      {copied === which ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />} {copied === which ? "Kopyalandı" : "Kopyala"}
+    </button>
+  );
 
   const tr = result?.tr;
 
@@ -100,19 +108,22 @@ export function IbanCheck() {
 
           <dl className="mt-4 bg-white/70 dark:bg-slate-900/60 rounded-xl px-4">
             <Row
-              label="Biçimli IBAN"
+              label="Boşluklu IBAN"
               mono
               value={
                 <span className="inline-flex items-center gap-2 flex-wrap">
                   {result.formatted}
-                  {result.valid && (
-                    <button
-                      onClick={copy}
-                      className="inline-flex items-center gap-1 text-xs px-2 py-1 rounded-md bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 font-sans"
-                    >
-                      {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />} {copied ? "Kopyalandı" : "Kopyala"}
-                    </button>
-                  )}
+                  {result.valid && <CopyBtn text={result.formatted} which="spaced" />}
+                </span>
+              }
+            />
+            <Row
+              label="Boşluksuz IBAN"
+              mono
+              value={
+                <span className="inline-flex items-center gap-2 flex-wrap">
+                  {result.input}
+                  {result.valid && <CopyBtn text={result.input} which="plain" />}
                 </span>
               }
             />
