@@ -1,59 +1,106 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { LegalPage, H2, UL } from "../components/LegalPage";
+import { seo, SITE_NAME, SITE_URL, CONTACT_EMAIL, OWNER_NAME, HOSTING_PROVIDER } from "../lib/site";
+import { openConsentBanner } from "../lib/consent";
 
 export const Route = createFileRoute("/gizlilik-politikasi")({
-  head: () => ({
-    meta: [
-      { title: "Gizlilik Politikası – PDF Dönüştürücü" },
-      { name: "description", content: "KVKK uyumlu gizlilik politikası ve çerez kullanım bilgileri." },
-      { property: "og:title", content: "Gizlilik Politikası — PDF Dönüştürücü" },
-      { property: "og:description", content: "KVKK uyumlu gizlilik politikası ve çerez kullanımı." },
-      { property: "og:url", content: "https://pdfdonusturucu.netlify.app/gizlilik-politikasi" },
-      { property: "og:type", content: "article" },
-    ],
-    links: [{ rel: "canonical", href: "https://pdfdonusturucu.netlify.app/gizlilik-politikasi" }],
-  }),
+  head: () =>
+    seo({
+      title: `Gizlilik Politikası ve Çerez Aydınlatma Metni – ${SITE_NAME}`,
+      description: "Hangi verilerin işlendiği, çerezler, Google AdSense ve KVKK kapsamındaki haklarınız hakkında aydınlatma metni.",
+      path: "/gizlilik-politikasi",
+      type: "article",
+    }),
   component: Privacy,
 });
 
 function Privacy() {
   return (
-    <article className="prose prose-slate dark:prose-invert max-w-3xl mx-auto bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8">
-      <h1 className="text-2xl sm:text-3xl font-bold mb-6">Gizlilik Politikası</h1>
-
-      <h2 className="text-lg font-bold mt-6 mb-2">Veri Sorumlusu</h2>
-      <p className="text-sm text-slate-600 dark:text-slate-400">
-        PDF Dönüştürücü — İletişim: info@pdfdonusturucu.net
+    <LegalPage title="Gizlilik Politikası ve Çerez Aydınlatma Metni">
+      <p>
+        Bu metin, 6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") madde 10 uyarınca, {SITE_URL.replace("https://", "")} adresindeki{" "}
+        {SITE_NAME} sitesini ("Site") kullanırken hangi verilerin işlendiğini açıklamak için hazırlanmıştır.
       </p>
 
-      <h2 className="text-lg font-bold mt-6 mb-2">İşlenen Veriler</h2>
-      <p className="text-sm text-slate-600 dark:text-slate-400">
-        Yüklediğiniz dosyalar yalnızca tarayıcınızda işlenir; sunucularımıza iletilmez, kaydedilmez.
+      <H2>1. Veri Sorumlusu</H2>
+      <p>
+        Veri sorumlusu: {OWNER_NAME}. İletişim: <a className="text-primary-600 dark:text-primary-400 underline" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
       </p>
 
-      <h2 className="text-lg font-bold mt-6 mb-2">Çerezler ve Analitik</h2>
-      <p className="text-sm text-slate-600 dark:text-slate-400">
-        Google Analytics (anonim, IP anonimleştirilmiş) yalnızca kullanıcı onayı sonrası aktif hâle gelir. Onay verilmediğinde herhangi bir analitik veri toplanmaz.
+      <H2>2. Yüklediğiniz Dosyalar</H2>
+      <p>
+        Sitedeki araçlara eklediğiniz PDF ve görsel dosyalar <strong>yalnızca kendi cihazınızda, tarayıcınızın belleğinde</strong> işlenir.
+        Bu dosyalar bize veya başka bir sunucuya gönderilmez, kaydedilmez, görüntülenmez ve saklanmaz. Sayfayı kapattığınızda veya
+        yenilediğinizde tarayıcı belleğinden silinir. Bu nedenle dosyalarınızın içeriği bakımından tarafımızca herhangi bir kişisel veri
+        işlenmemektedir.
       </p>
 
-      <h2 className="text-lg font-bold mt-6 mb-2">Reklam Çerezleri</h2>
-      <p className="text-sm text-slate-600 dark:text-slate-400">
-        Google AdSense, kullanıcı onayı sonrası kişiselleştirilmiş reklam gösterebilir. Reddetmeniz hâlinde yalnızca kişiselleştirilmemiş reklamlar veya hiç reklam görüntülenmeyebilir.
+      <H2>3. Üyelik, Form ve Analiz</H2>
+      <p>
+        Sitede üyelik, giriş, iletişim formu, yorum alanı veya ziyaretçi analiz aracı (ör. Google Analytics) <strong>yoktur</strong>. Ziyaretçilere ait bir veritabanı tutulmamaktadır.
       </p>
 
-      <h2 className="text-lg font-bold mt-6 mb-2">Kullanıcı Hakları (KVKK Madde 11)</h2>
-      <p className="text-sm text-slate-600 dark:text-slate-400">
-        Kişisel verilerinizin işlenip işlenmediğini öğrenme, düzeltilmesini, silinmesini talep etme ve işlenmesine itiraz etme hakkına sahipsiniz.
+      <H2>4. Barındırma Hizmeti Kayıtları</H2>
+      <p>
+        Site, {HOSTING_PROVIDER} tarafından barındırılmaktadır. Her web sitesinde olduğu gibi, sayfaları size iletebilmek ve hizmetin
+        güvenliğini sağlamak için barındırma sağlayıcısı tarafından teknik erişim kayıtları (IP adresi, tarayıcı ve cihaz bilgisi, istenen
+        sayfa, tarih ve saat) otomatik olarak işlenir. Bu kayıtlar bize ait bir sistemde tutulmaz; sağlayıcının kendi politikası
+        doğrultusunda sınırlı süre saklanır. Bu işleme, KVKK m. 5/2-f (meşru menfaat: sitenin çalışması ve güvenliği) hukuki sebebine
+        dayanır. Sağlayıcının sunucuları yurt dışında bulunabileceğinden bu veriler KVKK m. 9 kapsamında yurt dışına aktarılabilir.
       </p>
 
-      <h2 className="text-lg font-bold mt-6 mb-2">Çerez Tercihleri</h2>
-      <p className="text-sm text-slate-600 dark:text-slate-400">
-        Çerez tercihlerinizi istediğiniz zaman çerez banner'ı aracılığıyla değiştirebilirsiniz. Banner görünmüyorsa tarayıcınızın site verilerini temizleyerek yeniden gösterilmesini sağlayabilirsiniz.
+      <H2>5. Tarayıcınızda Saklanan Bilgiler</H2>
+      <p>Site, tarayıcınızın yerel depolama alanında (localStorage) yalnızca şu iki bilgiyi saklar. Bunlar cihazınızdan dışarı gönderilmez:</p>
+      <UL
+        items={[
+          <><code>theme</code>: Açık/koyu tema tercihiniz.</>,
+          <><code>cookie_consent</code>: Reklam çerezlerini kabul veya reddettiğiniz bilgisi (tercihinizi her sayfada tekrar sormamak için).</>,
+        ]}
+      />
+
+      <H2>6. Reklam Çerezleri (Yalnızca Onayınızla)</H2>
+      <p>
+        Sitenin ücretsiz kalabilmesi için Google AdSense reklamları gösterilmektedir. Reklam sistemi <strong>yalnızca çerez bildirimindeki
+        "Kabul Et" düğmesine basmanız hâlinde</strong> yüklenir. Onay vermezseniz Google'a herhangi bir istek gönderilmez, reklam çerezi
+        yerleştirilmez ve reklam gösterilmez; sitenin tüm araçları yine eksiksiz çalışır.
+      </p>
+      <p>Onay vermeniz hâlinde:</p>
+      <UL
+        items={[
+          "Google; çerez tanımlayıcıları, IP adresi, tarayıcı/cihaz bilgisi ve ziyaret edilen sayfa bilgisini reklam gösterimi, reklam ölçümü, sahtekârlığın önlenmesi ve (kişiselleştirilmiş reklam için) ilgi alanı tahmini amaçlarıyla işler.",
+          "Bu işlemenin hukuki sebebi açık rızanızdır (KVKK m. 5/1). Google'ın sunucuları yurt dışında bulunduğundan veriler açık rızanıza dayanılarak yurt dışına aktarılır (KVKK m. 9).",
+          "Google bu verileri kendi gizlilik politikası çerçevesinde, bağımsız olarak işler. Ayrıntılar: policies.google.com/technologies/partner-sites",
+          "Kişiselleştirilmiş reklamları ayrıca adssettings.google.com adresinden kapatabilirsiniz.",
+        ]}
+      />
+      <p>
+        Onayınızı istediğiniz zaman{" "}
+        <button onClick={openConsentBanner} className="text-primary-600 dark:text-primary-400 underline">
+          Çerez Tercihleri
+        </button>{" "}
+        bağlantısından (sayfanın en altında da bulunur) geri alabilirsiniz. Geri alma, geri alma anından sonrasını etkiler; daha önce Google
+        tarafından yerleştirilmiş çerezleri tarayıcınızın ayarlarından silebilirsiniz.
       </p>
 
-      <h2 className="text-lg font-bold mt-6 mb-2">İletişim</h2>
-      <p className="text-sm text-slate-600 dark:text-slate-400">info@pdfdonusturucu.net</p>
+      <H2>7. KVKK Madde 11 Kapsamındaki Haklarınız</H2>
+      <UL
+        items={[
+          "Kişisel verilerinizin işlenip işlenmediğini öğrenme ve işlenmişse bilgi talep etme,",
+          "İşlenme amacını ve amacına uygun kullanılıp kullanılmadığını öğrenme,",
+          "Yurt içinde veya yurt dışında aktarıldığı üçüncü kişileri bilme,",
+          "Eksik veya yanlış işlenmişse düzeltilmesini, KVKK m. 7 şartlarıyla silinmesini veya yok edilmesini isteme ve bu işlemlerin aktarılan üçüncü kişilere bildirilmesini isteme,",
+          "Münhasıran otomatik sistemlerle analiz edilmesi sonucu aleyhinize bir sonucun ortaya çıkmasına itiraz etme,",
+          "Kanuna aykırı işleme nedeniyle zarara uğramanız hâlinde zararın giderilmesini talep etme.",
+        ]}
+      />
+      <p>
+        Taleplerinizi <a className="text-primary-600 dark:text-primary-400 underline" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>{" "}
+        adresine iletebilirsiniz. Talepler en geç 30 gün içinde ücretsiz olarak yanıtlanır. Sitede tarafımızca tutulan bir ziyaretçi kaydı
+        bulunmadığından, Google tarafından işlenen verilere ilişkin taleplerinizi doğrudan Google'a da iletebilirsiniz.
+      </p>
 
-      <p className="text-xs text-slate-500 mt-8">Son güncelleme: Haziran 2026</p>
-    </article>
+      <H2>8. Değişiklikler</H2>
+      <p>Bu metin gerektiğinde güncellenebilir. Güncel sürüm her zaman bu sayfada yayımlanır.</p>
+    </LegalPage>
   );
 }

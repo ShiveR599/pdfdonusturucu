@@ -1,24 +1,27 @@
 # PDF Dönüştürücü
 
-> Tarayıcı tabanlı, ücretsiz ve sınırsız PDF ile görsel işleme araçları. Tüm işlemler kullanıcının cihazında gerçekleşir; dosyalar sunucuya yüklenmez.
+> Tarayıcı tabanlı, ücretsiz PDF ve görsel işleme araçları. Tüm işlemler kullanıcının cihazında gerçekleşir; dosyalar sunucuya yüklenmez ve saklanmaz.
 
 ## Araçlar
 
-- [PDF Dönüştürücü](/): PDF ↔ görsel (JPEG/PNG/WebP) dönüşümü, PDF bölme ve sayfa düzenleme.
+- [PDF'ten Görsele](/pdf-jpg): PDF sayfalarını JPEG, PNG veya WebP görsele çevirme.
+- [Görselden PDF'e](/jpg-pdf): JPEG, PNG ve WebP görselleri tek PDF yapma.
 - [PDF Birleştir](/pdf-birlestir): Birden fazla PDF'i tek belgede birleştirme.
-- [PDF Sıkıştır](/pdf-sikistir): PDF dosyalarını tarayıcıda küçültme.
-- [Resim Sıkıştır](/resim-sikistir): JPEG, PNG ve WebP görselleri sıkıştırma.
+- [PDF Böl](/pdf-bol): PDF'i sayfa aralıklarına veya tek sayfalara ayırma.
+- [PDF Sıkıştır](/pdf-sikistir): PDF'leri sayfaları görüntüye çevirerek küçültme (metin seçilemez hâle gelir).
+- [PDF Sayfa Düzenle](/pdf-sayfa-duzenle): Sayfaları sıralama, döndürme ve silme.
+- [Resim Sıkıştır](/resim-sikistir): JPEG, PNG ve WebP görselleri küçültme.
 
 ## Bilgi
 
 - [Nasıl Kullanılır](/nasil-kullanilir): Araçların adım adım kullanım rehberi.
-- [Özelliklerimiz](/ozelliklerimiz): Öne çıkan özellikler.
-- [SSS](/sss): Sıkça sorulan sorular ve yanıtları.
+- [SSS](/sss): Sıkça sorulan sorular.
 - [Blog](/blog): PDF ve görsel işleme rehberleri.
-- [Güvenlik & Gizlilik](/guvenlik): Sunucusuz altyapı ve gizlilik açıklamaları.
-- [Hakkımızda](/hakkimizda): Proje hakkında.
-- [İletişim](/iletisim): İletişim bilgileri.
+- [Güvenlik](/guvenlik): Dosyaların cihazda işlenmesi hakkında bilgi.
 
 ## Optional
 
-- [Gizlilik Politikası](/gizlilik-politikasi): KVKK uyumlu gizlilik metni.
+- [Gizlilik Politikası](/gizlilik-politikasi): KVKK aydınlatma metni ve çerez bilgileri.
+- [Kullanım Koşulları](/kullanim-kosullari): Kullanım koşulları ve sorumluluk sınırları.
+- [Hakkımızda](/hakkimizda)
+- [İletişim](/iletisim)

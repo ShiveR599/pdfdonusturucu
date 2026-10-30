@@ -1,42 +1,30 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { CloudOff, Lock, Eye, Server } from "lucide-react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { CloudOff, Lock, Cookie, Trash2 } from "lucide-react";
+import { seo, SITE_NAME } from "../lib/site";
 
 export const Route = createFileRoute("/guvenlik")({
-  head: () => ({
-    meta: [
-      { title: "Güvenlik & Gizlilik – PDF Dönüştürücü" },
-      { name: "description", content: "Tüm işlemler tarayıcınızda gerçekleşir. Dosyalarınız sunucuya yüklenmez. KVKK uyumlu gizlilik politikamızı okuyun." },
-      { property: "og:title", content: "Güvenlik & Gizlilik — PDF Dönüştürücü" },
-      { property: "og:description", content: "Tüm işlemler tarayıcınızda. Dosyalar sunucuya yüklenmez. KVKK uyumlu." },
-      { property: "og:url", content: "https://pdfdonusturucu.netlify.app/guvenlik" },
-    ],
-    links: [{ rel: "canonical", href: "https://pdfdonusturucu.netlify.app/guvenlik" }],
-  }),
+  head: () =>
+    seo({
+      title: `Güvenlik – ${SITE_NAME}`,
+      description: "Dosyalarınız sunucuya yüklenmez; tüm işlemler tarayıcınızda yapılır. Reklam çerezleri yalnızca onayınızla yüklenir.",
+      path: "/guvenlik",
+    }),
   component: Security,
 });
 
 const CARDS = [
-  { icon: CloudOff, title: "Sunucusuz İşlem", text: "Tüm işlemler %100 tarayıcınızda gerçekleşir, hiçbir dosya sunucuya gönderilmez." },
-  { icon: Lock, title: "Veri Gizliliği", text: "Dosyalarınız sunucularımıza yüklenmez, işlenmez veya saklanmaz, bilgisayarınızdan asla çıkmaz." },
-  { icon: Eye, title: "Görünürlük Yok", text: "Üçüncü tarafların dosyalarınıza erişimi yoktur, işlemler tamamen cihazınızda gerçekleşir." },
-  { icon: Server, title: "Arka Plan Yok", text: "Arka planda çalışan hiçbir veri toplama veya işleme süreci yoktur." },
-];
-
-const PRIVACY = [
-  { title: "Veri Sorumlusu", text: "PDF Dönüştürücü — pdfdonusturucu.netlify.app" },
-  { title: "İşlenen Veriler", text: "Yüklediğiniz dosyalar yalnızca tarayıcınızda işlenir. Sunucularımıza iletilmez, kaydedilmez veya saklanmaz." },
-  { title: "Çerezler ve Analitik", text: "Google Analytics kullanılmaktadır. Yalnızca kullanıcı onayı sonrasında aktif olur. IP adresleri anonimleştirilir." },
-  { title: "Reklam Çerezleri", text: "Google AdSense kullanılmaktadır. Kullanıcı onayı sonrasında kişiselleştirilmiş reklam gösterilebilir." },
-  { title: "Kullanıcı Hakları (KVKK Madde 11)", text: "Bilgi edinme, düzeltme, silme ve itiraz haklarınız için iletişim adresimize yazabilirsiniz." },
-  { title: "Çerez Tercihleri", text: "Tercihlerinizi sayfanın alt kısmındaki banner üzerinden istediğiniz zaman değiştirebilirsiniz." },
-  { title: "İletişim", text: "info@pdfdonusturucu.net" },
+  { icon: CloudOff, title: "Sunucuya Yükleme Yok", text: "Dosyalarınız hiçbir sunucuya gönderilmez. İşlemi yapan kod sayfayla birlikte tarayıcınıza iner ve dosyanız yalnızca cihazınızda işlenir." },
+  { icon: Lock, title: "Saklama Yok", text: "Dosyalarınız kaydedilmez ve saklanmaz. Sayfayı kapattığınızda veya yenilediğinizde tarayıcı belleğinden silinir." },
+  { icon: Cookie, title: "Onaysız Reklam Çerezi Yok", text: "Google reklam sistemi yalnızca çerez bildiriminde 'Kabul Et' derseniz yüklenir. Reddederseniz Google'a hiçbir istek gitmez." },
+  { icon: Trash2, title: "Üyelik ve Takip Yok", text: "Üyelik, form veya ziyaretçi analiz aracı yoktur. Sizinle ilgili bir veritabanı tutulmaz." },
 ];
 
 function Security() {
   return (
-    <div className="space-y-10">
+    <div className="space-y-8">
       <header className="text-center">
-        <h1 className="text-2xl sm:text-3xl font-bold">Güvenlik & Gizlilik</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold">Güvenlik</h1>
+        <p className="text-slate-600 dark:text-slate-400 mt-2">Dosyalarınız cihazınızdan çıkmaz.</p>
       </header>
       <div className="grid sm:grid-cols-2 gap-4">
         {CARDS.map((c) => (
@@ -44,23 +32,30 @@ function Security() {
             <div className="w-12 h-12 rounded-xl bg-accent-100 dark:bg-accent-900/30 text-accent-700 dark:text-accent-400 flex items-center justify-center mb-4">
               <c.icon className="w-6 h-6" />
             </div>
-            <h3 className="font-bold text-lg">{c.title}</h3>
+            <h2 className="font-bold text-lg">{c.title}</h2>
             <p className="text-sm text-slate-600 dark:text-slate-400 mt-2">{c.text}</p>
           </div>
         ))}
       </div>
-
-      <section id="gizlilik-politikasi" className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
-        <h2 className="text-xl font-bold mb-5">Gizlilik Politikası</h2>
-        <dl className="space-y-4">
-          {PRIVACY.map((p) => (
-            <div key={p.title}>
-              <dt className="font-semibold text-slate-800 dark:text-slate-200">{p.title}</dt>
-              <dd className="text-sm text-slate-600 dark:text-slate-400 mt-1">{p.text}</dd>
-            </div>
-          ))}
-        </dl>
-        <p className="mt-6 text-xs text-slate-500 dark:text-slate-400">Son güncelleme: Haziran 2026</p>
+      <section className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 text-sm text-slate-600 dark:text-slate-400 space-y-3">
+        <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">Kendiniz Doğrulayın</h2>
+        <p>
+          Bilgisayar tarayıcısında geliştirici araçlarını (F12) açıp "Ağ" (Network) sekmesini izlerken bir dosya işleyin. Dosyanızın hiçbir
+          adrese gönderilmediğini görürsünüz.
+        </p>
+        <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 pt-2">Öneriler</h2>
+        <ul className="list-disc pl-5 space-y-1">
+          <li>Hassas belgeleri ortak veya başkasına ait cihazlarda işlemeyin.</li>
+          <li>İndirdiğiniz dosyaları işiniz bitince "İndirilenler" klasöründen silin.</li>
+          <li>Önemli belgelerin orijinallerini her zaman saklayın.</li>
+        </ul>
+        <p className="pt-2">
+          Hangi verilerin nasıl işlendiğinin ayrıntıları için{" "}
+          <Link to="/gizlilik-politikasi" className="text-primary-600 dark:text-primary-400 underline">
+            Gizlilik Politikası
+          </Link>
+          'nı okuyabilirsiniz.
+        </p>
       </section>
     </div>
   );

@@ -1,37 +1,19 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PdfCompress } from "../components/PdfCompress";
-import { ToolDescription } from "../components/ToolDescription";
+import { ToolPage } from "../components/ToolPage";
+import { TEXT_PDF_COMPRESS } from "../lib/toolTexts";
+import { seo } from "../lib/site";
 
 export const Route = createFileRoute("/pdf-sikistir")({
-  head: () => ({
-    meta: [
-      { title: "PDF Sıkıştır – Ücretsiz Online Araç" },
-      { name: "description", content: "PDF dosyalarınızı tarayıcınızda sıkıştırın. 3 kalite seviyesi, önce/sonra boyut karşılaştırması, toplu ZIP indirme. Ücretsiz, sınırsız, sunucusuz." },
-      { property: "og:title", content: "PDF Sıkıştır" },
-      { property: "og:description", content: "PDF dosyalarınızı tarayıcınızda küçültün." },
-      { property: "og:url", content: "https://pdfdonusturucu.netlify.app/pdf-sikistir" },
-    ],
-    links: [{ rel: "canonical", href: "https://pdfdonusturucu.netlify.app/pdf-sikistir" }],
-  }),
+  head: () =>
+    seo({
+      title: "PDF Sıkıştır – Ücretsiz PDF Küçültme",
+      description: "Taranmış ve görsel ağırlıklı PDF'lerin boyutunu tarayıcınızda küçültün. 3 sıkıştırma seviyesi, önce/sonra boyut karşılaştırması. Ücretsiz.",
+      path: "/pdf-sikistir",
+    }),
   component: () => (
-    <div>
-      <div className="text-center mb-6">
-        <h1 className="text-2xl sm:text-3xl font-bold">PDF Sıkıştır</h1>
-        <p className="text-slate-500 dark:text-slate-400 mt-1 text-sm">Dosyalarınızı tarayıcınızda sıkıştırın — sunucusuz, sınırsız.</p>
-      </div>
+    <ToolPage title="PDF Sıkıştır" intro="PDF dosyalarınızı e-posta ve yükleme için küçültün — tarayıcınızda, sunucusuz." text={TEXT_PDF_COMPRESS} current="/pdf-sikistir">
       <PdfCompress />
-      <ToolDescription
-        title="PDF Sıkıştırma Nasıl Çalışır?"
-        items={[
-          "PDF Sıkıştır aracı, yüklediğiniz PDF dosyasının her sayfasını seçilen kalite seviyesinde işleyerek dosya boyutunu küçültür.",
-          "Tüm işlem tarayıcınızda gerçekleşir; dosyalarınız sunucuya gönderilmez.",
-          "Üç farklı sıkıştırma seviyesi mevcuttur: Yüksek sıkıştırma maksimum boyut azaltması sağlar ve e-posta veya mesajlaşma için idealdir.",
-          "Orta sıkıştırma kalite ile boyut arasında denge kurar ve çoğu kullanım için önerilir.",
-          "Düşük sıkıştırma ise görsel kaliteyi koruyarak minimal boyut azaltması yapar; baskı veya arşiv için uygundur.",
-          "Sıkıştırma tamamlandığında orijinal boyut, yeni boyut ve tasarruf yüzdesi ekranda gösterilir.",
-          "Birden fazla PDF yükleyip tümünü ZIP olarak indirebilirsiniz.",
-        ]}
-      />
-    </div>
+    </ToolPage>
   ),
 });

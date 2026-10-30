@@ -1,90 +1,95 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { seo, SITE_NAME } from "../lib/site";
+import type { ToolPath } from "../lib/tools";
 import { MousePointerClick, Upload, Settings, Download } from "lucide-react";
 
 export const Route = createFileRoute("/nasil-kullanilir")({
-  head: () => ({
-    meta: [
-      { title: "Nasıl Kullanılır – PDF Dönüştürücü" },
-      { name: "description", content: "PDF dönüştür, birleştir, böl, sıkıştır, sayfa düzenle ve görsel sıkıştır. Tüm araçların adım adım kullanım kılavuzu." },
-      { property: "og:title", content: "Nasıl Kullanılır — PDF Dönüştürücü" },
-      { property: "og:description", content: "PDF Dönüştürücü araçlarını adım adım nasıl kullanacağınız." },
-      { property: "og:url", content: "https://pdfdonusturucu.netlify.app/nasil-kullanilir" },
-    ],
-    links: [{ rel: "canonical", href: "https://pdfdonusturucu.netlify.app/nasil-kullanilir" }],
-  }),
+  head: () =>
+    seo({
+      title: `Nasıl Kullanılır – ${SITE_NAME}`,
+      description: "PDF'i görsele çevirme, görselden PDF, birleştirme, bölme, sıkıştırma, sayfa düzenleme ve resim sıkıştırma araçlarının adım adım kullanımı.",
+      path: "/nasil-kullanilir",
+    }),
   component: HowToUse,
 });
 
 const STEPS = [
-  { icon: MousePointerClick, title: "Aracını Seç", text: "Üst menüden ihtiyacına uygun aracı seç." },
-  { icon: Upload, title: "Dosyanı Yükle", text: "Sürükle-bırak veya tıklayarak yükle, dosya sayısı sınırı yok." },
+  { icon: MousePointerClick, title: "Aracını Seç", text: "Menüdeki 'Araçlar' bölümünden veya ana sayfadan ihtiyacına uygun aracı seç." },
+  { icon: Upload, title: "Dosyanı Yükle", text: "Dosyanı sürükleyip bırak veya dokunarak seç. Dosyan sunucuya gönderilmez." },
   { icon: Settings, title: "Ayarlarını Belirle", text: "Format, kalite, sıkıştırma seviyesi veya sayfa aralığını seç." },
-  { icon: Download, title: "İndir", text: "İşlem tarayıcında anında tamamlanır, dosyayı hemen indir." },
+  { icon: Download, title: "İndir", text: "İşlem tarayıcında tamamlanır; sonucu kontrol edip indir." },
 ];
 
-const DETAILS = [
+const DETAILS: { title: string; to: ToolPath; items: string[] }[] = [
   {
     title: "PDF → Görsel",
+    to: "/pdf-jpg",
     items: [
-      "Birden fazla PDF aynı anda yüklenebilir, sınır yoktur",
+      "Birden fazla PDF aynı anda yüklenebilir",
       "Tek PDF'te sayfa aralığı belirlenebilir (örn: 1-5, 8, 11-13)",
       "Çoklu PDF'te tüm sayfalar listelenir, sayfa seçimi bireysel yapılır",
       "Çıktı formatı: JPEG, PNG veya WebP",
       "4 kalite seviyesi: Standart (108 DPI), İyi (144 DPI), Yüksek (180 DPI), HD (216 DPI)",
       "Seçilen sayfalar ZIP olarak indirilebilir; her sayfa ayrı ayrı da indirilebilir",
-      "Sayfaya tıklayınca büyütme (lightbox) görünümü açılır",
+      "Sayfaya dokununca büyütülmüş görünüm açılır",
     ],
   },
   {
     title: "Görsel → PDF",
+    to: "/jpg-pdf",
     items: [
       "JPEG, PNG ve WebP dosyaları kabul edilir",
-      "Görseller sürükleyerek yeniden sıralanabilir",
+      "Görseller sürükleyerek veya ok düğmeleriyle sıralanabilir",
       "Her görsel 90° döndürülebilir",
-      "Tüm görseller tek PDF'te A4 sayfalarına birleştirilir",
+      "Tüm görseller tek PDF'te A4 sayfalarına yerleştirilir (yatay görseller yatay sayfaya)",
     ],
   },
   {
     title: "PDF Sıkıştır",
+    to: "/pdf-sikistir",
     items: [
-      "Birden fazla PDF yüklenebilir, sınır yoktur",
+      "Sayfalar görüntüye çevrilerek küçültülür; sıkıştırılmış PDF'te yazılar seçilemez",
       "3 sıkıştırma seviyesi: Yüksek, Orta, Düşük (Yüksek Kalite)",
       "İşlem öncesi ve sonrası dosya boyutu ve tasarruf yüzdesi gösterilir",
-      "Tümü ZIP olarak indirilebilir",
+      "Sonuç orijinalden büyükse orijinal korunur; birden fazla dosya ZIP olarak iner",
     ],
   },
   {
     title: "Resim Sıkıştır",
+    to: "/resim-sikistir",
     items: [
       "JPEG, PNG ve WebP dosyaları kabul edilir",
       "Sıkıştırma sonrası boyut ve tasarruf yüzdesi görüntülenir",
-      "PNG dosyaları için yalnızca boyut küçültme uygulanır (kayıpsız)",
+      "PNG dosyalarında yalnızca çözünürlük küçültülür (kayıpsız)",
       "Tüm sıkıştırılmış görseller tek ZIP olarak indirilebilir",
     ],
   },
   {
     title: "PDF Birleştir",
+    to: "/pdf-birlestir",
     items: [
       "Birden fazla PDF'i tek belgede toplamak için PDF Birleştir aracını kullanın",
-      "PDF'leri yükleyin, sürükleyerek sıralamayı düzenleyin ve 'Birleştir' butonuna tıklayın",
-      "Dosya sayısı sınırı yoktur",
+      "En az iki PDF yükleyin, sürükleyerek veya oklarla sıralayın ve 'Birleştir' düğmesine basın",
+      "Şifreli PDF'ler birleştirilemez",
       "Tüm işlem tarayıcınızda gerçekleşir",
     ],
   },
   {
     title: "PDF Böl",
+    to: "/pdf-bol",
     items: [
       "Bir PDF'i belirli sayfa aralıklarına bölmek için PDF Böl aracını kullanın",
       "'1-3, 5, 8-10' formatında sayfa aralıkları girin; her aralık ayrı bir PDF olarak indirilir",
-      "Alternatif olarak her sayfayı ayrı PDF yapabilirsiniz",
+      "Alternatif olarak seçtiğiniz her sayfayı ayrı PDF yapabilirsiniz",
       "Birden fazla aralık tek ZIP olarak indirilir",
     ],
   },
   {
     title: "PDF Sayfa Düzenle",
+    to: "/pdf-sayfa-duzenle",
     items: [
       "PDF sayfalarını yeniden sıralamak, döndürmek veya silmek için Sayfa Düzenle aracını kullanın",
-      "Sayfaları sürükleyerek yeniden sıralayın",
+      "Sayfaları sürükleyerek veya ok düğmeleriyle yeniden sıralayın",
       "Döndürme butonlarıyla her sayfanın yönünü ayarlayın",
       "İstemediğiniz sayfaları kaldırın ve değişiklikleri tek tıkla uygulayın",
     ],
@@ -112,7 +117,11 @@ function HowToUse() {
       <div className="grid md:grid-cols-2 gap-4">
         {DETAILS.map((d) => (
           <div key={d.title} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5">
-            <h2 className="font-bold text-lg mb-3 text-primary-700 dark:text-primary-300">{d.title}</h2>
+            <h2 className="font-bold text-lg mb-3 text-primary-700 dark:text-primary-300">
+              <Link to={d.to} className="hover:underline">
+                {d.title}
+              </Link>
+            </h2>
             <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-400">
               {d.items.map((it, i) => (
                 <li key={i} className="flex gap-2">

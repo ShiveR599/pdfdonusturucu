@@ -1,27 +1,27 @@
-import { useRef, useState } from "react";
-import { Upload, Loader2, Download, Trash2, AlertCircle } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Loader2, Download, Trash2 } from "lucide-react";
 import JSZip from "jszip";
 import { PDFDocument } from "pdf-lib";
-import { pdfjsLib, withTimeout, pdfErrorMessage } from "../lib/pdfjs";
-import { downloadBlob } from "../lib/format";
+import { pdfjsLib, withTimeout, pdfErrorMessage, loadPdfLib } from "../lib/pdfjs";
+import { downloadBlob, isPdf } from "../lib/format";
+import { DropZone, ErrorBox, Progress } from "./ToolUi";
 
 type Thumb = { num: number; preview: string; selected: boolean };
 
+/** "1-3, 5, 8-10" → [[0,1,2],[4],[7,8,9]] (0 tabanlı). Geçersizse hata fırlatır. */
 function parseRanges(input: string, total: number): number[][] {
   const groups: number[][] = [];
   const parts = input.split(",").map((s) => s.trim()).filter(Boolean);
+  if (!parts.length) throw new Error("invalid");
   for (const part of parts) {
-    if (part.includes("-")) {
-      const [a, b] = part.split("-").map((n) => parseInt(n, 10));
-      if (!Number.isInteger(a) || !Number.isInteger(b) || a < 1 || b < a || b > total) throw new Error("invalid");
-      const arr: number[] = [];
-      for (let i = a; i <= b; i++) arr.push(i - 1);
-      groups.push(arr);
-    } else {
-      const n = parseInt(part, 10);
-      if (!Number.isInteger(n) || n < 1 || n > total) throw new Error("invalid");
-      groups.push([n - 1]);
-    }
+    const m = part.match(/^(\d+)\s*(?:-\s*(\d+))?$/);
+    if (!m) throw new Error("invalid");
+    const a = parseInt(m[1], 10);
+    const b = m[2] ? parseInt(m[2], 10) : a;
+    if (a < 1 || b < a || b > total) throw new Error("invalid");
+    const arr: number[] = [];
+    for (let i = a; i <= b; i++) arr.push(i - 1);
+    groups.push(arr);
   }
   return groups;
 }
@@ -33,28 +33,38 @@ export function PdfSplit() {
   const [rangeInput, setRangeInput] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
-  const [dragOver, setDragOver] = useState(false);
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState<{ done: number; total: number } | null>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const generation = useRef(0);
 
-  async function loadFile(f: File) {
-    if (!f.name.toLowerCase().endsWith(".pdf")) return;
+  useEffect(() => () => void generation.current++, []);
+
+  async function loadFile(files: File[]) {
+    const f = files[0];
+    if (!f) return;
+    if (!isPdf(f)) {
+      setError("Lütfen bir PDF dosyası seçin.");
+      return;
+    }
+    const gen = ++generation.current;
     setFile(f);
     setError("");
     setThumbs([]);
+    setRangeInput("");
     setLoading(true);
+    let doc: any;
     try {
-      const buf = await f.arrayBuffer();
-      const doc = await withTimeout(pdfjsLib.getDocument({ data: buf.slice(0) }).promise);
+      doc = await withTimeout(pdfjsLib.getDocument({ data: await f.arrayBuffer() }).promise);
       setProgress({ done: 0, total: doc.numPages });
       for (let i = 1; i <= doc.numPages; i++) {
+        if (gen !== generation.current) return;
         const p = await doc.getPage(i);
         const vp = p.getViewport({ scale: 0.4 });
         const canvas = document.createElement("canvas");
-        canvas.width = vp.width;
-        canvas.height = vp.height;
-        const ctx = canvas.getContext("2d")!;
+        canvas.width = Math.floor(vp.width);
+        canvas.height = Math.floor(vp.height);
+        const ctx = canvas.getContext("2d");
+        if (!ctx) throw new Error("CANVAS");
         await withTimeout(p.render({ canvasContext: ctx, viewport: vp, canvas } as any).promise);
         const preview = canvas.toDataURL("image/jpeg", 0.7);
         canvas.width = 0;
@@ -64,28 +74,32 @@ export function PdfSplit() {
         await new Promise((r) => requestAnimationFrame(() => r(null)));
       }
     } catch (e) {
-      setError(pdfErrorMessage(e));
+      if (gen === generation.current) {
+        setError(pdfErrorMessage(e));
+        setFile(null);
+        setThumbs([]);
+      }
     } finally {
-      setLoading(false);
-      setProgress(null);
+      doc?.destroy();
+      if (gen === generation.current) {
+        setLoading(false);
+        setProgress(null);
+      }
     }
   }
 
   function reset() {
+    generation.current++;
     setFile(null);
     setThumbs([]);
     setRangeInput("");
     setError("");
+    setLoading(false);
+    setProgress(null);
   }
-  function selectAll() {
-    setThumbs((p) => p.map((x) => ({ ...x, selected: true })));
-  }
-  function clearSel() {
-    setThumbs((p) => p.map((x) => ({ ...x, selected: false })));
-  }
-  function toggle(num: number) {
-    setThumbs((p) => p.map((x) => (x.num === num ? { ...x, selected: !x.selected } : x)));
-  }
+  const selectAll = () => setThumbs((p) => p.map((x) => ({ ...x, selected: true })));
+  const clearSel = () => setThumbs((p) => p.map((x) => ({ ...x, selected: false })));
+  const toggle = (num: number) => setThumbs((p) => p.map((x) => (x.num === num ? { ...x, selected: !x.selected } : x)));
 
   async function buildPdf(src: PDFDocument, indices: number[]): Promise<Blob> {
     const out = await PDFDocument.create();
@@ -96,50 +110,42 @@ export function PdfSplit() {
   }
 
   async function run() {
-    if (!file) return;
+    if (!file || busy) return;
     setError("");
+    const total = thumbs.length;
+    let groups: number[][] = [];
+    let labels: string[] = [];
+
+    if (mode === "range") {
+      try {
+        groups = parseRanges(rangeInput, total);
+      } catch {
+        setError(`Geçersiz aralık. Sayfalar 1 ile ${total} arasında olmalı (örn: 1-3, 5, 8-10).`);
+        return;
+      }
+      labels = groups.map((g) => (g.length === 1 ? `sayfa_${g[0] + 1}` : `sayfa_${g[0] + 1}-${g[g.length - 1] + 1}`));
+    } else {
+      const sel = thumbs.filter((t) => t.selected).map((t) => t.num - 1);
+      if (!sel.length) {
+        setError("Lütfen en az bir sayfa seçin.");
+        return;
+      }
+      groups = sel.map((i) => [i]);
+      labels = sel.map((i) => `sayfa_${i + 1}`);
+    }
+
     setBusy(true);
     try {
-      const buf = await file.arrayBuffer();
-      const src = await PDFDocument.load(buf, { ignoreEncryption: true });
+      const src = await loadPdfLib(await file.arrayBuffer());
       const base = file.name.replace(/\.pdf$/i, "");
-      const total = src.getPageCount();
-
-      let groups: number[][] = [];
-      let labels: string[] = [];
-
-      if (mode === "range") {
-        if (!rangeInput.trim()) {
-          setError("Lütfen bir sayfa aralığı girin (örn: 1-3, 5, 8-10).");
-          setBusy(false);
-          return;
-        }
-        try {
-          groups = parseRanges(rangeInput, total);
-        } catch {
-          setError(`Geçersiz aralık. 1-${total} arasında olmalı.`);
-          setBusy(false);
-          return;
-        }
-        labels = groups.map((g) => (g.length === 1 ? `sayfa_${g[0] + 1}` : `sayfa_${g[0] + 1}-${g[g.length - 1] + 1}`));
-      } else {
-        const sel = thumbs.filter((t) => t.selected).map((t) => t.num - 1);
-        const pages = sel.length ? sel : Array.from({ length: total }, (_, i) => i);
-        groups = pages.map((i) => [i]);
-        labels = pages.map((i) => `sayfa_${i + 1}`);
-      }
-
       if (groups.length === 1) {
-        const blob = await buildPdf(src, groups[0]);
-        downloadBlob(blob, `${base}_${labels[0]}.pdf`);
+        downloadBlob(await buildPdf(src, groups[0]), `${base}_${labels[0]}.pdf`);
       } else {
         const zip = new JSZip();
         for (let i = 0; i < groups.length; i++) {
-          const blob = await buildPdf(src, groups[i]);
-          zip.file(`${base}_${labels[i]}.pdf`, blob);
+          zip.file(`${base}_${labels[i]}.pdf`, await buildPdf(src, groups[i]));
         }
-        const out = await zip.generateAsync({ type: "blob" });
-        downloadBlob(out, `${base}_bolunmus.zip`);
+        downloadBlob(await zip.generateAsync({ type: "blob" }), `${base}_bolunmus.zip`);
       }
     } catch (e) {
       setError(pdfErrorMessage(e));
@@ -148,43 +154,20 @@ export function PdfSplit() {
     }
   }
 
+  const ready = file && !loading && thumbs.length > 0;
+
   return (
     <div>
-      <div
-        onDragOver={(e) => {
-          e.preventDefault();
-          setDragOver(true);
-        }}
-        onDragLeave={() => setDragOver(false)}
-        onDrop={(e) => {
-          e.preventDefault();
-          setDragOver(false);
-          if (e.dataTransfer.files[0]) loadFile(e.dataTransfer.files[0]);
-        }}
-        onClick={() => inputRef.current?.click()}
-        className={`cursor-pointer border-2 border-dashed rounded-2xl p-10 text-center transition ${
-          dragOver ? "border-primary-500 bg-primary-50 dark:bg-primary-900/20" : "border-slate-300 dark:border-slate-700 hover:border-primary-400"
-        }`}
-      >
-        <Upload className="w-10 h-10 mx-auto text-primary-500 mb-3" />
-        <p className="font-semibold">Bölmek için bir PDF seçin</p>
-        <p className="text-sm text-slate-500 mt-1">Tek dosya · Tarayıcınızda işlenir · Sunucuya gönderilmez</p>
-        <input ref={inputRef} type="file" accept=".pdf,application/pdf" hidden onChange={(e) => e.target.files?.[0] && loadFile(e.target.files[0])} />
-      </div>
+      <DropZone
+        accept=".pdf,application/pdf"
+        onFiles={loadFile}
+        title="Bölmek için bir PDF seçin"
+        subtitle="Tek dosya · Tarayıcınızda işlenir · Sunucuya gönderilmez"
+      />
 
-      {error && (
-        <div className="mt-4 flex items-start gap-2 text-sm bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800/50 rounded-xl p-3">
-          <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
-          <span>{error}</span>
-        </div>
-      )}
+      <ErrorBox>{error}</ErrorBox>
 
-      {loading && (
-        <div className="mt-4 flex items-center justify-center gap-2 text-slate-600 dark:text-slate-400 text-sm">
-          <Loader2 className="w-4 h-4 animate-spin" />
-          {progress ? `İşleniyor... ${progress.done}/${progress.total} sayfa` : "İşleniyor..."}
-        </div>
-      )}
+      {loading && progress && <Progress done={progress.done} total={progress.total} />}
 
       {file && thumbs.length > 0 && (
         <>
@@ -199,23 +182,27 @@ export function PdfSplit() {
 
             <div className="flex flex-wrap gap-3">
               <label className="inline-flex items-center gap-2 cursor-pointer">
-                <input type="radio" checked={mode === "range"} onChange={() => setMode("range")} className="accent-primary-600" />
+                <input type="radio" name="split-mode" checked={mode === "range"} onChange={() => setMode("range")} className="accent-primary-600" />
                 <span className="text-sm font-medium">Sayfa aralığı ile böl</span>
               </label>
               <label className="inline-flex items-center gap-2 cursor-pointer">
-                <input type="radio" checked={mode === "each"} onChange={() => setMode("each")} className="accent-primary-600" />
-                <span className="text-sm font-medium">Her sayfayı ayrı PDF yap</span>
+                <input type="radio" name="split-mode" checked={mode === "each"} onChange={() => setMode("each")} className="accent-primary-600" />
+                <span className="text-sm font-medium">Seçili her sayfayı ayrı PDF yap</span>
               </label>
             </div>
 
             {mode === "range" && (
-              <div className="flex flex-wrap gap-2 items-center">
+              <div className="space-y-1">
                 <input
                   value={rangeInput}
                   onChange={(e) => setRangeInput(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && run()}
                   placeholder="örn: 1-3, 5, 8-10"
-                  className="flex-1 min-w-[200px] px-3 py-2 text-sm rounded-lg bg-slate-100 dark:bg-slate-800 border-0"
+                  inputMode="numeric"
+                  aria-label="Sayfa aralığı"
+                  className="w-full px-3 py-2 text-sm rounded-lg bg-slate-100 dark:bg-slate-800 border-0"
                 />
+                <p className="text-xs text-slate-500">Virgülle ayrılan her aralık ayrı bir PDF olur.</p>
               </div>
             )}
 
@@ -230,11 +217,9 @@ export function PdfSplit() {
               </div>
             )}
 
-            {error && <p className="text-sm text-red-600">{error}</p>}
-
             <button
               onClick={run}
-              disabled={busy}
+              disabled={busy || !ready}
               className="px-4 py-2 rounded-lg bg-primary-600 hover:bg-primary-700 text-white font-semibold inline-flex items-center gap-2 disabled:opacity-40"
             >
               {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
@@ -244,11 +229,11 @@ export function PdfSplit() {
 
           <div className="mt-4 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3">
             {thumbs.map((t) => (
-              <div
+              <label
                 key={t.num}
-                className={`relative bg-white dark:bg-slate-900 border-2 rounded-xl overflow-hidden ${
-                  mode === "each" && t.selected ? "border-primary-500" : "border-slate-200 dark:border-slate-800"
-                }`}
+                className={`relative block bg-white dark:bg-slate-900 border-2 rounded-xl overflow-hidden ${
+                  mode === "each" ? "cursor-pointer" : ""
+                } ${mode === "each" && t.selected ? "border-primary-500" : "border-slate-200 dark:border-slate-800"}`}
               >
                 <div className="aspect-[3/4] bg-slate-100 dark:bg-slate-800">
                   <img src={t.preview} alt={`Sayfa ${t.num}`} className="w-full h-full object-contain" />
@@ -262,7 +247,7 @@ export function PdfSplit() {
                     className="absolute top-1.5 right-1.5 w-4 h-4 accent-primary-600 cursor-pointer"
                   />
                 )}
-              </div>
+              </label>
             ))}
           </div>
         </>

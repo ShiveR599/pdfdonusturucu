@@ -12,6 +12,8 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Layout } from "../components/Layout";
+import { SITE_NAME, SITE_URL, ADSENSE_CLIENT } from "../lib/site";
+import { TOOLS } from "../lib/tools";
 
 function NotFoundComponent() {
   return (
@@ -78,59 +80,36 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "PDF Dönüştürücü – Ücretsiz & Güvenli" },
+      { title: `${SITE_NAME} – Ücretsiz PDF ve Görsel Araçları` },
       { name: "google-site-verification", content: "lNvdKACSDfKuIJF8QPzUubeb3mXGmtoCZ3pFF8ZLJow" },
-      { name: "description", content: "PDF dönüştür, birleştir, böl, sıkıştır ve sayfa düzenle. Görselleri PDF'e ekle. Ücretsiz, sınırsız ve tarayıcıda güvenli." },
-      { name: "keywords", content: "pdf dönüştürücü, pdf birleştir, pdf böl, pdf sıkıştır, pdf sayfa düzenle, pdf sayfaları yeniden sırala, pdf sayfa döndür, pdf birleştirme, pdf bölme, pdf jpeg çevirme, pdf png çevirme, pdf webp dönüştürme, jpg pdf yapma, png pdf yapma, webp pdf yapma, pdf küçültme, resim sıkıştırma, görsel küçültme, fotoğraf sıkıştırma, ücretsiz pdf dönüştür, online pdf dönüştürücü, pdf görsel çevirici, pdf araçları, dosya sıkıştırma online, tarayıcıda pdf işleme, güvenli pdf dönüştürücü, sınırsız pdf dönüştürücü, pdf to image, image to pdf, compress pdf online, merge pdf online, split pdf online, pdf küçük yapma, resim boyutu küçültme, toplu pdf dönüştürme, pdf sayfaları birleştir, pdf parçala, pdf ayır, pdf düzenle" },
-      { property: "og:title", content: "PDF Dönüştürücü – Ücretsiz & Güvenli" },
-      { property: "og:description", content: "PDF dönüştür, birleştir, böl, sıkıştır ve sayfa düzenle. Ücretsiz, sınırsız ve tarayıcıda güvenli." },
-      { property: "og:type", content: "website" },
-      { property: "og:site_name", content: "PDF Dönüştürücü" },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "PDF Dönüştürücü – Ücretsiz & Güvenli" },
-      { name: "twitter:description", content: "PDF dönüştür, birleştir, böl, sıkıştır ve sayfa düzenle. Ücretsiz, sınırsız ve tarayıcıda güvenli." },
-      { property: "og:image", content: "https://pdfdonusturucu.netlify.app/og-image.svg" },
-      { name: "twitter:image", content: "https://pdfdonusturucu.netlify.app/og-image.svg" },
+      // AdSense site doğrulaması: reklam betiği onaydan önce yüklenmediği için bu etiket gerekir.
+      { name: "google-adsense-account", content: ADSENSE_CLIENT },
+      { name: "theme-color", content: "#2563eb" },
+      { property: "og:site_name", content: SITE_NAME },
+      { property: "og:locale", content: "tr_TR" },
     ],
     links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "dns-prefetch", href: "https://www.googletagmanager.com" },
-      { rel: "dns-prefetch", href: "https://pagead2.googlesyndication.com" },
+      { rel: "stylesheet", href: appCss },
       { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" },
     ],
     scripts: [
+      // Tema, sayfa çizilmeden önce uygulanır (açılışta beyaz/siyah yanıp sönmeyi önler).
       {
-        children: `window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;gtag('consent','default',{'analytics_storage':'denied','ad_storage':'denied','ad_personalization':'denied','ad_user_data':'denied','wait_for_update':500});gtag('js', new Date());gtag('config','G-W252V0SC0E');`,
+        children: `try{var t=localStorage.getItem("theme");if(t==="dark"||(!t&&matchMedia("(prefers-color-scheme: dark)").matches))document.documentElement.classList.add("dark")}catch(e){}`,
       },
-      { src: "https://www.googletagmanager.com/gtag/js?id=G-W252V0SC0E", async: true },
-      { src: "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8147032819898233", async: true, crossOrigin: "anonymous" },
       {
         type: "application/ld+json",
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "WebApplication",
-          name: "PDF Dönüştürücü",
-          url: "https://pdfdonusturucu.netlify.app/",
-          description: "PDF dönüştür, birleştir, böl ve sıkıştır. Görsel işleme araçları. %100 ücretsiz, sunucusuz, güvenli.",
+          name: SITE_NAME,
+          url: `${SITE_URL}/`,
+          description: "PDF'i görsele çevirme, görselden PDF oluşturma, PDF birleştirme, bölme, sıkıştırma ve sayfa düzenleme. Ücretsiz; dosyalar tarayıcıda işlenir.",
           applicationCategory: "UtilitiesApplication",
           operatingSystem: "Web Browser",
           offers: { "@type": "Offer", price: "0", priceCurrency: "TRY" },
           inLanguage: "tr",
-          featureList: [
-            "PDF'ten Görsele Dönüştürme",
-            "Görsellerden PDF Oluşturma",
-            "PDF Sıkıştırma",
-            "Resim Sıkıştırma",
-            "PDF Birleştirme",
-            "PDF Bölme",
-            "PDF Sayfa Düzenleme",
-          ],
+          featureList: TOOLS.map((t) => t.label),
         }),
       },
     ],
@@ -143,7 +122,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="tr">
+    <html lang="tr" suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>

@@ -9,74 +9,40 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as SssRouteImport } from './routes/sss'
-import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
-import { Route as ResimSikistirRouteImport } from './routes/resim-sikistir'
-import { Route as PdfSikistirRouteImport } from './routes/pdf-sikistir'
-import { Route as PdfBirlestirRouteImport } from './routes/pdf-birlestir'
-import { Route as OzelliklerimizRouteImport } from './routes/ozelliklerimiz'
-import { Route as NasilKullanilirRouteImport } from './routes/nasil-kullanilir'
-import { Route as IletisimRouteImport } from './routes/iletisim'
-import { Route as HakkimizdaRouteImport } from './routes/hakkimizda'
-import { Route as GuvenlikRouteImport } from './routes/guvenlik'
-import { Route as GizlilikPolitikasiRouteImport } from './routes/gizlilik-politikasi'
-import { Route as BlogRouteImport } from './routes/blog'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BlogIndexRouteImport } from './routes/blog.index'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as GizlilikPolitikasiRouteImport } from './routes/gizlilik-politikasi'
+import { Route as GuvenlikRouteImport } from './routes/guvenlik'
+import { Route as HakkimizdaRouteImport } from './routes/hakkimizda'
+import { Route as IletisimRouteImport } from './routes/iletisim'
+import { Route as JpgPdfRouteImport } from './routes/jpg-pdf'
+import { Route as KullanimKosullariRouteImport } from './routes/kullanim-kosullari'
+import { Route as NasilKullanilirRouteImport } from './routes/nasil-kullanilir'
+import { Route as OzelliklerimizRouteImport } from './routes/ozelliklerimiz'
+import { Route as PdfBirlestirRouteImport } from './routes/pdf-birlestir'
+import { Route as PdfBolRouteImport } from './routes/pdf-bol'
+import { Route as PdfJpgRouteImport } from './routes/pdf-jpg'
+import { Route as PdfSayfaDuzenleRouteImport } from './routes/pdf-sayfa-duzenle'
+import { Route as PdfSikistirRouteImport } from './routes/pdf-sikistir'
+import { Route as ResimSikistirRouteImport } from './routes/resim-sikistir'
+import { Route as SssRouteImport } from './routes/sss'
+import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 
-const SssRoute = SssRouteImport.update({
-  id: '/sss',
-  path: '/sss',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
-  id: '/sitemap.xml',
-  path: '/sitemap.xml',
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
-  id: '/robots.txt',
-  path: '/robots.txt',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ResimSikistirRoute = ResimSikistirRouteImport.update({
-  id: '/resim-sikistir',
-  path: '/resim-sikistir',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PdfSikistirRoute = PdfSikistirRouteImport.update({
-  id: '/pdf-sikistir',
-  path: '/pdf-sikistir',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PdfBirlestirRoute = PdfBirlestirRouteImport.update({
-  id: '/pdf-birlestir',
-  path: '/pdf-birlestir',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OzelliklerimizRoute = OzelliklerimizRouteImport.update({
-  id: '/ozelliklerimiz',
-  path: '/ozelliklerimiz',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const NasilKullanilirRoute = NasilKullanilirRouteImport.update({
-  id: '/nasil-kullanilir',
-  path: '/nasil-kullanilir',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const IletisimRoute = IletisimRouteImport.update({
-  id: '/iletisim',
-  path: '/iletisim',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HakkimizdaRoute = HakkimizdaRouteImport.update({
-  id: '/hakkimizda',
-  path: '/hakkimizda',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GuvenlikRoute = GuvenlikRouteImport.update({
-  id: '/guvenlik',
-  path: '/guvenlik',
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/blog/$slug',
+  path: '/blog/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GizlilikPolitikasiRoute = GizlilikPolitikasiRouteImport.update({
@@ -84,211 +50,267 @@ const GizlilikPolitikasiRoute = GizlilikPolitikasiRouteImport.update({
   path: '/gizlilik-politikasi',
   getParentRoute: () => rootRouteImport,
 } as any)
-const BlogRoute = BlogRouteImport.update({
-  id: '/blog',
-  path: '/blog',
+const GuvenlikRoute = GuvenlikRouteImport.update({
+  id: '/guvenlik',
+  path: '/guvenlik',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const HakkimizdaRoute = HakkimizdaRouteImport.update({
+  id: '/hakkimizda',
+  path: '/hakkimizda',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IletisimRoute = IletisimRouteImport.update({
+  id: '/iletisim',
+  path: '/iletisim',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JpgPdfRoute = JpgPdfRouteImport.update({
+  id: '/jpg-pdf',
+  path: '/jpg-pdf',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KullanimKosullariRoute = KullanimKosullariRouteImport.update({
+  id: '/kullanim-kosullari',
+  path: '/kullanim-kosullari',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NasilKullanilirRoute = NasilKullanilirRouteImport.update({
+  id: '/nasil-kullanilir',
+  path: '/nasil-kullanilir',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OzelliklerimizRoute = OzelliklerimizRouteImport.update({
+  id: '/ozelliklerimiz',
+  path: '/ozelliklerimiz',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PdfBirlestirRoute = PdfBirlestirRouteImport.update({
+  id: '/pdf-birlestir',
+  path: '/pdf-birlestir',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PdfBolRoute = PdfBolRouteImport.update({
+  id: '/pdf-bol',
+  path: '/pdf-bol',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PdfJpgRoute = PdfJpgRouteImport.update({
+  id: '/pdf-jpg',
+  path: '/pdf-jpg',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PdfSayfaDuzenleRoute = PdfSayfaDuzenleRouteImport.update({
+  id: '/pdf-sayfa-duzenle',
+  path: '/pdf-sayfa-duzenle',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PdfSikistirRoute = PdfSikistirRouteImport.update({
+  id: '/pdf-sikistir',
+  path: '/pdf-sikistir',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResimSikistirRoute = ResimSikistirRouteImport.update({
+  id: '/resim-sikistir',
+  path: '/resim-sikistir',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SssRoute = SssRouteImport.update({
+  id: '/sss',
+  path: '/sss',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
+  id: '/robots.txt',
+  path: '/robots.txt',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/blog': typeof BlogRoute
+  '/blog/': typeof BlogIndexRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/gizlilik-politikasi': typeof GizlilikPolitikasiRoute
   '/guvenlik': typeof GuvenlikRoute
   '/hakkimizda': typeof HakkimizdaRoute
   '/iletisim': typeof IletisimRoute
+  '/jpg-pdf': typeof JpgPdfRoute
+  '/kullanim-kosullari': typeof KullanimKosullariRoute
   '/nasil-kullanilir': typeof NasilKullanilirRoute
   '/ozelliklerimiz': typeof OzelliklerimizRoute
   '/pdf-birlestir': typeof PdfBirlestirRoute
+  '/pdf-bol': typeof PdfBolRoute
+  '/pdf-jpg': typeof PdfJpgRoute
+  '/pdf-sayfa-duzenle': typeof PdfSayfaDuzenleRoute
   '/pdf-sikistir': typeof PdfSikistirRoute
   '/resim-sikistir': typeof ResimSikistirRoute
+  '/sss': typeof SssRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/sss': typeof SssRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/blog': typeof BlogRoute
+  '/blog': typeof BlogIndexRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/gizlilik-politikasi': typeof GizlilikPolitikasiRoute
   '/guvenlik': typeof GuvenlikRoute
   '/hakkimizda': typeof HakkimizdaRoute
   '/iletisim': typeof IletisimRoute
+  '/jpg-pdf': typeof JpgPdfRoute
+  '/kullanim-kosullari': typeof KullanimKosullariRoute
   '/nasil-kullanilir': typeof NasilKullanilirRoute
   '/ozelliklerimiz': typeof OzelliklerimizRoute
   '/pdf-birlestir': typeof PdfBirlestirRoute
+  '/pdf-bol': typeof PdfBolRoute
+  '/pdf-jpg': typeof PdfJpgRoute
+  '/pdf-sayfa-duzenle': typeof PdfSayfaDuzenleRoute
   '/pdf-sikistir': typeof PdfSikistirRoute
   '/resim-sikistir': typeof ResimSikistirRoute
+  '/sss': typeof SssRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/sss': typeof SssRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/blog': typeof BlogRoute
+  '/blog/': typeof BlogIndexRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/gizlilik-politikasi': typeof GizlilikPolitikasiRoute
   '/guvenlik': typeof GuvenlikRoute
   '/hakkimizda': typeof HakkimizdaRoute
   '/iletisim': typeof IletisimRoute
+  '/jpg-pdf': typeof JpgPdfRoute
+  '/kullanim-kosullari': typeof KullanimKosullariRoute
   '/nasil-kullanilir': typeof NasilKullanilirRoute
   '/ozelliklerimiz': typeof OzelliklerimizRoute
   '/pdf-birlestir': typeof PdfBirlestirRoute
+  '/pdf-bol': typeof PdfBolRoute
+  '/pdf-jpg': typeof PdfJpgRoute
+  '/pdf-sayfa-duzenle': typeof PdfSayfaDuzenleRoute
   '/pdf-sikistir': typeof PdfSikistirRoute
   '/resim-sikistir': typeof ResimSikistirRoute
+  '/sss': typeof SssRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/sss': typeof SssRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/blog'
+    | '/blog/'
+    | '/blog/$slug'
     | '/gizlilik-politikasi'
     | '/guvenlik'
     | '/hakkimizda'
     | '/iletisim'
+    | '/jpg-pdf'
+    | '/kullanim-kosullari'
     | '/nasil-kullanilir'
     | '/ozelliklerimiz'
     | '/pdf-birlestir'
+    | '/pdf-bol'
+    | '/pdf-jpg'
+    | '/pdf-sayfa-duzenle'
     | '/pdf-sikistir'
     | '/resim-sikistir'
+    | '/sss'
     | '/robots.txt'
     | '/sitemap.xml'
-    | '/sss'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/blog'
+    | '/blog/$slug'
     | '/gizlilik-politikasi'
     | '/guvenlik'
     | '/hakkimizda'
     | '/iletisim'
+    | '/jpg-pdf'
+    | '/kullanim-kosullari'
     | '/nasil-kullanilir'
     | '/ozelliklerimiz'
     | '/pdf-birlestir'
+    | '/pdf-bol'
+    | '/pdf-jpg'
+    | '/pdf-sayfa-duzenle'
     | '/pdf-sikistir'
     | '/resim-sikistir'
+    | '/sss'
     | '/robots.txt'
     | '/sitemap.xml'
-    | '/sss'
   id:
     | '__root__'
     | '/'
-    | '/blog'
+    | '/blog/'
+    | '/blog/$slug'
     | '/gizlilik-politikasi'
     | '/guvenlik'
     | '/hakkimizda'
     | '/iletisim'
+    | '/jpg-pdf'
+    | '/kullanim-kosullari'
     | '/nasil-kullanilir'
     | '/ozelliklerimiz'
     | '/pdf-birlestir'
+    | '/pdf-bol'
+    | '/pdf-jpg'
+    | '/pdf-sayfa-duzenle'
     | '/pdf-sikistir'
     | '/resim-sikistir'
+    | '/sss'
     | '/robots.txt'
     | '/sitemap.xml'
-    | '/sss'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  BlogRoute: typeof BlogRoute
+  BlogIndexRoute: typeof BlogIndexRoute
+  BlogSlugRoute: typeof BlogSlugRoute
   GizlilikPolitikasiRoute: typeof GizlilikPolitikasiRoute
   GuvenlikRoute: typeof GuvenlikRoute
   HakkimizdaRoute: typeof HakkimizdaRoute
   IletisimRoute: typeof IletisimRoute
+  JpgPdfRoute: typeof JpgPdfRoute
+  KullanimKosullariRoute: typeof KullanimKosullariRoute
   NasilKullanilirRoute: typeof NasilKullanilirRoute
   OzelliklerimizRoute: typeof OzelliklerimizRoute
   PdfBirlestirRoute: typeof PdfBirlestirRoute
+  PdfBolRoute: typeof PdfBolRoute
+  PdfJpgRoute: typeof PdfJpgRoute
+  PdfSayfaDuzenleRoute: typeof PdfSayfaDuzenleRoute
   PdfSikistirRoute: typeof PdfSikistirRoute
   ResimSikistirRoute: typeof ResimSikistirRoute
+  SssRoute: typeof SssRoute
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
-  SssRoute: typeof SssRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/sss': {
-      id: '/sss'
-      path: '/sss'
-      fullPath: '/sss'
-      preLoaderRoute: typeof SssRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/sitemap.xml': {
-      id: '/sitemap.xml'
-      path: '/sitemap.xml'
-      fullPath: '/sitemap.xml'
-      preLoaderRoute: typeof SitemapDotxmlRouteImport
+    '/blog/': {
+      id: '/blog/'
+      path: '/blog/'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/robots.txt': {
-      id: '/robots.txt'
-      path: '/robots.txt'
-      fullPath: '/robots.txt'
-      preLoaderRoute: typeof RobotsDottxtRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/resim-sikistir': {
-      id: '/resim-sikistir'
-      path: '/resim-sikistir'
-      fullPath: '/resim-sikistir'
-      preLoaderRoute: typeof ResimSikistirRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/pdf-sikistir': {
-      id: '/pdf-sikistir'
-      path: '/pdf-sikistir'
-      fullPath: '/pdf-sikistir'
-      preLoaderRoute: typeof PdfSikistirRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/pdf-birlestir': {
-      id: '/pdf-birlestir'
-      path: '/pdf-birlestir'
-      fullPath: '/pdf-birlestir'
-      preLoaderRoute: typeof PdfBirlestirRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/ozelliklerimiz': {
-      id: '/ozelliklerimiz'
-      path: '/ozelliklerimiz'
-      fullPath: '/ozelliklerimiz'
-      preLoaderRoute: typeof OzelliklerimizRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/nasil-kullanilir': {
-      id: '/nasil-kullanilir'
-      path: '/nasil-kullanilir'
-      fullPath: '/nasil-kullanilir'
-      preLoaderRoute: typeof NasilKullanilirRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/iletisim': {
-      id: '/iletisim'
-      path: '/iletisim'
-      fullPath: '/iletisim'
-      preLoaderRoute: typeof IletisimRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/hakkimizda': {
-      id: '/hakkimizda'
-      path: '/hakkimizda'
-      fullPath: '/hakkimizda'
-      preLoaderRoute: typeof HakkimizdaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/guvenlik': {
-      id: '/guvenlik'
-      path: '/guvenlik'
-      fullPath: '/guvenlik'
-      preLoaderRoute: typeof GuvenlikRouteImport
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/blog/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/gizlilik-politikasi': {
@@ -298,18 +320,116 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GizlilikPolitikasiRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/blog': {
-      id: '/blog'
-      path: '/blog'
-      fullPath: '/blog'
-      preLoaderRoute: typeof BlogRouteImport
+    '/guvenlik': {
+      id: '/guvenlik'
+      path: '/guvenlik'
+      fullPath: '/guvenlik'
+      preLoaderRoute: typeof GuvenlikRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/hakkimizda': {
+      id: '/hakkimizda'
+      path: '/hakkimizda'
+      fullPath: '/hakkimizda'
+      preLoaderRoute: typeof HakkimizdaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/iletisim': {
+      id: '/iletisim'
+      path: '/iletisim'
+      fullPath: '/iletisim'
+      preLoaderRoute: typeof IletisimRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/jpg-pdf': {
+      id: '/jpg-pdf'
+      path: '/jpg-pdf'
+      fullPath: '/jpg-pdf'
+      preLoaderRoute: typeof JpgPdfRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kullanim-kosullari': {
+      id: '/kullanim-kosullari'
+      path: '/kullanim-kosullari'
+      fullPath: '/kullanim-kosullari'
+      preLoaderRoute: typeof KullanimKosullariRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/nasil-kullanilir': {
+      id: '/nasil-kullanilir'
+      path: '/nasil-kullanilir'
+      fullPath: '/nasil-kullanilir'
+      preLoaderRoute: typeof NasilKullanilirRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ozelliklerimiz': {
+      id: '/ozelliklerimiz'
+      path: '/ozelliklerimiz'
+      fullPath: '/ozelliklerimiz'
+      preLoaderRoute: typeof OzelliklerimizRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pdf-birlestir': {
+      id: '/pdf-birlestir'
+      path: '/pdf-birlestir'
+      fullPath: '/pdf-birlestir'
+      preLoaderRoute: typeof PdfBirlestirRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pdf-bol': {
+      id: '/pdf-bol'
+      path: '/pdf-bol'
+      fullPath: '/pdf-bol'
+      preLoaderRoute: typeof PdfBolRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pdf-jpg': {
+      id: '/pdf-jpg'
+      path: '/pdf-jpg'
+      fullPath: '/pdf-jpg'
+      preLoaderRoute: typeof PdfJpgRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pdf-sayfa-duzenle': {
+      id: '/pdf-sayfa-duzenle'
+      path: '/pdf-sayfa-duzenle'
+      fullPath: '/pdf-sayfa-duzenle'
+      preLoaderRoute: typeof PdfSayfaDuzenleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pdf-sikistir': {
+      id: '/pdf-sikistir'
+      path: '/pdf-sikistir'
+      fullPath: '/pdf-sikistir'
+      preLoaderRoute: typeof PdfSikistirRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/resim-sikistir': {
+      id: '/resim-sikistir'
+      path: '/resim-sikistir'
+      fullPath: '/resim-sikistir'
+      preLoaderRoute: typeof ResimSikistirRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sss': {
+      id: '/sss'
+      path: '/sss'
+      fullPath: '/sss'
+      preLoaderRoute: typeof SssRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/robots.txt': {
+      id: '/robots.txt'
+      path: '/robots.txt'
+      fullPath: '/robots.txt'
+      preLoaderRoute: typeof RobotsDottxtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -317,19 +437,25 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  BlogRoute: BlogRoute,
+  BlogIndexRoute: BlogIndexRoute,
+  BlogSlugRoute: BlogSlugRoute,
   GizlilikPolitikasiRoute: GizlilikPolitikasiRoute,
   GuvenlikRoute: GuvenlikRoute,
   HakkimizdaRoute: HakkimizdaRoute,
   IletisimRoute: IletisimRoute,
+  JpgPdfRoute: JpgPdfRoute,
+  KullanimKosullariRoute: KullanimKosullariRoute,
   NasilKullanilirRoute: NasilKullanilirRoute,
   OzelliklerimizRoute: OzelliklerimizRoute,
   PdfBirlestirRoute: PdfBirlestirRoute,
+  PdfBolRoute: PdfBolRoute,
+  PdfJpgRoute: PdfJpgRoute,
+  PdfSayfaDuzenleRoute: PdfSayfaDuzenleRoute,
   PdfSikistirRoute: PdfSikistirRoute,
   ResimSikistirRoute: ResimSikistirRoute,
+  SssRoute: SssRoute,
   RobotsDottxtRoute: RobotsDottxtRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
-  SssRoute: SssRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
