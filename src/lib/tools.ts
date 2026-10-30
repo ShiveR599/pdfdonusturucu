@@ -9,4 +9,9 @@ export const TOOLS = [
   { to: "/resim-sikistir", label: "Resim Sıkıştır", short: "Resim Sıkıştır", desc: "JPEG, PNG ve WebP görsellerin boyutunu küçültün." },
 ] as const;
 
+// PDF dışındaki yardımcı araçlar (menüde ayrı başlık altında gösterilir).
+export const EXTRA_TOOLS = [
+  { to: "/iban-dogrulama", label: "IBAN Doğrulama", short: "IBAN", desc: "IBAN'ın doğru yazıldığını kontrol edin, bankasını görün." },
+] as const;
+
 export type ToolPath = (typeof TOOLS)[number]["to"];

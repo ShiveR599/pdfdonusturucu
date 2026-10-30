@@ -15,6 +15,7 @@ import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as GizlilikPolitikasiRouteImport } from './routes/gizlilik-politikasi'
 import { Route as GuvenlikRouteImport } from './routes/guvenlik'
 import { Route as HakkimizdaRouteImport } from './routes/hakkimizda'
+import { Route as IbanDogrulamaRouteImport } from './routes/iban-dogrulama'
 import { Route as IletisimRouteImport } from './routes/iletisim'
 import { Route as JpgPdfRouteImport } from './routes/jpg-pdf'
 import { Route as KullanimKosullariRouteImport } from './routes/kullanim-kosullari'
@@ -58,6 +59,11 @@ const GuvenlikRoute = GuvenlikRouteImport.update({
 const HakkimizdaRoute = HakkimizdaRouteImport.update({
   id: '/hakkimizda',
   path: '/hakkimizda',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IbanDogrulamaRoute = IbanDogrulamaRouteImport.update({
+  id: '/iban-dogrulama',
+  path: '/iban-dogrulama',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IletisimRoute = IletisimRouteImport.update({
@@ -138,6 +144,7 @@ export interface FileRoutesByFullPath {
   '/gizlilik-politikasi': typeof GizlilikPolitikasiRoute
   '/guvenlik': typeof GuvenlikRoute
   '/hakkimizda': typeof HakkimizdaRoute
+  '/iban-dogrulama': typeof IbanDogrulamaRoute
   '/iletisim': typeof IletisimRoute
   '/jpg-pdf': typeof JpgPdfRoute
   '/kullanim-kosullari': typeof KullanimKosullariRoute
@@ -160,6 +167,7 @@ export interface FileRoutesByTo {
   '/gizlilik-politikasi': typeof GizlilikPolitikasiRoute
   '/guvenlik': typeof GuvenlikRoute
   '/hakkimizda': typeof HakkimizdaRoute
+  '/iban-dogrulama': typeof IbanDogrulamaRoute
   '/iletisim': typeof IletisimRoute
   '/jpg-pdf': typeof JpgPdfRoute
   '/kullanim-kosullari': typeof KullanimKosullariRoute
@@ -183,6 +191,7 @@ export interface FileRoutesById {
   '/gizlilik-politikasi': typeof GizlilikPolitikasiRoute
   '/guvenlik': typeof GuvenlikRoute
   '/hakkimizda': typeof HakkimizdaRoute
+  '/iban-dogrulama': typeof IbanDogrulamaRoute
   '/iletisim': typeof IletisimRoute
   '/jpg-pdf': typeof JpgPdfRoute
   '/kullanim-kosullari': typeof KullanimKosullariRoute
@@ -207,6 +216,7 @@ export interface FileRouteTypes {
     | '/gizlilik-politikasi'
     | '/guvenlik'
     | '/hakkimizda'
+    | '/iban-dogrulama'
     | '/iletisim'
     | '/jpg-pdf'
     | '/kullanim-kosullari'
@@ -229,6 +239,7 @@ export interface FileRouteTypes {
     | '/gizlilik-politikasi'
     | '/guvenlik'
     | '/hakkimizda'
+    | '/iban-dogrulama'
     | '/iletisim'
     | '/jpg-pdf'
     | '/kullanim-kosullari'
@@ -251,6 +262,7 @@ export interface FileRouteTypes {
     | '/gizlilik-politikasi'
     | '/guvenlik'
     | '/hakkimizda'
+    | '/iban-dogrulama'
     | '/iletisim'
     | '/jpg-pdf'
     | '/kullanim-kosullari'
@@ -274,6 +286,7 @@ export interface RootRouteChildren {
   GizlilikPolitikasiRoute: typeof GizlilikPolitikasiRoute
   GuvenlikRoute: typeof GuvenlikRoute
   HakkimizdaRoute: typeof HakkimizdaRoute
+  IbanDogrulamaRoute: typeof IbanDogrulamaRoute
   IletisimRoute: typeof IletisimRoute
   JpgPdfRoute: typeof JpgPdfRoute
   KullanimKosullariRoute: typeof KullanimKosullariRoute
@@ -332,6 +345,13 @@ declare module '@tanstack/react-router' {
       path: '/hakkimizda'
       fullPath: '/hakkimizda'
       preLoaderRoute: typeof HakkimizdaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/iban-dogrulama': {
+      id: '/iban-dogrulama'
+      path: '/iban-dogrulama'
+      fullPath: '/iban-dogrulama'
+      preLoaderRoute: typeof IbanDogrulamaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/iletisim': {
@@ -442,6 +462,7 @@ const rootRouteChildren: RootRouteChildren = {
   GizlilikPolitikasiRoute: GizlilikPolitikasiRoute,
   GuvenlikRoute: GuvenlikRoute,
   HakkimizdaRoute: HakkimizdaRoute,
+  IbanDogrulamaRoute: IbanDogrulamaRoute,
   IletisimRoute: IletisimRoute,
   JpgPdfRoute: JpgPdfRoute,
   KullanimKosullariRoute: KullanimKosullariRoute,

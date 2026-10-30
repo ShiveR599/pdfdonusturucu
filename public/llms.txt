@@ -11,6 +11,7 @@
 - [PDF Sıkıştır](/pdf-sikistir): PDF'leri sayfaları görüntüye çevirerek küçültme (metin seçilemez hâle gelir).
 - [PDF Sayfa Düzenle](/pdf-sayfa-duzenle): Sayfaları sıralama, döndürme ve silme.
 - [Resim Sıkıştır](/resim-sikistir): JPEG, PNG ve WebP görselleri küçültme.
+- [IBAN Doğrulama](/iban-dogrulama): IBAN'ın doğru yazıldığını kontrol etme ve Türk IBAN'larında bankayı gösterme (tarayıcıda, IBAN gönderilmez).
 
 ## Bilgi
 

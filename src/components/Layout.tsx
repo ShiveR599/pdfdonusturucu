@@ -4,7 +4,7 @@ import { FileText, Sun, Moon, Menu, X, ShieldCheck, ChevronDown } from "lucide-r
 import { CookieBanner } from "./CookieBanner";
 import { AdSlot } from "./AdSlot";
 import { AD_SLOTS } from "../lib/adSlots";
-import { TOOLS } from "../lib/tools";
+import { TOOLS, EXTRA_TOOLS } from "../lib/tools";
 import { useConsent, openConsentBanner } from "../lib/consent";
 import { SITE_NAME } from "../lib/site";
 
@@ -86,7 +86,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
     } catch {}
   };
 
-  const toolActive = TOOLS.some((t) => t.to === path) || path === "/";
+  const toolActive = [...TOOLS, ...EXTRA_TOOLS].some((t) => t.to === path) || path === "/";
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans flex flex-col">
@@ -116,7 +116,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               </button>
               {toolsOpen && (
                 <div className="absolute right-0 mt-2 w-72 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-xl p-2">
-                  {TOOLS.map((t) => (
+                  {[...TOOLS, ...EXTRA_TOOLS].map((t) => (
                     <Link
                       key={t.to}
                       to={t.to}
@@ -165,6 +165,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   {t.label}
                 </Link>
               ))}
+              {EXTRA_TOOLS.map((t) => (
+                <Link key={t.to} to={t.to} activeProps={activeCls} className="px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-slate-100 dark:hover:bg-slate-800">
+                  {t.label}
+                </Link>
+              ))}
               <span className="px-3 pt-3 pb-1 text-xs font-semibold uppercase text-slate-400">Bilgi</span>
               {NAV_EXTRA.map((n) => (
                 <Link key={n.to} to={n.to} activeProps={activeCls} className="px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-slate-100 dark:hover:bg-slate-800">
@@ -205,7 +210,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <span className="font-bold text-base">{SITE_NAME}</span>
           </div>
           <nav className="flex flex-wrap justify-center gap-x-5 gap-y-2 text-sm" aria-label="Araçlar">
-            {TOOLS.map((t) => (
+            {[...TOOLS, ...EXTRA_TOOLS].map((t) => (
               <Link key={t.to} to={t.to} className="text-slate-600 dark:text-slate-400 hover:text-primary-600 dark:hover:text-primary-400 hover:underline">
                 {t.label}
               </Link>

@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SITE_URL } from "../lib/site";
-import { TOOLS } from "../lib/tools";
+import { TOOLS, EXTRA_TOOLS } from "../lib/tools";
 import { POSTS } from "../lib/blogPosts";
 
 type Entry = { path: string; changefreq?: string; priority?: string; lastmod?: string };
@@ -8,6 +8,7 @@ type Entry = { path: string; changefreq?: string; priority?: string; lastmod?: s
 const entries: Entry[] = [
   { path: "/", changefreq: "weekly", priority: "1.0" },
   ...TOOLS.map((t) => ({ path: t.to, changefreq: "monthly", priority: "0.9" })),
+  ...EXTRA_TOOLS.map((t) => ({ path: t.to, changefreq: "monthly", priority: "0.8" })),
   { path: "/blog", changefreq: "weekly", priority: "0.7" },
   ...POSTS.map((p) => ({ path: `/blog/${p.slug}`, changefreq: "yearly", priority: "0.6", lastmod: p.date })),
   { path: "/sss", changefreq: "monthly", priority: "0.6" },

@@ -27,11 +27,11 @@ function Privacy() {
         Veri sorumlusu: {OWNER_NAME}. İletişim: <a className="text-primary-600 dark:text-primary-400 underline" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
       </p>
 
-      <H2>2. Yüklediğiniz Dosyalar</H2>
+      <H2>2. Yüklediğiniz Dosyalar ve Girdiğiniz Bilgiler</H2>
       <p>
-        Sitedeki araçlara eklediğiniz PDF ve görsel dosyalar <strong>yalnızca kendi cihazınızda, tarayıcınızın belleğinde</strong> işlenir.
-        Bu dosyalar bize veya başka bir sunucuya gönderilmez, kaydedilmez, görüntülenmez ve saklanmaz. Sayfayı kapattığınızda veya
-        yenilediğinizde tarayıcı belleğinden silinir. Bu nedenle dosyalarınızın içeriği bakımından tarafımızca herhangi bir kişisel veri
+        Sitedeki araçlara eklediğiniz PDF ve görsel dosyalar ile IBAN Doğrulama aracına yazdığınız IBAN numaraları <strong>yalnızca kendi cihazınızda, tarayıcınızın belleğinde</strong> işlenir.
+        Bunlar bize veya başka bir sunucuya gönderilmez, kaydedilmez, görüntülenmez ve saklanmaz. Sayfayı kapattığınızda veya
+        yenilediğinizde tarayıcı belleğinden silinir. Bu nedenle dosyalarınızın ve girdiğiniz bilgilerin içeriği bakımından tarafımızca herhangi bir kişisel veri
         işlenmemektedir.
       </p>
 
