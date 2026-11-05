@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { Download, ZoomIn, X, Loader2, Trash2 } from "lucide-react";
 import JSZip from "jszip";
-import { pdfjsLib, withTimeout, pdfErrorMessage } from "../lib/pdfjs";
+import { pdfjsLib, withTimeout, pdfErrorMessage, renderPage, renderThumbnail, createBatcher, cappedViewport } from "../lib/pdfjs";
+import { pageNumberSet } from "../lib/ranges";
+import { logError } from "../lib/log";
 import { downloadBlob, isPdf, canvasToBlob, canEncodeWebp } from "../lib/format";
 import { DropZone, ErrorBox, InfoBox, Progress } from "./ToolUi";
 
@@ -24,28 +26,23 @@ const QUALITY: Record<string, number> = {
   "HD (216 DPI)": 3.0,
 };
 
-// Telefon tarayıcılarının tuval sınırı (~16 megapiksel) aşılmasın.
-const MAX_PIXELS = 16_000_000;
-
 type Fmt = "jpeg" | "png" | "webp";
 const MIME: Record<Fmt, string> = { jpeg: "image/jpeg", png: "image/png", webp: "image/webp" };
 const EXT: Record<Fmt, string> = { jpeg: "jpg", png: "png", webp: "webp" };
 
 async function renderToCanvas(doc: any, pageNumber: number, scale: number, whiteBg: boolean) {
   const p = await doc.getPage(pageNumber);
-  let viewport = p.getViewport({ scale });
-  const area = viewport.width * viewport.height;
-  if (area > MAX_PIXELS) viewport = p.getViewport({ scale: scale * Math.sqrt(MAX_PIXELS / area) });
+  const viewport = cappedViewport(p, scale);
   const canvas = document.createElement("canvas");
-  canvas.width = Math.floor(viewport.width);
-  canvas.height = Math.floor(viewport.height);
-  const ctx = canvas.getContext("2d");
-  if (!ctx) throw new Error("CANVAS");
-  if (whiteBg) {
-    ctx.fillStyle = "#ffffff";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  canvas.width = Math.max(1, Math.floor(viewport.width));
+  canvas.height = Math.max(1, Math.floor(viewport.height));
+  try {
+    await renderPage(p, canvas, viewport, { whiteBg });
+  } catch (e) {
+    canvas.width = 0;
+    canvas.height = 0;
+    throw e;
   }
-  await withTimeout(p.render({ canvasContext: ctx, viewport, canvas } as any).promise);
   return canvas;
 }
 
@@ -61,8 +58,12 @@ export function PdfToImage() {
   const [rangeError, setRangeError] = useState("");
   const [lightbox, setLightbox] = useState<{ page: Page; src: string } | null>(null);
   const [webpOk, setWebpOk] = useState(true);
+  const [downloading, setDownloading] = useState(false);
   const pdfsRef = useRef<PdfFile[]>([]);
   const generation = useRef(0);
+  // Yüklemeler sıraya alınır: ilki bitmeden yeni dosya bırakılırsa ikincisi onun ardından işlenir.
+  const queue = useRef<Promise<void>>(Promise.resolve());
+  const downloadingRef = useRef(false);
 
   useEffect(() => {
     setWebpOk(canEncodeWebp());
@@ -72,10 +73,19 @@ export function PdfToImage() {
     };
   }, []);
 
-  async function handleFiles(files: File[]) {
+  function handleFiles(files: File[]) {
     const gen = generation.current;
     setLoading(true);
     setError("");
+    queue.current = queue.current
+      .then(() => loadFiles(files, gen))
+      .catch((e) => logError("PDF'ten Görsele / yükleme sırası", e));
+  }
+
+  async function loadFiles(files: File[], gen: number) {
+    // Bu dosyalar sıradayken kullanıcı "Kaldır" dediyse hiç işleme.
+    if (gen !== generation.current) return;
+    setLoading(true);
     const pdfFiles = files.filter(isPdf);
     const errors: string[] = [];
     if (pdfFiles.length < files.length) errors.push(`${files.length - pdfFiles.length} dosya PDF olmadığı için atlandı.`);
@@ -89,6 +99,7 @@ export function PdfToImage() {
           pdfsRef.current = [...pdfsRef.current, { name: file.name, doc }];
           docs.push({ name: file.name, doc, pdfIndex });
         } catch (e) {
+          logError("PDF'ten Görsele / dosya okuma", e);
           errors.push(`"${file.name}": ${pdfErrorMessage(e)}`);
         }
       }
@@ -96,20 +107,24 @@ export function PdfToImage() {
       const totalPages = docs.reduce((s, d) => s + d.doc.numPages, 0);
       let done = 0;
       setProgress({ done, total: totalPages });
+      // Önizlemeler 8'erli gruplar hâlinde eklenir; yüzlerce sayfada ekran donmaz.
+      const batch = createBatcher<Page>((items) => {
+        if (gen !== generation.current) return;
+        setPages((prev) => [...prev, ...items]);
+        setProgress({ done, total: totalPages });
+      });
       for (const { name, doc, pdfIndex } of docs) {
         for (let i = 1; i <= doc.numPages; i++) {
           if (gen !== generation.current) return;
-          const canvas = await renderToCanvas(doc, i, 0.5, true);
-          const preview = canvas.toDataURL("image/jpeg", 0.7);
-          canvas.width = 0;
-          canvas.height = 0;
-          setPages((prev) => [...prev, { id: `${pdfIndex}-${i}`, pdfName: name, pdfIndex, pageNumber: i, preview, selected: true }]);
+          const preview = await renderThumbnail(doc, i, 0.5);
           done++;
-          setProgress({ done, total: totalPages });
-          await new Promise((r) => requestAnimationFrame(() => r(null)));
+          batch.push({ id: `${pdfIndex}-${i}`, pdfName: name, pdfIndex, pageNumber: i, preview, selected: true });
+          if (done % 8 === 0) await new Promise((r) => requestAnimationFrame(() => r(null)));
         }
       }
+      batch.flush();
     } catch (e) {
+      logError("PDF'ten Görsele / önizleme", e);
       errors.push(pdfErrorMessage(e));
     } finally {
       if (gen === generation.current) {
@@ -141,22 +156,17 @@ export function PdfToImage() {
     setRangeError("");
     if (pdfs.length !== 1) return;
     const total = pdfs[0].doc.numPages;
-    const set = new Set<number>();
-    const parts = rangeInput.split(",").map((s) => s.trim()).filter(Boolean);
-    const bad = () => setRangeError(`Geçersiz aralık. Sayfalar 1 ile ${total} arasında olmalı (örn: 1-5, 8).`);
-    if (!parts.length) return bad();
-    for (const part of parts) {
-      const m = part.match(/^(\d+)\s*(?:-\s*(\d+))?$/);
-      if (!m) return bad();
-      const a = parseInt(m[1], 10);
-      const b = m[2] ? parseInt(m[2], 10) : a;
-      if (a < 1 || b < a || b > total) return bad();
-      for (let i = a; i <= b; i++) set.add(i);
+    let set: Set<number>;
+    try {
+      set = pageNumberSet(rangeInput, total);
+    } catch {
+      setRangeError(`Geçersiz aralık. Sayfalar 1 ile ${total} arasında olmalı (örn: 1-5, 8).`);
+      return;
     }
     setPages((p) => p.map((x) => ({ ...x, selected: set.has(x.pageNumber) })));
   }
 
-  async function renderPage(page: Page): Promise<Blob> {
+  async function renderImageBlob(page: Page): Promise<Blob> {
     const canvas = await renderToCanvas(pdfsRef.current[page.pdfIndex].doc, page.pageNumber, QUALITY[quality], format === "jpeg");
     try {
       return await canvasToBlob(canvas, MIME[format], 0.92);
@@ -168,11 +178,27 @@ export function PdfToImage() {
 
   const fileName = (page: Page) => `${page.pdfName.replace(/\.pdf$/i, "")}_sayfa-${page.pageNumber}.${EXT[format]}`;
 
+  /** Aynı anda yalnızca bir indirme yapılır; çift tıklama iki kez indirmez. */
+  function beginDownload(): boolean {
+    if (downloadingRef.current) return false;
+    downloadingRef.current = true;
+    setDownloading(true);
+    return true;
+  }
+  function endDownload() {
+    downloadingRef.current = false;
+    setDownloading(false);
+  }
+
   async function downloadOne(page: Page) {
+    if (!beginDownload()) return;
     try {
-      downloadBlob(await renderPage(page), fileName(page));
+      downloadBlob(await renderImageBlob(page), fileName(page));
     } catch (e) {
+      logError("PDF'ten Görsele / tek sayfa indirme", e);
       setError(pdfErrorMessage(e));
+    } finally {
+      endDownload();
     }
   }
 
@@ -184,8 +210,9 @@ export function PdfToImage() {
       canvas.width = 0;
       canvas.height = 0;
       setLightbox((cur) => (cur && cur.page.id === page.id ? { page, src } : cur));
-    } catch {
-      /* düşük çözünürlüklü önizleme gösterilmeye devam eder */
+    } catch (e) {
+      // Düşük çözünürlüklü önizleme gösterilmeye devam eder.
+      logError("PDF'ten Görsele / büyütme", e);
     }
   }
 
@@ -193,22 +220,23 @@ export function PdfToImage() {
     const sel = pages.filter((p) => p.selected);
     if (!sel.length) return;
     if (sel.length === 1) return downloadOne(sel[0]);
-    setLoading(true);
+    if (!beginDownload()) return;
     setError("");
     try {
       const zip = new JSZip();
       let done = 0;
       setProgress({ done, total: sel.length });
       for (const page of sel) {
-        zip.file(fileName(page), await renderPage(page));
+        zip.file(fileName(page), await renderImageBlob(page));
         done++;
         setProgress({ done, total: sel.length });
       }
       downloadBlob(await zip.generateAsync({ type: "blob" }), "pdf-gorseller.zip");
     } catch (e) {
+      logError("PDF'ten Görsele / ZIP indirme", e);
       setError(pdfErrorMessage(e));
     } finally {
-      setLoading(false);
+      endDownload();
       setProgress(null);
     }
   }
@@ -227,7 +255,7 @@ export function PdfToImage() {
 
       <ErrorBox>{error}</ErrorBox>
 
-      {loading && (progress ? <Progress done={progress.done} total={progress.total} /> : (
+      {(loading || downloading) && (progress ? <Progress done={progress.done} total={progress.total} /> : (
         <div className="mt-6 flex items-center justify-center gap-2 text-slate-600 dark:text-slate-400">
           <Loader2 className="w-5 h-5 animate-spin" /> İşleniyor...
         </div>
@@ -269,7 +297,7 @@ export function PdfToImage() {
                 ))}
               </select>
               <button
-                disabled={!selectedCount || loading}
+                disabled={!selectedCount || loading || downloading}
                 onClick={downloadZip}
                 className="px-4 py-1.5 text-sm rounded-lg bg-primary-600 hover:bg-primary-700 text-white font-semibold disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center gap-2"
               >
@@ -326,7 +354,12 @@ export function PdfToImage() {
                   >
                     <ZoomIn className="w-4 h-4" />
                   </button>
-                  <button onClick={() => downloadOne(p)} className="p-1.5 rounded-md bg-primary-600 hover:bg-primary-700 text-white" aria-label="İndir">
+                  <button
+                    onClick={() => downloadOne(p)}
+                    disabled={downloading}
+                    className="p-1.5 rounded-md bg-primary-600 hover:bg-primary-700 text-white disabled:opacity-40"
+                    aria-label="İndir"
+                  >
                     <Download className="w-4 h-4" />
                   </button>
                 </div>
@@ -350,7 +383,8 @@ export function PdfToImage() {
             </button>
             <button
               onClick={() => downloadOne(lightbox.page)}
-              className="absolute bottom-2 right-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg inline-flex items-center gap-2"
+              disabled={downloading}
+              className="absolute bottom-2 right-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg inline-flex items-center gap-2 disabled:opacity-40"
             >
               <Download className="w-4 h-4" /> İndir
             </button>

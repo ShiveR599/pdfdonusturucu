@@ -17,7 +17,7 @@ export const POSTS: Post[] = [
     slug: "pdf-dosyasi-nasil-kucultulur",
     title: "PDF Dosyası Nasıl Küçültülür?",
     description: "PDF'ler neden büyür, hangi PDF'ler iyi küçülür ve sıkıştırırken nelere dikkat etmeniz gerekir? Pratik rehber.",
-    date: "2026-04-01",
+    date: "2026-10-30",
     tag: "Rehber",
     tool: { to: "/pdf-sikistir", label: "PDF Sıkıştır aracını aç" },
     body: [
@@ -59,7 +59,7 @@ export const POSTS: Post[] = [
     slug: "jpeg-png-webp-farki",
     title: "JPEG, PNG ve WebP Arasındaki Fark Nedir?",
     description: "Üç popüler görsel formatının güçlü ve zayıf yanları; fotoğraf, ekran görüntüsü ve web için hangisini seçmelisiniz?",
-    date: "2026-05-01",
+    date: "2026-10-30",
     tag: "Bilgi",
     tool: { to: "/pdf-jpg", label: "PDF'ten Görsele aracını aç" },
     body: [
@@ -90,7 +90,7 @@ export const POSTS: Post[] = [
     slug: "gorselleri-tek-pdf-yapma",
     title: "Birden Fazla Görseli Tek PDF'e Nasıl Birleştiririm?",
     description: "Fotoğrafları, taranmış belge görüntülerini veya ekran görüntülerini tek bir PDF dosyasında toplamak için adım adım rehber.",
-    date: "2026-06-01",
+    date: "2026-10-30",
     tag: "Rehber",
     tool: { to: "/jpg-pdf", label: "Görselden PDF'e aracını aç" },
     body: [
@@ -120,7 +120,7 @@ export const POSTS: Post[] = [
     slug: "pdf-nasil-bolunur",
     title: "PDF Nasıl Bölünür? Sayfa Aralığıyla Ayırma Rehberi",
     description: "Büyük bir PDF'ten belirli sayfaları ayırmanın, her sayfayı ayrı dosya yapmanın ve sayfa aralığı yazmanın en kolay yolu.",
-    date: "2026-07-01",
+    date: "2026-10-30",
     tag: "Rehber",
     tool: { to: "/pdf-bol", label: "PDF Böl aracını aç" },
     body: [
@@ -147,7 +147,7 @@ export const POSTS: Post[] = [
     slug: "pdf-birlestirme-rehberi",
     title: "PDF Birleştirme: Dosyaları Doğru Sırayla Tek Belgede Toplama",
     description: "Birden fazla PDF'i tek belgede birleştirirken sıralama, şifreli dosyalar ve dosya boyutu hakkında bilmeniz gerekenler.",
-    date: "2026-08-01",
+    date: "2026-10-30",
     tag: "Rehber",
     tool: { to: "/pdf-birlestir", label: "PDF Birleştir aracını aç" },
     body: [
@@ -173,7 +173,7 @@ export const POSTS: Post[] = [
     slug: "cevrimici-pdf-araclarinda-gizlilik",
     title: "Çevrimiçi PDF Araçlarında Gizlilik: Dosyanız Nereye Gidiyor?",
     description: "Sunucuya yükleyen araçlarla tarayıcıda çalışan araçlar arasındaki fark ve hassas belgelerde dikkat edilmesi gerekenler.",
-    date: "2026-09-01",
+    date: "2026-10-30",
     tag: "Güvenlik",
     body: [
       { p: "Kimlik, maaş bordrosu, sağlık raporu veya sözleşme gibi belgeleri çevrimiçi bir araçla işlerken dosyanın nereye gittiğini bilmek önemlidir." },

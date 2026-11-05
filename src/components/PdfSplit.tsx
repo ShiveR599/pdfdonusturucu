@@ -2,29 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import { Loader2, Download, Trash2 } from "lucide-react";
 import JSZip from "jszip";
 import { PDFDocument } from "pdf-lib";
-import { pdfjsLib, withTimeout, pdfErrorMessage, loadPdfLib } from "../lib/pdfjs";
+import { pdfjsLib, withTimeout, pdfErrorMessage, loadPdfLib, renderThumbnail, createBatcher } from "../lib/pdfjs";
+import { parsePageRanges } from "../lib/ranges";
+import { logError } from "../lib/log";
 import { downloadBlob, isPdf } from "../lib/format";
 import { DropZone, ErrorBox, Progress } from "./ToolUi";
 
 type Thumb = { num: number; preview: string; selected: boolean };
-
-/** "1-3, 5, 8-10" → [[0,1,2],[4],[7,8,9]] (0 tabanlı). Geçersizse hata fırlatır. */
-function parseRanges(input: string, total: number): number[][] {
-  const groups: number[][] = [];
-  const parts = input.split(",").map((s) => s.trim()).filter(Boolean);
-  if (!parts.length) throw new Error("invalid");
-  for (const part of parts) {
-    const m = part.match(/^(\d+)\s*(?:-\s*(\d+))?$/);
-    if (!m) throw new Error("invalid");
-    const a = parseInt(m[1], 10);
-    const b = m[2] ? parseInt(m[2], 10) : a;
-    if (a < 1 || b < a || b > total) throw new Error("invalid");
-    const arr: number[] = [];
-    for (let i = a; i <= b; i++) arr.push(i - 1);
-    groups.push(arr);
-  }
-  return groups;
-}
 
 export function PdfSplit() {
   const [file, setFile] = useState<File | null>(null);
@@ -55,25 +39,22 @@ export function PdfSplit() {
     let doc: any;
     try {
       doc = await withTimeout(pdfjsLib.getDocument({ data: await f.arrayBuffer() }).promise);
-      setProgress({ done: 0, total: doc.numPages });
-      for (let i = 1; i <= doc.numPages; i++) {
+      const total = doc.numPages;
+      setProgress({ done: 0, total });
+      // Önizlemeler 8'erli gruplar hâlinde eklenir; yüzlerce sayfada ekran donmaz.
+      const batch = createBatcher<Thumb>((items) => {
         if (gen !== generation.current) return;
-        const p = await doc.getPage(i);
-        const vp = p.getViewport({ scale: 0.4 });
-        const canvas = document.createElement("canvas");
-        canvas.width = Math.floor(vp.width);
-        canvas.height = Math.floor(vp.height);
-        const ctx = canvas.getContext("2d");
-        if (!ctx) throw new Error("CANVAS");
-        await withTimeout(p.render({ canvasContext: ctx, viewport: vp, canvas } as any).promise);
-        const preview = canvas.toDataURL("image/jpeg", 0.7);
-        canvas.width = 0;
-        canvas.height = 0;
-        setThumbs((prev) => [...prev, { num: i, preview, selected: true }]);
-        setProgress({ done: i, total: doc.numPages });
-        await new Promise((r) => requestAnimationFrame(() => r(null)));
+        setThumbs((prev) => [...prev, ...items]);
+        setProgress({ done: items[items.length - 1].num, total });
+      });
+      for (let i = 1; i <= total; i++) {
+        if (gen !== generation.current) return;
+        batch.push({ num: i, preview: await renderThumbnail(doc, i, 0.4), selected: true });
+        if (i % 8 === 0) await new Promise((r) => requestAnimationFrame(() => r(null)));
       }
+      batch.flush();
     } catch (e) {
+      logError("PDF Böl / dosya okuma", e);
       if (gen === generation.current) {
         setError(pdfErrorMessage(e));
         setFile(null);
@@ -118,7 +99,7 @@ export function PdfSplit() {
 
     if (mode === "range") {
       try {
-        groups = parseRanges(rangeInput, total);
+        groups = parsePageRanges(rangeInput, total);
       } catch {
         setError(`Geçersiz aralık. Sayfalar 1 ile ${total} arasında olmalı (örn: 1-3, 5, 8-10).`);
         return;
@@ -148,6 +129,7 @@ export function PdfSplit() {
         downloadBlob(await zip.generateAsync({ type: "blob" }), `${base}_bolunmus.zip`);
       }
     } catch (e) {
+      logError("PDF Böl / bölme", e);
       setError(pdfErrorMessage(e));
     } finally {
       setBusy(false);

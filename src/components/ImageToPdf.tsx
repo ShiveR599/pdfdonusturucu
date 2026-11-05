@@ -3,6 +3,7 @@ import { Trash2, RotateCw, GripVertical, Loader2 } from "lucide-react";
 import { PDFDocument } from "pdf-lib";
 import { downloadBlob, imageMime, loadImage, canvasToBlob, fitWithin, moveItem } from "../lib/format";
 import { withTimeout } from "../lib/pdfjs";
+import { logError } from "../lib/log";
 import { DropZone, ErrorBox, MoveButtons } from "./ToolUi";
 
 type Img = { id: string; file: File; url: string; rotation: number };
@@ -68,7 +69,8 @@ export function ImageToPdf() {
         let img: HTMLImageElement;
         try {
           img = await loadImage(it.url);
-        } catch {
+        } catch (e) {
+          logError("Görselden PDF / görsel açma", e);
           throw new UserError(`"${it.file.name}" açılamadı. Dosya bozuk olabilir; listeden kaldırıp tekrar deneyin.`);
         }
         const { w, h } = fitWithin(img.naturalWidth, img.naturalHeight, MAX_SIDE);
@@ -87,7 +89,8 @@ export function ImageToPdf() {
         let jpeg: Blob;
         try {
           jpeg = await canvasToBlob(canvas, "image/jpeg", 0.92);
-        } catch {
+        } catch (e) {
+          logError("Görselden PDF / JPEG dönüştürme", e);
           throw new UserError("Cihazınızın belleği yetmedi. Daha az veya daha küçük görsellerle deneyin.");
         }
         const embedded = await pdfDoc.embedJpg(await jpeg.arrayBuffer());
@@ -110,6 +113,7 @@ export function ImageToPdf() {
       const base = imgs[0].file.name.replace(/\.[^.]+$/, "");
       downloadBlob(blob, imgs.length > 1 ? `${base}_ve_digerleri.pdf` : `${base}.pdf`);
     } catch (e) {
+      if (!(e instanceof UserError)) logError("Görselden PDF / PDF oluşturma", e);
       setError(
         e instanceof UserError
           ? e.message

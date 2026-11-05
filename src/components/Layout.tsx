@@ -6,6 +6,7 @@ import { AdSlot } from "./AdSlot";
 import { AD_SLOTS } from "../lib/adSlots";
 import { TOOLS, EXTRA_TOOLS } from "../lib/tools";
 import { useConsent, openConsentBanner } from "../lib/consent";
+import { useMediaQuery } from "../lib/useMediaQuery";
 import { SITE_NAME } from "../lib/site";
 
 const NAV_EXTRA = [
@@ -34,6 +35,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const consent = useConsent();
   const path = useRouterState({ select: (s) => s.location.pathname });
   const showAds = consent === "accepted";
+  // Yalnızca ekranda gerçekten görünecek reklam alanları oluşturulur (xl = 1280px).
+  // Gizli (display:none) alanlara reklam istenirse AdSense hata verir ve boşa istek gider.
+  const wide = useMediaQuery("(min-width: 1280px)");
+  const showSideAds = showAds && wide;
+  const showMobileAds = showAds && !wide;
 
   useEffect(() => {
     setDark(document.documentElement.classList.contains("dark"));
@@ -182,19 +188,19 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </header>
 
       <div className="flex-1 w-full max-w-7xl mx-auto px-4 py-6 flex gap-4">
-        {showAds && (
+        {showSideAds && (
           <aside className="hidden xl:block w-[160px] shrink-0">
             <AdSlot slot={AD_SLOTS.sidebarLeft} variant="sidebar" className="sticky top-24 w-[160px] min-h-[600px]" />
           </aside>
         )}
 
         <main id="icerik" className="flex-1 min-w-0">
-          {showAds && <AdSlot slot={AD_SLOTS.mobileTop} variant="mobile" className="xl:hidden mb-4 min-h-[50px] overflow-hidden" />}
+          {showMobileAds && <AdSlot slot={AD_SLOTS.mobileTop} variant="mobile" className="xl:hidden mb-4 min-h-[50px] overflow-hidden" />}
           {children}
-          {showAds && <AdSlot slot={AD_SLOTS.mobileBottom} variant="mobile" className="xl:hidden mt-6 min-h-[50px] overflow-hidden" />}
+          {showMobileAds && <AdSlot slot={AD_SLOTS.mobileBottom} variant="mobile" className="xl:hidden mt-6 min-h-[50px] overflow-hidden" />}
         </main>
 
-        {showAds && (
+        {showSideAds && (
           <aside className="hidden xl:block w-[160px] shrink-0">
             <AdSlot slot={AD_SLOTS.sidebarRight} variant="sidebar" className="sticky top-24 w-[160px] min-h-[600px]" />
           </aside>

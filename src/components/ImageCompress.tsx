@@ -3,6 +3,7 @@ import { Loader2, Download, X, Trash2 } from "lucide-react";
 import JSZip from "jszip";
 import { downloadBlob, formatBytes, imageMime, loadImage, canvasToBlob, canEncodeWebp } from "../lib/format";
 import { DropZone, ErrorBox, InfoBox } from "./ToolUi";
+import { logError } from "../lib/log";
 
 type Result = { blob: Blob; size: number; name: string; kept: boolean; note?: string };
 
@@ -98,7 +99,8 @@ export function ImageCompress() {
           height: img.naturalHeight,
           originalSize: file.size,
         });
-      } catch {
+      } catch (e) {
+        logError("Resim Sıkıştır / görsel açma", e);
         URL.revokeObjectURL(url);
         skipped++;
       }
@@ -129,7 +131,8 @@ export function ImageCompress() {
     patch(it.id, { busy: true, error: undefined });
     try {
       patch(it.id, { busy: false, result: await compressImage(it, level) });
-    } catch {
+    } catch (e) {
+      logError("Resim Sıkıştır / tek görsel", e);
       patch(it.id, { busy: false, error: "Bu görsel sıkıştırılamadı (dosya bozuk veya cihaz belleği yetersiz olabilir)." });
     } finally {
       setRunning(false);
@@ -151,7 +154,8 @@ export function ImageCompress() {
         const r = await compressImage(it, level);
         patch(it.id, { busy: false, result: r });
         results.push(r);
-      } catch {
+      } catch (e) {
+        logError("Resim Sıkıştır / toplu", e);
         patch(it.id, { busy: false, error: "Bu görsel sıkıştırılamadı." });
       }
     }
@@ -172,7 +176,8 @@ export function ImageCompress() {
         }
         downloadBlob(await zip.generateAsync({ type: "blob" }), "sikistirilmis-gorseller.zip");
       }
-    } catch {
+    } catch (e) {
+      logError("Resim Sıkıştır / ZIP", e);
       setError("ZIP dosyası oluşturulamadı. Daha az görselle tekrar deneyin.");
     } finally {
       setRunning(false);

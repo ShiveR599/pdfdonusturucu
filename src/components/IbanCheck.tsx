@@ -1,8 +1,9 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { CheckCircle2, XCircle, Copy, Check, Trash2 } from "lucide-react";
 import { analyzeIban } from "../lib/iban";
 import { TR_BANKS_UPDATED } from "../lib/trBanks";
 import { InfoBox } from "./ToolUi";
+import { logError } from "../lib/log";
 
 function Row({ label, value, mono = false }: { label: string; value: React.ReactNode; mono?: boolean }) {
   return (
@@ -13,29 +14,64 @@ function Row({ label, value, mono = false }: { label: string; value: React.React
   );
 }
 
-export function IbanCheck() {
-  const [value, setValue] = useState("");
-  const [copied, setCopied] = useState<"" | "spaced" | "plain">("");
-  const result = useMemo(() => (value.trim() ? analyzeIban(value) : null), [value]);
+type CopyKind = "spaced" | "plain";
+type CopyState = { kind: CopyKind; ok: boolean } | null;
 
-  async function copy(text: string, which: "spaced" | "plain") {
+/** Panoya kopyalar; eski tarayıcılarda yedek yöntemi dener. IBAN hiçbir yere gönderilmez. */
+async function copyText(text: string): Promise<boolean> {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch {
     try {
-      await navigator.clipboard.writeText(text);
-      setCopied(which);
-      setTimeout(() => setCopied(""), 1500);
-    } catch {
-      /* pano izni yoksa sessizce geç */
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      const ok = document.execCommand("copy");
+      ta.remove();
+      return ok;
+    } catch (e) {
+      // Yalnızca hata nesnesi yazılır; IBAN'ın kendisi asla loglanmaz.
+      logError("IBAN / kopyalama", e);
+      return false;
     }
   }
+}
 
-  const CopyBtn = ({ text, which }: { text: string; which: "spaced" | "plain" }) => (
+function CopyBtn({ kind, state, onCopy }: { kind: CopyKind; state: CopyState; onCopy: (kind: CopyKind) => void }) {
+  const mine = state?.kind === kind ? state : null;
+  return (
     <button
-      onClick={() => copy(text, which)}
+      type="button"
+      onClick={() => onCopy(kind)}
       className="inline-flex items-center gap-1 text-xs px-2 py-1 rounded-md bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 font-sans"
     >
-      {copied === which ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />} {copied === which ? "Kopyalandı" : "Kopyala"}
+      {mine?.ok ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}{" "}
+      {mine ? (mine.ok ? "Kopyalandı" : "Kopyalanamadı — elle seçin") : "Kopyala"}
     </button>
   );
+}
+
+export function IbanCheck() {
+  const [value, setValue] = useState("");
+  const [copyState, setCopyState] = useState<CopyState>(null);
+  const copyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => () => {
+    if (copyTimer.current) clearTimeout(copyTimer.current);
+  }, []);
+  const result = useMemo(() => (value.trim() ? analyzeIban(value) : null), [value]);
+
+  async function onCopy(kind: CopyKind) {
+    if (!result) return;
+    const ok = await copyText(kind === "spaced" ? result.formatted : result.input);
+    setCopyState({ kind, ok });
+    if (copyTimer.current) clearTimeout(copyTimer.current);
+    copyTimer.current = setTimeout(() => setCopyState(null), ok ? 1500 : 4000);
+  }
 
   const tr = result?.tr;
 
@@ -113,7 +149,7 @@ export function IbanCheck() {
               value={
                 <span className="inline-flex items-center gap-2 flex-wrap">
                   {result.formatted}
-                  {result.valid && <CopyBtn text={result.formatted} which="spaced" />}
+                  {result.valid && <CopyBtn kind="spaced" state={copyState} onCopy={onCopy} />}
                 </span>
               }
             />
@@ -123,7 +159,7 @@ export function IbanCheck() {
               value={
                 <span className="inline-flex items-center gap-2 flex-wrap">
                   {result.input}
-                  {result.valid && <CopyBtn text={result.input} which="plain" />}
+                  {result.valid && <CopyBtn kind="plain" state={copyState} onCopy={onCopy} />}
                 </span>
               }
             />

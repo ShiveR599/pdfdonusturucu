@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Loader2, Download, Trash2, GripVertical, RotateCw, RotateCcw, RefreshCcw } from "lucide-react";
 import { PDFDocument, degrees } from "pdf-lib";
-import { pdfjsLib, withTimeout, pdfErrorMessage, loadPdfLib } from "../lib/pdfjs";
+import { pdfjsLib, withTimeout, pdfErrorMessage, loadPdfLib, renderThumbnail, createBatcher } from "../lib/pdfjs";
+import { logError } from "../lib/log";
 import { downloadBlob, isPdf, moveItem } from "../lib/format";
 import { DropZone, ErrorBox, MoveButtons, Progress } from "./ToolUi";
 
@@ -37,27 +38,25 @@ export function PdfPagesEdit() {
     try {
       doc = await withTimeout(pdfjsLib.getDocument({ data: await f.arrayBuffer() }).promise);
       const list: Page[] = [];
-      setProgress({ done: 0, total: doc.numPages });
-      for (let i = 1; i <= doc.numPages; i++) {
+      const total = doc.numPages;
+      setProgress({ done: 0, total });
+      // Yeni sayfalar mevcut listeye EKLENİR; yükleme sürerken yapılan döndürme/silme işlemleri kaybolmaz.
+      const batch = createBatcher<Page>((items) => {
         if (gen !== generation.current) return;
-        const p = await doc.getPage(i);
-        const vp = p.getViewport({ scale: 0.5 });
-        const canvas = document.createElement("canvas");
-        canvas.width = Math.floor(vp.width);
-        canvas.height = Math.floor(vp.height);
-        const ctx = canvas.getContext("2d");
-        if (!ctx) throw new Error("CANVAS");
-        await withTimeout(p.render({ canvasContext: ctx, viewport: vp, canvas } as any).promise);
-        const preview = canvas.toDataURL("image/jpeg", 0.75);
-        canvas.width = 0;
-        canvas.height = 0;
-        list.push({ id: crypto.randomUUID(), srcIndex: i - 1, rotation: 0, preview });
-        setPages([...list]);
-        setProgress({ done: i, total: doc.numPages });
-        await new Promise((r) => requestAnimationFrame(() => r(null)));
+        setPages((prev) => [...prev, ...items]);
+        setProgress({ done: items[items.length - 1].srcIndex + 1, total });
+      });
+      for (let i = 1; i <= total; i++) {
+        if (gen !== generation.current) return;
+        const page: Page = { id: crypto.randomUUID(), srcIndex: i - 1, rotation: 0, preview: await renderThumbnail(doc, i, 0.5, 0.75) };
+        list.push(page);
+        batch.push(page);
+        if (i % 8 === 0) await new Promise((r) => requestAnimationFrame(() => r(null)));
       }
+      batch.flush();
       setOriginalPages(list);
     } catch (e) {
+      logError("Sayfa Düzenle / dosya okuma", e);
       if (gen === generation.current) {
         setError(pdfErrorMessage(e));
         setFile(null);
@@ -117,6 +116,7 @@ export function PdfPagesEdit() {
       const blob = new Blob([bytes as BlobPart], { type: "application/pdf" });
       downloadBlob(blob, `${file.name.replace(/\.pdf$/i, "")}_duzenlenmis.pdf`);
     } catch (e) {
+      logError("Sayfa Düzenle / kaydetme", e);
       setError(pdfErrorMessage(e));
     } finally {
       setBusy(false);

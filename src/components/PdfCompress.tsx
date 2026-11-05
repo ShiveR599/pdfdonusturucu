@@ -2,7 +2,8 @@ import { useState } from "react";
 import { FileText, Loader2, Download, X, Trash2 } from "lucide-react";
 import JSZip from "jszip";
 import { PDFDocument } from "pdf-lib";
-import { pdfjsLib, withTimeout, pdfErrorMessage } from "../lib/pdfjs";
+import { pdfjsLib, withTimeout, pdfErrorMessage, renderPage, cappedViewport } from "../lib/pdfjs";
+import { logError } from "../lib/log";
 import { downloadBlob, formatBytes, isPdf, canvasToBlob } from "../lib/format";
 import { DropZone, ErrorBox, InfoBox } from "./ToolUi";
 
@@ -36,18 +37,19 @@ async function compressFile(file: File, level: string): Promise<Result> {
     for (let i = 1; i <= srcDoc.numPages; i++) {
       const p = await srcDoc.getPage(i);
       const base = p.getViewport({ scale: 1 });
-      const viewport = p.getViewport({ scale });
+      // Çok büyük sayfalarda (ör. A0 poster) çözünürlük, telefonun tuval sınırına göre otomatik düşürülür.
+      const viewport = cappedViewport(p, scale);
       const canvas = document.createElement("canvas");
-      canvas.width = Math.floor(viewport.width);
-      canvas.height = Math.floor(viewport.height);
-      const ctx = canvas.getContext("2d");
-      if (!ctx) throw new Error("CANVAS");
-      ctx.fillStyle = "#ffffff";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      await withTimeout(p.render({ canvasContext: ctx, viewport, canvas } as any).promise);
-      const jpegBlob = await canvasToBlob(canvas, "image/jpeg", quality);
-      canvas.width = 0;
-      canvas.height = 0;
+      canvas.width = Math.max(1, Math.floor(viewport.width));
+      canvas.height = Math.max(1, Math.floor(viewport.height));
+      let jpegBlob: Blob;
+      try {
+        await renderPage(p, canvas, viewport, { whiteBg: true });
+        jpegBlob = await canvasToBlob(canvas, "image/jpeg", quality);
+      } finally {
+        canvas.width = 0;
+        canvas.height = 0;
+      }
       const jpg = await out.embedJpg(await jpegBlob.arrayBuffer());
       // Sayfa boyutu orijinal ölçüde (punto) kalır; görüntü bu alana sığdırılır.
       const page = out.addPage([base.width, base.height]);
@@ -90,6 +92,7 @@ export function PdfCompress() {
         next.push({ id: crypto.randomUUID(), file, pages: doc.numPages, originalSize: file.size });
         doc.destroy();
       } catch (e) {
+        logError("PDF Sıkıştır / dosya okuma", e);
         failed++;
         lastErr = e;
       }
@@ -113,6 +116,7 @@ export function PdfCompress() {
       const result = await compressFile(it.file, level);
       patch(it.id, { busy: false, result });
     } catch (e) {
+      logError("PDF Sıkıştır / tek dosya", e);
       patch(it.id, { busy: false, error: pdfErrorMessage(e) });
     } finally {
       setRunning(false);
@@ -135,6 +139,7 @@ export function PdfCompress() {
         patch(it.id, { busy: false, result });
         done.push({ item: it, result });
       } catch (e) {
+        logError("PDF Sıkıştır / toplu", e);
         patch(it.id, { busy: false, error: pdfErrorMessage(e) });
       }
     }
@@ -160,6 +165,7 @@ export function PdfCompress() {
         downloadBlob(await zip.generateAsync({ type: "blob" }), "sikistirilmis-pdfler.zip");
       }
     } catch (e) {
+      logError("PDF Sıkıştır / ZIP", e);
       setError(pdfErrorMessage(e));
     } finally {
       setRunning(false);

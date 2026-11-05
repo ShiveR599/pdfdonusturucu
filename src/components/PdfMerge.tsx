@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { FileText, GripVertical, X, Trash2, Loader2, Download } from "lucide-react";
 import { PDFDocument } from "pdf-lib";
 import { withTimeout, pdfErrorMessage, loadPdfLib } from "../lib/pdfjs";
+import { logError } from "../lib/log";
 import { downloadBlob, formatBytes, isPdf, moveItem } from "../lib/format";
 import { DropZone, ErrorBox, MoveButtons } from "./ToolUi";
 
@@ -26,9 +27,12 @@ export function PdfMerge() {
         continue;
       }
       try {
+        // Dosya burada bilerek tam okunur: şifreli/korumalı PDF'ler birleştirme anında değil,
+        // eklendiği anda ve dosya adıyla birlikte yakalanır.
         const doc = await loadPdfLib(await file.arrayBuffer());
         next.push({ id: crypto.randomUUID(), file, pages: doc.getPageCount(), size: file.size });
       } catch (e) {
+        logError("PDF Birleştir / dosya okuma", e);
         errors.push(`"${file.name}": ${pdfErrorMessage(e)}`);
       }
     }
@@ -66,16 +70,22 @@ export function PdfMerge() {
     try {
       const merged = await PDFDocument.create();
       for (const it of items) {
-        const src = await loadPdfLib(await it.file.arrayBuffer());
-        const copied = await merged.copyPages(src, src.getPageIndices());
-        copied.forEach((p) => merged.addPage(p));
+        try {
+          const src = await loadPdfLib(await it.file.arrayBuffer());
+          const copied = await merged.copyPages(src, src.getPageIndices());
+          copied.forEach((p) => merged.addPage(p));
+        } catch (e) {
+          // Hangi dosyada sorun çıktığını kullanıcıya söyle.
+          throw Object.assign(new Error(`"${it.file.name}": ${pdfErrorMessage(e)}`), { userFacing: true, cause: e });
+        }
       }
       const bytes = await withTimeout(merged.save());
       const blob = new Blob([bytes as BlobPart], { type: "application/pdf" });
       setResultPages(merged.getPageCount());
       downloadBlob(blob, "birlestirilmis.pdf");
     } catch (e) {
-      setError(pdfErrorMessage(e));
+      logError("PDF Birleştir / birleştirme", e);
+      setError(e instanceof Error && (e as Error & { userFacing?: boolean }).userFacing ? e.message : pdfErrorMessage(e));
     } finally {
       setBusy(false);
     }
